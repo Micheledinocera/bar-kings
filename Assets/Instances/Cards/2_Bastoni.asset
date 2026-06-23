@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f40f3cd783e7c6459e713c294b3628e, type: 3}
+  m_Name: 2_Bastoni
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  nome: 32_Due_di_bastoni
+  valore: 2
+  seme: Bastoni
+  immagineFronte: {fileID: 1393444602345457633, guid: c437cf61de80f3d4790d8eb29e59817e, type: 3}

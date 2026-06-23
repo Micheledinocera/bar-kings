@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f40f3cd783e7c6459e713c294b3628e, type: 3}
+  m_Name: 10_Bastoni
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  nome: 40_Dieci_di_Bastoni
+  valore: 10
+  seme: Bastoni
+  immagineFronte: {fileID: 704215484065602669, guid: bcd2a2a96356b6b4e9bf5f518ab19df9, type: 3}

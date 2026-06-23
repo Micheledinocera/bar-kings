@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f40f3cd783e7c6459e713c294b3628e, type: 3}
+  m_Name: 9_Bastoni
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  nome: 39_Nove_di_bastoni
+  valore: 9
+  seme: Bastoni
+  immagineFronte: {fileID: 7807096426911459119, guid: 825e8e16d87a40e4984b6a6a6f7785e9, type: 3}

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f40f3cd783e7c6459e713c294b3628e, type: 3}
+  m_Name: 4_Bastoni
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  nome: 34_Quattro_di_bastoni
+  valore: 4
+  seme: Bastoni
+  immagineFronte: {fileID: -1755076795350683171, guid: 455c8f27c03c68347b376d24126cc004, type: 3}

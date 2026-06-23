@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // Aggiunta l'interfaccia IDragHandler qui sotto
-public class CardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableCardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Canvas canvas;
     private RectTransform rectTransform; // Più efficiente per muovere la UI rispetto al Transform classico
@@ -16,8 +16,8 @@ public class CardController : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     [SerializeField] private float moveSpeedLimit = 50f;
     [HideInInspector] public bool wasDragged;
     
-    [HideInInspector] public UnityEvent<CardController> BeginDragEvent;
-    [HideInInspector] public UnityEvent<CardController> EndDragEvent;
+    [HideInInspector] public UnityEvent<DraggableCardController> BeginDragEvent;
+    [HideInInspector] public UnityEvent<DraggableCardController> EndDragEvent;
     
     void Start()
     {
