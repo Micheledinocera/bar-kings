@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3643160401920637456}
   - component: {fileID: 7893818476541713727}
   - component: {fileID: 1542198553567963272}
+  - component: {fileID: 8471652855411944681}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -90,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDisplay
   cardData: {fileID: 0}
-  displayImage: {fileID: 0}
+  displayImage: {fileID: 3643160401920637456}
   spriteRetro: {fileID: 5205299292697767660, guid: 0299007c81195014782129f41c865781, type: 3}
 --- !u!114 &1542198553567963272
 MonoBehaviour:
@@ -148,3 +149,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8471652855411944681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243345193984600052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95c32b6cf6f89ee45acd108ed09642ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DraggableCardController
+  moveSpeedLimit: 50
+  wasDragged: 0
+  BeginDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EndDragEvent:
+    m_PersistentCalls:
+      m_Calls: []

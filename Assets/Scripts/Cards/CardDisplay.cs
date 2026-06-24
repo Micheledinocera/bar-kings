@@ -10,14 +10,18 @@ public class CardDisplay : MonoBehaviour
     public void Setup(CardData data)
     {
         cardData = data;
+        
+        // Se displayImage non è assegnato, cercalo nel GameObject
+        if (displayImage == null)
+            displayImage = GetComponent<Image>();
+        
         displayImage.sprite = spriteRetro;
     }
 
-    public void OnMouseDown()
-    {
-        // Qui aggiungeremo la logica per scoprire la carta
-        displayImage.sprite = cardData.immagineFronte;
-    }
+    // public void OnMouseDown()
+    // {
+    //     Flip();
+    // }
 
     public void Flip()
     {

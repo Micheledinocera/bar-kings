@@ -18,6 +18,7 @@ public class DeckManager : MonoBehaviour
         {
             mazzo.Push(carta);
         }
+        
     }
 
     void ShuffleDeck()
@@ -40,7 +41,7 @@ public class DeckManager : MonoBehaviour
             CardData cartaEstratta = mazzo.Pop();
 
             // Istanziamo il Prefab nella scena
-            GameObject nuovaCarta = Instantiate(cardPrefab, spawnPoint.position, Quaternion.identity);
+            GameObject nuovaCarta = Instantiate(cardPrefab, spawnPoint.position, Quaternion.identity,spawnPoint);
 
             // Passiamo i dati alla carta
             nuovaCarta.GetComponent<CardDisplay>().Setup(cartaEstratta);
