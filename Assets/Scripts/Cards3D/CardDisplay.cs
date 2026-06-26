@@ -31,8 +31,7 @@ public class CardDisplay3D : MonoBehaviour
         if (isAnimating) return;
         // if (isFlipped) return;
         isAnimating = true;
-        isFlipped = !isFlipped; // Inverti lo stato
-        // transform.Rotate(0, 0, 180);
+        isFlipped = !isFlipped;
         await StaticAnimations.FlipAnimation(this, isFlipped).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
         isAnimating = false;
 
