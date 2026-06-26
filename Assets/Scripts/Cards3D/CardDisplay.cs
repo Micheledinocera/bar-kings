@@ -1,5 +1,8 @@
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI; // Se usi UI
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 
 public class CardDisplay3D : MonoBehaviour
 {
@@ -8,12 +11,13 @@ public class CardDisplay3D : MonoBehaviour
     public GameObject retro;
     private MeshRenderer meshRenderer;
     private bool isFlipped = false;
+    private bool isAnimating = false;
 
     void Awake()
     {
         // Otteniamo il riferimento al componente che disegna la grafica
         meshRenderer = fronte.GetComponent<MeshRenderer>();
-        meshRenderer.material.mainTexture=cardData.immagineFronte.texture;
+        meshRenderer.material.mainTexture = cardData.immagineFronte.texture;
     }
 
     public void Setup(CardData data)
@@ -22,12 +26,15 @@ public class CardDisplay3D : MonoBehaviour
         // Qui potresti impostare il materiale del retro
     }
 
-    public void Flip()
+    public async Task Flip()
     {
-        if (isFlipped) return;
+        if (isAnimating) return;
+        // if (isFlipped) return;
+        isAnimating = true;
+        isFlipped = !isFlipped; // Inverti lo stato
+        // transform.Rotate(0, 0, 180);
+        await StaticAnimations.FlipAnimation(this, isFlipped).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+        isAnimating = false;
 
-        transform.Rotate(0, 0, 180);
-        
-        isFlipped = true;
     }
 }

@@ -9,13 +9,13 @@ public class CardController : MonoBehaviour
         // Otteniamo il riferimento al componente che disegna la grafica
     }
 
-    void OnMouseDown()
+    async void OnMouseDown()
     {
         CardDisplay3D padre = GetComponentInParent<CardDisplay3D>();
         
         if (padre != null)
         {
-            padre.Flip();
+            await padre.Flip();
         }
     }
 }
