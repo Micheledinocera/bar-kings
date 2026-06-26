@@ -15,15 +15,8 @@ public class CardDisplay3D : MonoBehaviour
 
     void Awake()
     {
-        // Otteniamo il riferimento al componente che disegna la grafica
         meshRenderer = fronte.GetComponent<MeshRenderer>();
-        meshRenderer.material.mainTexture = cardData.immagineFronte.texture;
-    }
-
-    public void Setup(CardData data)
-    {
-        cardData = data;
-        // Qui potresti impostare il materiale del retro
+        meshRenderer.material.SetTexture("_BaseMap", cardData.immagineFronte.texture);
     }
 
     public async Task Flip()
