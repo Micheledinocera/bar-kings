@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 19_Nove_di_coppe
   valore: 9
+  index: 18
+  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: -906375416584388181, guid: 7d6d8bfcf9ce18c4db21843634106e82, type: 3}

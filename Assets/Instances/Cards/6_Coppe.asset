@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 16_Sei_di_coppe
   valore: 6
+  index: 15
+  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: 6824469240999089247, guid: ba84e041331b51746bb543105991b2f7, type: 3}

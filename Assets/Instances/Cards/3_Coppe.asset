@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 13_Tre_di_coppe
   valore: 3
+  index: 12
+  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: -6145251894481682853, guid: ce694c08844f4a3489fa325b48beef08, type: 3}

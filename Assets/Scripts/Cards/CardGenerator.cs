@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Linq;
 
 public class CardGenerator : EditorWindow
 {
@@ -10,21 +11,20 @@ public class CardGenerator : EditorWindow
         // Supponiamo che le tue immagini siano in una cartella chiamata "Sprites"
         string folderPath = "Assets/Images/Cards/Fronte";
         string[] filePaths = Directory.GetFiles(folderPath, "*.jpg");
-        int i = 0;
-        foreach (string path in filePaths)
+        for (int i = 0; i < filePaths.Count(); i++)
         {
-            string fileName = Path.GetFileNameWithoutExtension(path);
-            CardData newCard = ScriptableObject.CreateInstance<CardData>();
+            string fileName = Path.GetFileNameWithoutExtension(filePaths[i]);
+            CardData newCard = CreateInstance<CardData>();
 
             // Imposta dati base
             newCard.nome = fileName;
+            newCard.index = i;
             newCard.seme = CardData.SEMI[i / 10];
             newCard.valore = (i % 10) + 1;
-            newCard.immagineFronte = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            newCard.isFlipped = false;
+            newCard.immagineFronte = AssetDatabase.LoadAssetAtPath<Sprite>(filePaths[i]);
 
-            // Crea l'asset nella cartella "Data"
             AssetDatabase.CreateAsset(newCard, "Assets/Instances/Cards/" + newCard.valore + "_" + newCard.seme + ".asset");
-            i++;
         }
         AssetDatabase.SaveAssets();
         Debug.Log("40 Carte generate con successo!");

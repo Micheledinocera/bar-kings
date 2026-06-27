@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 38_Otto_di_bastoni
   valore: 8
+  index: 37
+  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 8472227451316791819, guid: 070c655454e3d7c4eb179bb758851bd5, type: 3}

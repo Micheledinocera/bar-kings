@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 31_Asso_di_bastoni
   valore: 1
+  index: 30
+  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: -6674628186945659002, guid: 8bed151a51662e34d866bebae3cfbf2a, type: 3}

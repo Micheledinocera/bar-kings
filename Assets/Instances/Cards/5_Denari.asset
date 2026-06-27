@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 05_Cinque_di_denari
   valore: 5
+  index: 4
+  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: 7312832775009401068, guid: 8aa1fad7b0568b44f8d93351a6fbcddc, type: 3}

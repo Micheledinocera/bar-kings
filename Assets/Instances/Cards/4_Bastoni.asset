@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 34_Quattro_di_bastoni
   valore: 4
+  index: 33
+  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: -1755076795350683171, guid: 455c8f27c03c68347b376d24126cc004, type: 3}

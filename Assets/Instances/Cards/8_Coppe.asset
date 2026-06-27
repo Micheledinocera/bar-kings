@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 18_Otto_di_coppe
   valore: 8
+  index: 17
+  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: 2494138989473988884, guid: 86b36e595520c0b4992cc73e1234a7e9, type: 3}

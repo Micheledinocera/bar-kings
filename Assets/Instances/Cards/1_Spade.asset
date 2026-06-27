@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 21_Asso_di_spade
   valore: 1
+  index: 20
+  isFlipped: 0
   seme: Spade
   immagineFronte: {fileID: -664388445574401138, guid: 9dafadf34af42674084f02bea885bbee, type: 3}

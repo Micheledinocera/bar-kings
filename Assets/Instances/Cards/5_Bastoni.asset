@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 35_Cinque_di_bastoni
   valore: 5
+  index: 34
+  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 8954142077804374772, guid: 375f418314485da44a32ddbb418c73fc, type: 3}

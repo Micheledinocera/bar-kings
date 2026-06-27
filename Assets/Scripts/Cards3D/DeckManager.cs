@@ -8,13 +8,15 @@ public class DeckManager3D : MonoBehaviour
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
     public List<CardData> cardDatabase = new();
-    private List<GameObject> deckCards = new();
+    public static List<GameObject> deckCards = new();
 
     async void Start()
     {
+        GameManager.isClickBlocked=true;
         ShuffleDeck();
         RenderDeck();
-        await moveCards();
+        await MoveCards();
+        GameManager.isClickBlocked=false;
     }
 
     void ShuffleDeck()
@@ -40,7 +42,7 @@ public class DeckManager3D : MonoBehaviour
         }
     }
 
-    async Task moveCards()
+    async Task MoveCards()
     {
         for (int i = 0; i < deckCards.Count; i++)
         {

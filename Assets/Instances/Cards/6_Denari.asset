@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 06_Sei_di_denari
   valore: 6
+  index: 5
+  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: 58176099673122265, guid: 70f2504a4b0dec649923519e0e8f6e82, type: 3}

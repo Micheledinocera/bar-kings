@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 10_Dieci_di_denari
   valore: 10
+  index: 9
+  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: -1742387668297317326, guid: 23efe317259c9aa4698f6df0a1428eca, type: 3}
