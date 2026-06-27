@@ -13,8 +13,10 @@ public class CardDisplay3D : MonoBehaviour
     private bool isFlipped = false;
     private bool isAnimating = false;
 
-    void Awake()
+    public void Setup(CardData data)
     {
+        cardData = data;
+        
         meshRenderer = fronte.GetComponent<MeshRenderer>();
         meshRenderer.material.SetTexture("_BaseMap", cardData.immagineFronte.texture);
     }
@@ -25,7 +27,7 @@ public class CardDisplay3D : MonoBehaviour
         // if (isFlipped) return;
         isAnimating = true;
         isFlipped = !isFlipped;
-        await StaticAnimations.FlipAnimation(this, isFlipped).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+        await CardAnimations.FlipAnimation(this, isFlipped).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
         isAnimating = false;
 
     }
