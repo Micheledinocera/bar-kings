@@ -1,8 +1,6 @@
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 
 public class CardDisplay3D : MonoBehaviour
 {

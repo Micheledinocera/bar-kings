@@ -17,4 +17,17 @@ public static class CardAnimations
         sequence.SetLink(card.gameObject);
         return sequence;
     }
+    public static Sequence MoveAnimation(GameObject card, Vector3 targetPosition, float duration = 1f)
+    {
+        Sequence sequence = DOTween.Sequence();
+
+        float alzata = 1f;
+        
+        sequence.Insert(0,card.transform.DOMoveY(card.transform.position.y+ alzata, duration / 3).SetEase(Ease.OutQuad));
+        sequence.Insert(duration/3,card.transform.DOMove(targetPosition, duration).SetEase(Ease.InOutBack));
+        // sequence.Append(card.transform.DOMoveY(targetPosition.y, duration / 3).SetEase(Ease.InQuad));
+        
+        sequence.SetLink(card);
+        return sequence;
+    }
 }
