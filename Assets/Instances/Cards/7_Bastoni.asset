@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 37_Sette_di_bastoni
   valore: 7
   index: 36
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 4735151439447752903, guid: 287eddb238bac3a4984b65ed679295ce, type: 3}

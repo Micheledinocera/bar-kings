@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 33_Tre_di_bastoni
   valore: 3
   index: 32
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: -2984530631192145405, guid: 3f8c70adc8136bd41b56e04b0c575a98, type: 3}

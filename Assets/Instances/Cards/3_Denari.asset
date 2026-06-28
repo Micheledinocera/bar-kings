@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 03_Tre_di_denari
   valore: 3
   index: 2
-  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: 285180214433883251, guid: cb9104016fead7e41a4915ffbdf502d6, type: 3}

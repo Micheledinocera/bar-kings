@@ -21,7 +21,6 @@ public class CardGenerator : EditorWindow
             newCard.index = i;
             newCard.seme = CardData.SEMI[i / 10];
             newCard.valore = (i % 10) + 1;
-            newCard.isFlipped = false;
             newCard.immagineFronte = AssetDatabase.LoadAssetAtPath<Sprite>(filePaths[i]);
 
             AssetDatabase.CreateAsset(newCard, "Assets/Instances/Cards/" + newCard.valore + "_" + newCard.seme + ".asset");

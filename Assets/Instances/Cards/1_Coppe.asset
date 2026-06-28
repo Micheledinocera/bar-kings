@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 11_Asso_di_coppe
   valore: 1
   index: 10
-  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: 8531645381245881767, guid: bab88db5852805345845831ab0adb9a4, type: 3}

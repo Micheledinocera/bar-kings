@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 36_Sei_di_bastoni
   valore: 6
   index: 35
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 8538718316192994835, guid: f75a5306211997b46a7022d5cdd59d9c, type: 3}

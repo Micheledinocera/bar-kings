@@ -19,12 +19,11 @@ public class CardController : MonoBehaviour
     {
         CardDisplay3D cardDisplay = GetComponentInParent<CardDisplay3D>();
 
-        if (GameManager.isClickBlocked || cardDisplay.cardData.isFlipped) return;
+        if (GameManager.isClickBlocked || cardDisplay.isFlipped) return;
         
         GameManager.isClickBlocked=true;
         
         await CardAnimations.MoveCards(cardDisplay.gameObject,DeckManager3D.deckCards[cardDisplay.cardData.index]);
-        // await CardAnimations.MoveCards(cardDisplay.gameObject,DeckManager3D.deckCards[cardDisplay.cardData.index]).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
         
         GameManager.isClickBlocked=false;
     }

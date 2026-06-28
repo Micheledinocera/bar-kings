@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 07_Sette_di_denari
   valore: 7
   index: 6
-  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: -4535340737547794049, guid: eb3e7d7163ced2b47960b8c0a831dfca, type: 3}

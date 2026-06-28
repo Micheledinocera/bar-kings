@@ -31,40 +31,32 @@ public static class CardAnimations
         sequence.SetLink(card);
         return sequence;
     }
-    public static async Task<Sequence> MoveCards(GameObject startingCard, GameObject endingCard, float duration = 0.5f)
+    public static async Task MoveCards(GameObject startingCard, GameObject endingCard, float duration = 0.5f)
     {
-        Sequence sequence = DOTween.Sequence();
-
         float alzata = 1f;
         int firstCardIndex = startingCard.GetComponent<CardDisplay3D>().cardData.index;
-        startingCard.GetComponent<CardDisplay3D>().cardData.isFlipped=true;
+        startingCard.GetComponent<CardDisplay3D>().isFlipped = true;
         GameObject tempStartingCard = startingCard;
         Vector3 startingPosition = startingCard.transform.position;
         GameObject tempEndingCard = endingCard;
         int tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
-        await sequence.Insert(0, startingCard.transform.DOMoveY(startingCard.transform.position.y + alzata, duration / 3).SetEase(Ease.OutQuad));
+        await startingCard.transform.DOMoveY(startingCard.transform.position.y + alzata, duration / 3).SetEase(Ease.OutQuad).ToUniTask();
         while (tempEndingCardIndex != firstCardIndex)
         {
-        // sequence.Insert(duration / 3, tempStartingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack));
-        // sequence.Append(tempEndingCard.transform.DOMoveY(tempEndingCard.transform.position.y + alzata, duration / 3).SetEase(Ease.InQuad));
-        // sequence.Append(tempStartingCard.transform.DOMove(tempEndingCard.transform.position, duration).SetEase(Ease.InOutBack));
-        
-        await MoveCardsAtom(tempStartingCard,tempEndingCard);
-        tempStartingCard=tempEndingCard;
-        tempEndingCard=DeckManager3D.deckCards[tempEndingCardIndex];
-        tempEndingCardIndex=tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
+            await MoveCardsAtom(tempStartingCard, tempEndingCard);
+            tempStartingCard = tempEndingCard;
+            tempEndingCard = DeckManager3D.deckCards[tempEndingCardIndex];
+            tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
         }
-        await sequence.Insert(duration / 3, tempStartingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack));
-        await sequence.Append(tempStartingCard.transform.DOMove(startingPosition, duration).SetEase(Ease.InOutBack));
-        await sequence.SetLink(startingCard);
-        return sequence;
+        await tempStartingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack).ToUniTask();
+        await tempStartingCard.transform.DOMove(startingPosition, duration).SetEase(Ease.InOutBack).ToUniTask();
     }
 
     public static Sequence MoveCardsAtom(GameObject startingCard, GameObject endingCard, float duration = 0.5f)
     {
         float alzata = 1f;
         Sequence sequence = DOTween.Sequence();
-        endingCard.GetComponent<CardDisplay3D>().cardData.isFlipped=true;
+        endingCard.GetComponent<CardDisplay3D>().isFlipped = true;
         sequence.Insert(duration / 3, startingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack));
         sequence.Append(endingCard.transform.DOMoveY(endingCard.transform.position.y + alzata, duration / 3).SetEase(Ease.InQuad));
         sequence.Append(startingCard.transform.DOMove(endingCard.transform.position, duration).SetEase(Ease.InOutBack));

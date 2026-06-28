@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 40_Dieci_di_Bastoni
   valore: 10
   index: 39
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 704215484065602669, guid: bcd2a2a96356b6b4e9bf5f518ab19df9, type: 3}

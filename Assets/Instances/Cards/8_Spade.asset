@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 28_Otto_di_spade
   valore: 8
   index: 27
-  isFlipped: 0
   seme: Spade
   immagineFronte: {fileID: -6633235561258584130, guid: 1549c4827a742ee499a3b1a6666a9df0, type: 3}

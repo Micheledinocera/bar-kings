@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 12_Due_di_coppe
   valore: 2
   index: 11
-  isFlipped: 0
   seme: Coppe
   immagineFronte: {fileID: -444032242232472248, guid: a2c96892826fcdf4891ebb82a6a284c3, type: 3}

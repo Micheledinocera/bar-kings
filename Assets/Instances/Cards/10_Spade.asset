@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 30_Dieci_di_spade
   valore: 10
   index: 29
-  isFlipped: 0
   seme: Spade
   immagineFronte: {fileID: -5849322533357080803, guid: d2cc3129e2878524487672e6d59a4dbb, type: 3}

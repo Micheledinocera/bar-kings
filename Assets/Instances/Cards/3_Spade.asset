@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 23_Tre_di_spade
   valore: 3
   index: 22
-  isFlipped: 0
   seme: Spade
   immagineFronte: {fileID: -8063720184350110457, guid: e43fdad0b3c23a34aafe8ed10332b7eb, type: 3}

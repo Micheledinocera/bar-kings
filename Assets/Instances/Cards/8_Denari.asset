@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 08_Otto_di_denari
   valore: 8
   index: 7
-  isFlipped: 0
   seme: Denari
   immagineFronte: {fileID: 5989089427422103954, guid: c3d9a4df2ec106f468f4f7abaac949c0, type: 3}

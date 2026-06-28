@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 39_Nove_di_bastoni
   valore: 9
   index: 38
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 7807096426911459119, guid: 825e8e16d87a40e4984b6a6a6f7785e9, type: 3}

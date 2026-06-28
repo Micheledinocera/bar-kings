@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 32_Due_di_bastoni
   valore: 2
   index: 31
-  isFlipped: 0
   seme: Bastoni
   immagineFronte: {fileID: 1393444602345457633, guid: c437cf61de80f3d4790d8eb29e59817e, type: 3}

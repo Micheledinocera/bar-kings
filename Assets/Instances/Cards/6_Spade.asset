@@ -15,6 +15,5 @@ MonoBehaviour:
   nome: 26_Sei_di_spade
   valore: 6
   index: 25
-  isFlipped: 0
   seme: Spade
   immagineFronte: {fileID: 7433818919918806136, guid: 853bceeefcab2f14e9d8a0d727638416, type: 3}
