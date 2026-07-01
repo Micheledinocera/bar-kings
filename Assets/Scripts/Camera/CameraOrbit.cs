@@ -7,7 +7,6 @@ public class CameraOrbit : MonoBehaviour
 
     void Update()
     {
-        // Ruota la camera se tieni premuto il tasto destro
         if (Input.GetMouseButton(1))
         {
             float rotX = Input.GetAxis("Mouse X") * sensitivity;
