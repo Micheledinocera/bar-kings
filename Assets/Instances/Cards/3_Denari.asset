@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 03_Tre_di_denari
   valore: 3
-  index: 2
-  seme: Denari
+  seme: 0
   immagineFronte: {fileID: 285180214433883251, guid: cb9104016fead7e41a4915ffbdf502d6, type: 3}

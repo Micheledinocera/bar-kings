@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 33_Tre_di_bastoni
   valore: 3
-  index: 32
-  seme: Bastoni
+  seme: 3
   immagineFronte: {fileID: -2984530631192145405, guid: 3f8c70adc8136bd41b56e04b0c575a98, type: 3}

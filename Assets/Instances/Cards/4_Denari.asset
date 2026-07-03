@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 04_Quattro_di_denari
   valore: 4
-  index: 3
-  seme: Denari
+  seme: 0
   immagineFronte: {fileID: 3088832170865060655, guid: f4f086374471301479dfffd4a2df8891, type: 3}

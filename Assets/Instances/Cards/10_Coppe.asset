@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 20_Dieci_di_coppe
   valore: 10
-  index: 19
-  seme: Coppe
+  seme: 1
   immagineFronte: {fileID: 7490273766920510951, guid: 5c7fd4c97a976a543ad7afee358aa363, type: 3}

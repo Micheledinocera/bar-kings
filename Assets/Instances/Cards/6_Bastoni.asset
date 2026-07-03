@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 36_Sei_di_bastoni
   valore: 6
-  index: 35
-  seme: Bastoni
+  seme: 3
   immagineFronte: {fileID: 8538718316192994835, guid: f75a5306211997b46a7022d5cdd59d9c, type: 3}

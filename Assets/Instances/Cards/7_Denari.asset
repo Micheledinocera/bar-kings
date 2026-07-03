@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 07_Sette_di_denari
   valore: 7
-  index: 6
-  seme: Denari
+  seme: 0
   immagineFronte: {fileID: -4535340737547794049, guid: eb3e7d7163ced2b47960b8c0a831dfca, type: 3}

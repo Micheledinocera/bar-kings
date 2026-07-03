@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 30_Dieci_di_spade
   valore: 10
-  index: 29
-  seme: Spade
+  seme: 2
   immagineFronte: {fileID: -5849322533357080803, guid: d2cc3129e2878524487672e6d59a4dbb, type: 3}

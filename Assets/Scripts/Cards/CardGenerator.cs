@@ -18,12 +18,13 @@ public class CardGenerator : EditorWindow
 
             // Imposta dati base
             newCard.nome = fileName;
-            newCard.index = i;
-            newCard.seme = CardData.SEMI[i / 10];
+            newCard.seme = (Seme)(i / 10);
             newCard.valore = (i % 10) + 1;
             newCard.immagineFronte = AssetDatabase.LoadAssetAtPath<Sprite>(filePaths[i]);
 
             AssetDatabase.CreateAsset(newCard, "Assets/Instances/Cards/" + newCard.valore + "_" + newCard.seme + ".asset");
+            DeckManager3D.cardDatabase.Add(newCard);
+            DeckManager3D.cardDatabaseInGame.Add(new(newCard, i));
         }
         AssetDatabase.SaveAssets();
         Debug.Log("40 Carte generate con successo!");

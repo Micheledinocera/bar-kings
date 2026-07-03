@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 24_Quattro_di_spade
   valore: 4
-  index: 23
-  seme: Spade
+  seme: 2
   immagineFronte: {fileID: -903617738609961116, guid: f027f05d73c176e43afde730d69bce91, type: 3}

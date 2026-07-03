@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 02_Due_di_denari
   valore: 2
-  index: 1
-  seme: Denari
+  seme: 0
   immagineFronte: {fileID: -1857476512683483718, guid: 2c88a7f472036af4f9f1b3fe4a91cf84, type: 3}

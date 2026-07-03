@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 40_Dieci_di_Bastoni
   valore: 10
-  index: 39
-  seme: Bastoni
+  seme: 3
   immagineFronte: {fileID: 704215484065602669, guid: bcd2a2a96356b6b4e9bf5f518ab19df9, type: 3}

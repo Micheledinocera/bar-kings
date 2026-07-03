@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 01_Asso_di_denari
   valore: 1
-  index: 0
-  seme: Denari
+  seme: 0
   immagineFronte: {fileID: -5361408979437252416, guid: 96f4decaa15427447894f8f951069089, type: 3}

@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   nome: 22_Due_di_spade
   valore: 2
-  index: 21
-  seme: Spade
+  seme: 2
   immagineFronte: {fileID: 3478836002529475283, guid: 8c1539ade63ef6944838828414ad3d71, type: 3}
