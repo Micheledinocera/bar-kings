@@ -1,6 +1,4 @@
-using UnityEngine;
-
-public class CardDataInGame : ScriptableObject
+public class CardDataInGame
 {
     public CardData cardData;
     public int index;
