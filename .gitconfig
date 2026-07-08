@@ -1,3 +1,0 @@
-[merge "unitymergemedium"]
-    name = Unity SmartMerge
-    driver = "C:/Progra~1/Unity/Hub/Editor/6000.4.9f1/Editor/Data/Tools/UnityYAMLMerge.exe" merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED"
