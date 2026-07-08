@@ -1,2 +1,3 @@
 *.unity filter=lfs diff=unitymergemedium merge=unitymergemedium
-*.prefab filter=lfs diff=unitymergemedium merge=unitymergemedium
+*.prefab filter=lfs diff=unitymergemedium merge=unitymergemedium*
+*.asset filter=lfs diff=lfs merge=unitymergemedium text
