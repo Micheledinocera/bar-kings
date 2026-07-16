@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 
 public class CardDisplay3D : MonoBehaviour
 {
