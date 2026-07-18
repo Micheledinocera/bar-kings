@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-public static class CardAnimationsTest
+public static class CardAnimationsPanchina
 {
     public static Sequence FlipAnimation(CardDisplay3D card, bool front = true, float duration = 1f)
     {
@@ -36,7 +36,7 @@ public static class CardAnimationsTest
         float alzata = 1f;
         int firstCardIndex = startingCard.GetComponent<CardDisplay3D>().cardData.index;
         startingCard.GetComponent<CardDisplay3D>().isFlipped = true;
-        DeckManager3DTest.instance.GetCardPositionByIndex(firstCardIndex); // da scemunirci
+        DeckManagerPanchina.instance.GetCardPositionByIndex(firstCardIndex); // da scemunirci
         GameObject tempStartingCard = startingCard;
         Vector3 startingPosition = startingCard.transform.position;
         GameObject tempEndingCard = endingCard;

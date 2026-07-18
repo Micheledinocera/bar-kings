@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 2775225418866146358}
   - component: {fileID: -6520976992916241235}
   m_Layer: 0
-  m_Name: 3DCardTest
+  m_Name: 3DCardPanchina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

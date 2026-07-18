@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using System.Linq;
 
-public class DeckManager3DTest : MonoBehaviour
+public class DeckManagerPanchina : MonoBehaviour
 {
-    public static DeckManager3DTest instance;
+    public static DeckManagerPanchina instance;
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
     public static List<CardData> cardDatabase = new();

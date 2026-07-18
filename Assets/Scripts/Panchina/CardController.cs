@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CardControllerTest : MonoBehaviour
+public class CardControllerPanchina : MonoBehaviour
 {
     async void OnMouseDown()
     {
@@ -10,7 +10,7 @@ public class CardControllerTest : MonoBehaviour
         
         GameManager.isClickBlocked=true;
         
-        await CardAnimationsTest.MoveCards(cardDisplay.gameObject,DeckManager3D.deckCards[cardDisplay.cardData.index]);
+        await CardAnimationsPanchina.MoveCards(cardDisplay.gameObject,DeckManager3D.deckCards[cardDisplay.cardData.index]);
         
         GameManager.isClickBlocked=false;
     }
