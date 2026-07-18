@@ -3,9 +3,9 @@ using UnityEditor;
 using System.IO;
 using System.Linq;
 
-public class CardGenerator : EditorWindow
+public class CardGeneratorPanchina : EditorWindow
 {
-    [MenuItem("Tools/Genera Carte Napoletane")]
+    [MenuItem("Tools/Genera Carte Napoletane Panchina")]
     public static void GenerateCards()
     {
         // Supponiamo che le tue immagini siano in una cartella chiamata "Sprites"
@@ -23,10 +23,9 @@ public class CardGenerator : EditorWindow
             newCard.immagineFronte = AssetDatabase.LoadAssetAtPath<Sprite>(filePaths[i]);
 
             AssetDatabase.CreateAsset(newCard, "Assets/Instances/Cards/" + newCard.valore + "_" + newCard.seme + ".asset");
-            DeckManager3D.cardDatabase.Add(newCard);
-            DeckManager3D.cardDatabaseInGame.Add(new(newCard, i));
+            DeckManagerPanchina.cardDatabase.Add(newCard);
+            DeckManagerPanchina.cardDatabaseInGame.Add(new(newCard, i));
         }
         AssetDatabase.SaveAssets();
-        Debug.Log(DeckManager3D.cardDatabaseInGame.Count() + " Carte generate con successo!");
     }
 }

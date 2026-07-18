@@ -15,15 +15,16 @@ public class DeckManagerPanchina : MonoBehaviour
     public static List<GameObject> deckCards = new();
     List<CardDataInGame> iQuattroRe = new();
     List<CardDataInGame> altreCarte = new();
-    int DECK_LIMIT=40;
+    int DECK_LIMIT = 40;
     async void Start()
     {
-        if(instance==null){
-            instance=this;
+        if (instance == null)
+        {
+            instance = this;
         }
 
         GameManager.isClickBlocked = true;
-        CardGenerator.GenerateCards();
+        CardGeneratorPanchina.GenerateCards();
         iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == 10).ToList();
         altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != 10).ToList();
         AddDoppioni();
@@ -41,12 +42,13 @@ public class DeckManagerPanchina : MonoBehaviour
     }
     private void AddRe()
     {
-        cardDatabaseInGame= shuffledCardDatabaseInGame.Where((c,i)=>i<DECK_LIMIT-iQuattroRe.Count()).ToList();
+        cardDatabaseInGame = shuffledCardDatabaseInGame.Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count()).ToList();
         cardDatabaseInGame.AddRange(iQuattroRe);
     }
 
     private void AddDoppioni()
     {
+        Debug.Log(cardDatabaseInGame.Count());
         for (int i = 0; i < 5; i++)
         {
             cardDatabaseInGame.Add(cardDatabaseInGame[i]);
@@ -74,7 +76,7 @@ public class DeckManagerPanchina : MonoBehaviour
         {
             GameObject nuovaCarta = Instantiate(cardPrefab, deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
             nuovaCarta.GetComponent<CardDisplay3D>().Setup(shuffledCardDatabaseInGame[i]);
-            nuovaCarta.name=nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
+            nuovaCarta.name = nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
             deckCards.Add(nuovaCarta);
         }
     }
