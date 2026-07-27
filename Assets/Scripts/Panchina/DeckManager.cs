@@ -27,8 +27,9 @@ public class DeckManagerPanchina : MonoBehaviour
         CardGeneratorPanchina.GenerateCards();
         iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == 10).ToList();
         altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != 10).ToList();
-        AddDoppioni();
-        ShuffleDeck();
+        shuffledCardDatabaseInGame.AddRange(altreCarte);
+        // AddDoppioni();
+        // ShuffleDeck();
         AddRe();
         ShuffleDeck();
         RenderDeck();
@@ -36,6 +37,10 @@ public class DeckManagerPanchina : MonoBehaviour
         GameManager.isClickBlocked = false;
     }
 
+    public Transform GetSlotByIndex(int index)
+    {
+        return deckPosition.GetChild(0).GetChild(index);
+    }
     public Vector3 GetCardPositionByIndex(int index)
     {
         return deckPosition.GetChild(0).GetChild(index).transform.position;
@@ -51,7 +56,8 @@ public class DeckManagerPanchina : MonoBehaviour
         Debug.Log(cardDatabaseInGame.Count());
         for (int i = 0; i < 5; i++)
         {
-            cardDatabaseInGame.Add(cardDatabaseInGame[i]);
+            shuffledCardDatabaseInGame.Add(cardDatabaseInGame[i]);
+            Debug.Log($"Aggiunto doppione {cardDatabaseInGame[i].cardData.nome} - {cardDatabaseInGame[i].cardData.seme}");
         }
     }
 
@@ -64,7 +70,6 @@ public class DeckManagerPanchina : MonoBehaviour
             int randomIndex = Random.Range(i, shuffledCardDatabaseInGame.Count);
             shuffledCardDatabaseInGame[i] = shuffledCardDatabaseInGame[randomIndex];
             shuffledCardDatabaseInGame[randomIndex] = temp;
-            Debug.Log($"Carta in indice {randomIndex}: {shuffledCardDatabaseInGame[randomIndex].index} - {shuffledCardDatabaseInGame[randomIndex].cardData.valore} - {shuffledCardDatabaseInGame[randomIndex].cardData.seme}");
         }
 
         Debug.Log("Mazzo mescolato!");
@@ -75,6 +80,7 @@ public class DeckManagerPanchina : MonoBehaviour
         for (int i = shuffledCardDatabaseInGame.Count - 1; i >= 0; i--)
         {
             GameObject nuovaCarta = Instantiate(cardPrefab, deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
+            // GameObject nuovaCarta = Instantiate(cardPrefab, GetSlotByIndex(i).position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
             nuovaCarta.GetComponent<CardDisplay3D>().Setup(shuffledCardDatabaseInGame[i]);
             nuovaCarta.name = nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
             deckCards.Add(nuovaCarta);
@@ -87,6 +93,7 @@ public class DeckManagerPanchina : MonoBehaviour
         {
             Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
             await CardAnimations.MoveAnimation(deckCards[i], cardPosition, 0.1f).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+            deckCards[i].transform.SetParent(GetSlotByIndex(i));
         }
     }
 }
