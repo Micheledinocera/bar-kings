@@ -41,10 +41,6 @@ public class DeckManagerPanchina : MonoBehaviour
     {
         return deckPosition.GetChild(0).GetChild(index);
     }
-    public Vector3 GetCardPositionByIndex(int index)
-    {
-        return deckPosition.GetChild(0).GetChild(index).transform.position;
-    }
     private void AddRe()
     {
         cardDatabaseInGame = shuffledCardDatabaseInGame.Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count()).ToList();
@@ -80,7 +76,6 @@ public class DeckManagerPanchina : MonoBehaviour
         for (int i = shuffledCardDatabaseInGame.Count - 1; i >= 0; i--)
         {
             GameObject nuovaCarta = Instantiate(cardPrefab, deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
-            // GameObject nuovaCarta = Instantiate(cardPrefab, GetSlotByIndex(i).position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
             nuovaCarta.GetComponent<CardDisplay3D>().Setup(shuffledCardDatabaseInGame[i]);
             nuovaCarta.name = nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
             deckCards.Add(nuovaCarta);
@@ -92,7 +87,7 @@ public class DeckManagerPanchina : MonoBehaviour
         for (int i = 0; i < deckCards.Count; i++)
         {
             Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
-            await CardAnimations.MoveAnimation(deckCards[i], cardPosition, 0.1f).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+            await CardAnimationsPanchina.MoveAnimation(deckCards[i], cardPosition, 0.1f).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
             deckCards[i].transform.SetParent(GetSlotByIndex(i));
         }
     }

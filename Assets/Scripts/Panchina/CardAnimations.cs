@@ -36,7 +36,7 @@ public static class CardAnimationsPanchina
         float alzata = 1f;
         int firstCardIndex = startingCard.GetComponent<CardDisplay3D>().cardData.index;
         startingCard.GetComponent<CardDisplay3D>().isFlipped = true;
-        DeckManagerPanchina.instance.GetCardPositionByIndex(firstCardIndex); // da scemunirci
+        // DeckManagerPanchina.instance.GetSlotByIndex(firstCardIndex); // da scemunirci
         GameObject tempStartingCard = startingCard;
         Vector3 startingPosition = startingCard.transform.position;
         GameObject tempEndingCard = endingCard;
@@ -46,7 +46,7 @@ public static class CardAnimationsPanchina
         {
             await MoveCardsAtom(tempStartingCard, tempEndingCard);
             tempStartingCard = tempEndingCard;
-            tempEndingCard = DeckManager3D.deckCards[tempEndingCardIndex];
+            tempEndingCard = DeckManagerPanchina.deckCards[tempEndingCardIndex];
             tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
         }
         await tempStartingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack).ToUniTask();
