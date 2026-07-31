@@ -28,9 +28,9 @@ public class DeckManagerPanchina : MonoBehaviour
         iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == 10).ToList();
         altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != 10).ToList();
         shuffledCardDatabaseInGame.AddRange(altreCarte);
-        // AddDoppioni();
-        // ShuffleDeck();
-        AddRe();
+        AddDoppioni();
+        ShuffleDeck();
+        shuffledCardDatabaseInGame.AddRange(iQuattroRe);
         ShuffleDeck();
         RenderDeck();
         await MoveCards();
@@ -40,11 +40,6 @@ public class DeckManagerPanchina : MonoBehaviour
     public Transform GetSlotByIndex(int index)
     {
         return deckPosition.GetChild(0).GetChild(index);
-    }
-    private void AddRe()
-    {
-        cardDatabaseInGame = shuffledCardDatabaseInGame.Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count()).ToList();
-        cardDatabaseInGame.AddRange(iQuattroRe);
     }
 
     private void AddDoppioni()
@@ -59,7 +54,6 @@ public class DeckManagerPanchina : MonoBehaviour
 
     void ShuffleDeck()
     {
-        shuffledCardDatabaseInGame = cardDatabaseInGame;
         for (int i = 0; i < shuffledCardDatabaseInGame.Count; i++)
         {
             CardDataInGame temp = shuffledCardDatabaseInGame[i];
