@@ -32,8 +32,6 @@ public class DeckManager3D : MonoBehaviour
             shuffledCardDatabaseInGame[i] = shuffledCardDatabaseInGame[randomIndex];
             shuffledCardDatabaseInGame[randomIndex] = temp;
         }
-        
-        Debug.Log("Mazzo mescolato!");
     }
 
     void RenderDeck()

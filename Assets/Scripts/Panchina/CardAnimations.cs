@@ -31,22 +31,21 @@ public static class CardAnimationsPanchina
         sequence.SetLink(card);
         return sequence;
     }
-    public static async Task MoveCards(GameObject startingCard, GameObject endingCard, float duration = 0.5f)
+    public static async Task MoveCards(GameObject startingCard,/*  GameObject endingCard,  */float duration = 0.5f)
     {
         float alzata = 1f;
         int firstCardIndex = startingCard.GetComponent<CardDisplay3D>().cardData.index;
         startingCard.GetComponent<CardDisplay3D>().isFlipped = true;
-        // DeckManagerPanchina.instance.GetSlotByIndex(firstCardIndex); // da scemunirci
         GameObject tempStartingCard = startingCard;
         Vector3 startingPosition = startingCard.transform.position;
-        GameObject tempEndingCard = endingCard;
-        int tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
         await startingCard.transform.DOMoveY(startingCard.transform.position.y + alzata, duration / 3).SetEase(Ease.OutQuad).ToUniTask();
-        while (tempEndingCardIndex != firstCardIndex)
+        GameObject tempEndingCard = DeckManagerPanchina.instance.GetSlotByIndex(firstCardIndex).GetChild(1).gameObject;
+        int tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
+        while (tempEndingCardIndex != firstCardIndex && !tempEndingCard.GetComponent<CardDisplay3D>().isFlipped)
         {
             await MoveCardsAtom(tempStartingCard, tempEndingCard);
             tempStartingCard = tempEndingCard;
-            tempEndingCard = DeckManagerPanchina.deckCards[tempEndingCardIndex];
+            tempEndingCard = DeckManagerPanchina.instance.GetSlotByIndex(tempEndingCardIndex).GetChild(1).gameObject;
             tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
         }
         await tempStartingCard.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd).SetEase(Ease.InOutBack).ToUniTask();

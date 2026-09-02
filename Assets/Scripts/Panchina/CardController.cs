@@ -10,7 +10,8 @@ public class CardControllerPanchina : MonoBehaviour
         
         GameManager.isClickBlocked=true;
         
-        await CardAnimationsPanchina.MoveCards(cardDisplay.gameObject,DeckManagerPanchina.deckCards[cardDisplay.cardData.index]);
+        await CardAnimationsPanchina.MoveCards(cardDisplay.gameObject);
+        // await CardAnimationsPanchina.MoveCards(cardDisplay.gameObject,DeckManagerPanchina.deckCards[cardDisplay.cardData.index]);
         
         GameManager.isClickBlocked=false;
     }

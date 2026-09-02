@@ -30,7 +30,7 @@ public class DeckManagerPanchina : MonoBehaviour
         shuffledCardDatabaseInGame.AddRange(altreCarte);
         AddDoppioni();
         ShuffleDeck();
-        shuffledCardDatabaseInGame.AddRange(iQuattroRe);
+        AddRe();
         ShuffleDeck();
         RenderDeck();
         await MoveCards();
@@ -41,14 +41,17 @@ public class DeckManagerPanchina : MonoBehaviour
     {
         return deckPosition.GetChild(0).GetChild(index);
     }
+    private void AddRe()
+    {
+        shuffledCardDatabaseInGame = shuffledCardDatabaseInGame.Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count()).ToList();
+        shuffledCardDatabaseInGame.AddRange(iQuattroRe);
+    }
 
     private void AddDoppioni()
     {
-        Debug.Log(cardDatabaseInGame.Count());
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 9; i++)
         {
             shuffledCardDatabaseInGame.Add(cardDatabaseInGame[i]);
-            Debug.Log($"Aggiunto doppione {cardDatabaseInGame[i].cardData.nome} - {cardDatabaseInGame[i].cardData.seme}");
         }
     }
 
@@ -61,8 +64,6 @@ public class DeckManagerPanchina : MonoBehaviour
             shuffledCardDatabaseInGame[i] = shuffledCardDatabaseInGame[randomIndex];
             shuffledCardDatabaseInGame[randomIndex] = temp;
         }
-
-        Debug.Log("Mazzo mescolato!");
     }
 
     void RenderDeck()
