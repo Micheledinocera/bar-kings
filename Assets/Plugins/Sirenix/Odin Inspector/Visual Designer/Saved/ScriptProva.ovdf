@@ -1,0 +1,23 @@
+OVDF v1.1
+ScriptProva, Assembly-CSharp
+MetaGuid:11438ae923601df4bb5d4886f29b967e
+
+# $W5aUguUpkwtQk26ZiriDMw
+Position: $root:0
++ [Sirenix.OdinInspector.BoxGroupAttribute]
+
+# eta
+Position: $W5aUguUpkwtQk26ZiriDMw:0
+
+# nome
+Position: $W5aUguUpkwtQk26ZiriDMw:1
+
+# debugLog()
+Visibility: Shown
+
+# Start()
+Position: $root:1
+Visibility: Shown
+
+# Update()
+Visibility: Shown
