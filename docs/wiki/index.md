@@ -14,5 +14,7 @@ Le decisioni ancora `aperta` o `in analisi`. Quelle prese sono negli indici dell
 
 | Decisione | Area | Stato |
 |---|---|---|
+| [Meccaniche della run](./business/meccaniche-della-run.md) | Business | in analisi |
+| [Modifica del mazzo: panchina, tribuna, index>40](./business/modifica-del-mazzo.md) | Business | in analisi |
 | [Definition of done delle feature di codice](./progetto/definition-of-done.md) | Progetto | aperta |
 | [Tipi di ramo e release](./progetto/tipi-di-ramo-e-release.md) | Progetto | aperta |
