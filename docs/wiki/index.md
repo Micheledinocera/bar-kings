@@ -12,4 +12,7 @@ Punto di partenza del wiki: le aree, ciascuna con il suo indice, e il radar dell
 
 Le decisioni ancora `aperta` o `in analisi`. Quelle prese sono negli indici delle aree.
 
-Nessuna decisione aperta.
+| Decisione | Area | Stato |
+|---|---|---|
+| [Definition of done delle feature di codice](./progetto/definition-of-done.md) | Progetto | aperta |
+| [Tipi di ramo e release](./progetto/tipi-di-ramo-e-release.md) | Progetto | aperta |
