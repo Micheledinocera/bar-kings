@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status *)", "Bash(git config gitflow.*)", "Bash(git branch --show-current)",
+      "Bash(git branch -a --list *)", "Bash(git branch -vv *)", "Bash(git fetch *)",
+      "Bash(git log *)", "Bash(git diff *)", "Bash(git show *)", "Bash(git stash list)",
+      "Bash(git pull --ff-only origin develop)", "Bash(git merge --no-edit origin/develop)",
+      "Bash(git flow feature start *)", "Bash(git add *)", "Bash(git commit *)",
+      "Bash(git push -u origin feature/*)",
+      "Bash(node .claude/skills/lint-wiki/lint-wiki.mjs)",
+      "Bash(gh auth status)", "Bash(gh pr view *)", "Bash(gh pr list *)", "Bash(gh pr create *)",
+      "Bash(dotnet tool restore)", "Bash(dotnet csharpier check *)"
+    ]
+  }
+}
