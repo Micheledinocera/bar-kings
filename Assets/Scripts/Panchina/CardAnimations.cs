@@ -55,8 +55,8 @@ public static class CardAnimationsPanchina
         return sequence;
     }
 
-    // One move of a path: the card flips face up and goes to the target slot; the card it displaces is lifted,
-    // ready to be the next move. The first move also lifts the clicked card.
+    // One move of a path, as in the first POC: the card (lifted) flips face up, the card it displaces is lifted,
+    // then the card moves onto the target. The first move also lifts the clicked card.
     public static Sequence PathMoveAnimation(
         CardDisplay3D card,
         CardDisplay3D displaced,
@@ -75,6 +75,11 @@ public static class CardAnimationsPanchina
                     .SetEase(Ease.OutQuad)
             );
         }
+        sequence.AppendInterval(duration / 3);
+        sequence.Append(
+            card.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd)
+                .SetEase(Ease.InOutBack)
+        );
         if (displaced != null)
         {
             sequence.Append(
@@ -83,11 +88,7 @@ public static class CardAnimationsPanchina
                     .SetEase(Ease.InQuad)
             );
         }
-        sequence.Append(
-            card.transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd)
-                .SetEase(Ease.InOutBack)
-        );
-        sequence.Join(card.transform.DOMove(targetPosition, duration).SetEase(Ease.InOutBack));
+        sequence.Append(card.transform.DOMove(targetPosition, duration).SetEase(Ease.InOutBack));
 
         sequence.SetLink(card.gameObject);
         return sequence;

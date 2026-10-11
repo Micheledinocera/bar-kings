@@ -21,6 +21,14 @@ public class DeckManagerPanchina : MonoBehaviour
     List<CardDataInGame> altreCarte = new();
     int DECK_LIMIT = 40;
 
+    [SerializeField, Range(0.02f, 1f)]
+    private float dealMoveDuration = 0.1f; // seconds per card when dealing
+
+    [SerializeField, Range(0.05f, 2f)]
+    private float pathMoveDuration = 0.5f; // seconds per flip / move in a path
+
+    const float StackOffset = 0.02f; // height of a card on top of a duplicate
+
     // Logical table state, built after dealing; cards on screen mirror it.
     PanchinaTable table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
@@ -80,9 +88,11 @@ public class DeckManagerPanchina : MonoBehaviour
         {
             CardDisplay3D card = cardViews[moves[i].Card];
             CardDisplay3D displaced = i + 1 < moves.Count ? cardViews[moves[i + 1].Card] : null;
+            Vector3 target =
+                SlotPosition(moves[i].ToSlot) + Vector3.up * (StackOffset * moves[i].StackIndex);
             card.isFlipped = true;
             await CardAnimationsPanchina
-                .PathMoveAnimation(card, displaced, SlotPosition(moves[i].ToSlot), i == 0)
+                .PathMoveAnimation(card, displaced, target, i == 0, pathMoveDuration)
                 .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
         }
@@ -145,7 +155,7 @@ public class DeckManagerPanchina : MonoBehaviour
         {
             Vector3 cardPosition = SlotPosition(i);
             await CardAnimationsPanchina
-                .MoveAnimation(deckCards[i], cardPosition, 0.1f)
+                .MoveAnimation(deckCards[i], cardPosition, dealMoveDuration)
                 .ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
             deckCards[i].transform.SetParent(GetSlotByIndex(i));
         }
