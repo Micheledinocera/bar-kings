@@ -10,7 +10,7 @@ fonti:
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): block A (card generation) is done; next formatting and conventions (**F**), then a shared core (**B** + **C**, with **D** and **E** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [panchina](./panchina.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): block A (card generation) is done; next cleanup and conventions (**F**; formatting is done), then a shared core (**B** + **C**, with **D** and **E** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [panchina](./panchina.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
@@ -18,7 +18,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 | [C — Game state in hierarchy and statics](#block-c--game-state-in-hierarchy-and-statics) | 4 | debt, dead-code | — |
 | [D — Input](#block-d--input) | 1 | debt | — |
 | [E — Async and animations](#block-e--async-and-animations) | 4 | debt, bug, dead-code, performance | — |
-| [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 4 | dead-code, debt | — |
+| [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 3 | dead-code, debt | — |
 
 ## Block B — Shared / Panchina duplication
 
@@ -49,4 +49,3 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 - `dead-code` — `Assets/Scripts/ScriptProva.cs` (test script) and `Assets/Scripts/Shared/Camera/CameraOrbit.cs` (in no scene, legacy input) — [CameraOrbit](./shared.md#cameraorbit)
 - `debt` — File names differ from class names (`CardDisplay.cs` → `CardDisplay3D`, …); no warning in Unity. [shared](./shared.md)
 - `debt` — Magic numbers: grid layout, deck size, duplicates count, king value. `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
-- `debt` — CSharpier: 15 of 16 scripts not formatted; `/close` now formats them. `Assets/Scripts/`

@@ -34,7 +34,7 @@ Quando una feature di codice è finita e può andare in PR.
 ## Conseguenze
 
 - Gli asset che Unity riscrive a ogni Play non risultano più modificati: `.gitattributes` forza LF (vedi [Branching, commit e pull request](./git-flow-e-convenzioni.md)). `/start` e `/close` ignorano comunque i file con `git diff` vuoto.
-- La prima feature di codice che passa da `/close` formatta tutto `Assets/Scripts/`. L'ordine dei lavori previsto ha comunque una feature dedicata a formattazione e convenzioni (vedi `tecnico/known-issues.md`).
+- Tutto `Assets/Scripts/` è stato formattato con CSharpier al `/close` di card-generator, la prima feature di codice: da lì in poi la formattazione riguarda solo i file nuovi o modificati.
 
 ## Alternative scartate
 
