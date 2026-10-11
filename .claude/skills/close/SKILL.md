@@ -1,6 +1,6 @@
 ---
 name: close
-description: Close the current feature - check raw notes, merge origin/develop, run /ingest to update the wiki, run /lint-wiki, run the repo checks (skipped for study- features, which must touch no code), push and open a pull request toward develop with GitHub CLI. Never merges. Use when the user runs /close. Only on a feature/* branch.
+description: Close the current feature - check raw notes, merge origin/develop, run /ingest to update the wiki, run /lint-wiki, run the repo checks, fixing instead of blocking (skipped for study- features, which change only documentation), push and open a pull request toward develop with GitHub CLI. Never merges. Use when the user runs /close. Only on a feature/* branch.
 ---
 
 # /close — close a feature with a PR
@@ -23,18 +23,18 @@ The feature is **not** merged here, and `git flow feature finish` is **never** u
 
 1. **Branch** (stop): `git branch --show-current` starts with `feature/`. Otherwise stop. Feature name = branch without `feature/`.
 2. **No uncommitted work** (stop): `git status --porcelain`, ignoring `docs/raw/`, must be empty. Otherwise stop and ask the user to commit or discard it. New raw notes are fine: `/ingest` processes them. Files listed as modified while `git diff --quiet -- <path>` succeeds are line-ending noise (Unity rewrites assets with LF at every Play): ignore them.
-3. **GitHub CLI**: use `gh` if on the PATH, otherwise `"C:/Program Files/GitHub CLI/gh.exe"`. `gh auth status` must succeed; otherwise stop and tell the user to run `gh auth login` in a real terminal.
-4. **Study features touch no code**: if the name starts with `study-`, every file changed by the feature must be documentation, i.e. under `docs/`, under `.claude/`, or a `*.md` file:
+3. **GitHub CLI** (stop): use `gh` if on the PATH, otherwise `"C:/Program Files/GitHub CLI/gh.exe"`. `gh auth status` must succeed; otherwise stop and tell the user to run `gh auth login` in a real terminal.
+4. **Study features touch no code** (ask): if the name starts with `study-`, every file changed by the feature should be documentation: any `*.md` file anywhere (wiki, raw, `AGENTS.md`, `CONTRIBUTING.md`, skills, templates), or anything under `docs/` or `.claude/`:
    ```bash
    git fetch origin
    git diff --name-only origin/develop...HEAD
    ```
-   If any other file appears, stop, list them and tell the user: a study cannot change code; move that work to a new feature (`/start <name>`) and revert it here.
-5. **Raw untouched**: files that already exist on `develop` under `docs/raw/` are never modified or deleted:
+   If any other file appears, list them and ask the user: move that work to a new feature (`/start <name>`) and revert it here, or keep it in this PR. If kept, the code checks of step 5 run for this feature and the PR *Notes* say that the study contains code.
+5. **Raw untouched** (warn): files that already exist on `develop` under `docs/raw/` should never be modified or deleted:
    ```bash
    git diff --name-status --no-renames origin/develop...HEAD -- docs/raw
    ```
-   Every line must be `A` (added). An `M` or `D` line: stop, list the files and tell the user to restore them (`git checkout origin/develop -- <file>`) and add a new note instead. The current feature's own notes are never on `develop`, so correcting them is allowed.
+   Every line should be `A` (added). For an `M` or `D` line, list the files and offer to restore them (`git checkout origin/develop -- <file>`) and to put the change in a new note instead; if the user declines, mention it in the PR *Notes*. The current feature's own notes are never on `develop`, so correcting them is allowed.
 
 ## 2. Raw notes — a reminder, not a check
 
