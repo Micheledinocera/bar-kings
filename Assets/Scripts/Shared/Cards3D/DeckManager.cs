@@ -1,14 +1,16 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using System.Linq;
+using UnityEngine;
 
 public class DeckManager3D : MonoBehaviour
 {
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
-    [SerializeField] private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
+
+    [SerializeField]
+    private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
     public static List<CardData> cardDatabase = new();
     public static List<CardDataInGame> cardDatabaseInGame = new();
     public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
@@ -16,18 +18,18 @@ public class DeckManager3D : MonoBehaviour
 
     async void Start()
     {
-        GameManager.isClickBlocked=true;
+        GameManager.isClickBlocked = true;
         cardDatabase = deckDatabase.Cards.ToList();
         cardDatabaseInGame = deckDatabase.CreateCardsInGame();
         ShuffleDeck();
         RenderDeck();
         await MoveCards();
-        GameManager.isClickBlocked=false;
+        GameManager.isClickBlocked = false;
     }
 
     void ShuffleDeck()
     {
-        shuffledCardDatabaseInGame=cardDatabaseInGame;
+        shuffledCardDatabaseInGame = cardDatabaseInGame;
         for (int i = 0; i < shuffledCardDatabaseInGame.Count; i++)
         {
             CardDataInGame temp = shuffledCardDatabaseInGame[i];
@@ -39,9 +41,14 @@ public class DeckManager3D : MonoBehaviour
 
     void RenderDeck()
     {
-        for (int i = shuffledCardDatabaseInGame.Count-1; i >=0 ; i--)
+        for (int i = shuffledCardDatabaseInGame.Count - 1; i >= 0; i--)
         {
-            GameObject nuovaCarta = Instantiate(cardPrefab, deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
+            GameObject nuovaCarta = Instantiate(
+                cardPrefab,
+                deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i,
+                Quaternion.identity,
+                deckPosition
+            );
             nuovaCarta.GetComponent<CardDisplay3D>().Setup(shuffledCardDatabaseInGame[i]);
             deckCards.Add(nuovaCarta);
         }
@@ -51,8 +58,10 @@ public class DeckManager3D : MonoBehaviour
     {
         for (int i = 0; i < deckCards.Count; i++)
         {
-            Vector3 cardPosition=new(-5+(1.2f*(i% 10)),0.25f,4.5f-(1.5f*(i/ 10)));
-            await CardAnimations.MoveAnimation(deckCards[i],cardPosition,0.1f).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+            Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
+            await CardAnimations
+                .MoveAnimation(deckCards[i], cardPosition, 0.1f)
+                .ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
         }
     }
 }
