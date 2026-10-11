@@ -3,7 +3,9 @@ tipo: decisione
 stato: presa
 aggiornato: 2026-10-11
 verificato: 2026-10-11
+consolidato: 2026-10-11
 fonti:
+  - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
@@ -42,4 +44,4 @@ Quando una feature di codice è finita e può andare in PR.
 ## Domande aperte
 
 - Test: servono (il Unity Test Framework è già tra i pacchetti)? Per quali modifiche? Le regole di `AGENTS.md` separano già la logica di gioco dalla vista per poterla testare in Edit Mode.
-- Build: serve una build del gioco (es. Unity in batchmode) prima della PR? Oggi la build non compila (generatori delle carte fuori da `Editor/`).
+- Build: serve una build del gioco (es. Unity in batchmode) prima della PR? Il codice editor noto ora sta in `Editor/`, ma la build non è mai stata provata. Un'opzione è Unity in batchmode, vedi [Accesso dell'agent all'Unity Editor](./accesso-editor-agent.md).

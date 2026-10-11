@@ -3,33 +3,26 @@ tipo: info
 aggiornato: 2026-10-11
 verificato: 2026-10-11
 fonti:
+  - raw/compiled/card-generator/2026-10-11-obiettivo.md
   - raw/compiled/study-new-implementations/2026-10-11-analisi-codice.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
 ---
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): **A** first, then formatting and conventions (**F**), then a shared core (**B** + **C**, with **D** and **E** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [panchina](./panchina.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): block A (card generation) is done; next formatting and conventions (**F**), then a shared core (**B** + **C**, with **D** and **E** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [panchina](./panchina.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
-| [A — Card generation and editor code](#block-a--card-generation-and-editor-code) | 4 | bug, debt, duplicate | — |
 | [B — Shared / Panchina duplication](#block-b--shared--panchina-duplication) | 3 | duplicate, debt | — |
 | [C — Game state in hierarchy and statics](#block-c--game-state-in-hierarchy-and-statics) | 4 | debt, dead-code | — |
 | [D — Input](#block-d--input) | 1 | debt | — |
 | [E — Async and animations](#block-e--async-and-animations) | 4 | debt, bug, dead-code, performance | — |
 | [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 4 | dead-code, debt | — |
 
-## Block A — Card generation and editor code
-
-- `bug` — The generators use `UnityEditor` outside an `Editor/` folder: a **player build does not compile**. `Assets/Scripts/Shared/Cards/CardGenerator.cs`, `Assets/Scripts/Panchina/CardGenerator.cs` — [CardGenerator](./shared.md#cardgenerator)
-- `bug` — Called at runtime in `Start`: every Play rewrites the 40 card assets. They should be generated from the menu only, skipping assets that already exist. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManager3D](./shared.md#deckmanager3d), [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
-- `debt` — Suit and value inferred from the file order of `Directory.GetFiles`, not from an explicit sort or the file name. `Assets/Scripts/Shared/Cards/CardGenerator.cs` — [CardGenerator](./shared.md#cardgenerator)
-- `duplicate` — Two identical generators writing the same assets. `Assets/Scripts/Panchina/CardGenerator.cs` — [CardGeneratorPanchina](./panchina.md#cardgeneratorpanchina)
-
 ## Block B — Shared / Panchina duplication
 
-- `duplicate` — `DeckManager`, `CardController`, `CardAnimations`, `CardGenerator` copied into `Assets/Scripts/Panchina/` with a `Panchina` suffix; tribuna and index>40 would add two more copies. [panchina](./panchina.md)
+- `duplicate` — `DeckManager`, `CardController`, `CardAnimations` copied into `Assets/Scripts/Panchina/` with a `Panchina` suffix; tribuna and index>40 would add two more copies. [panchina](./panchina.md)
 - `duplicate` — `Assets/Prefab/3DCardPanchina.prefab` is a copy of `Assets/Prefab/3DCard.prefab`, not a Prefab Variant. [scenes](./scenes.md#prefabs)
 - `debt` — `Assets/Scripts/Shared/` holds the first POC (`DeckManager3D`, `CardController`, `CardAnimations`), used only by the twin scenes. [shared](./shared.md)
 
