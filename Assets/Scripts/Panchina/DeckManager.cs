@@ -9,6 +9,7 @@ public class DeckManagerPanchina : MonoBehaviour
     public static DeckManagerPanchina instance;
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
+    [SerializeField] private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
     public static List<CardData> cardDatabase = new();
     public static List<CardDataInGame> cardDatabaseInGame = new();
     public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
@@ -24,7 +25,8 @@ public class DeckManagerPanchina : MonoBehaviour
         }
 
         GameManager.isClickBlocked = true;
-        CardGeneratorPanchina.GenerateCards();
+        cardDatabase = deckDatabase.Cards.ToList();
+        cardDatabaseInGame = deckDatabase.CreateCardsInGame();
         iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == 10).ToList();
         altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != 10).ToList();
         shuffledCardDatabaseInGame.AddRange(altreCarte);

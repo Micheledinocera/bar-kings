@@ -2,11 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 public class DeckManager3D : MonoBehaviour
 {
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
+    [SerializeField] private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
     public static List<CardData> cardDatabase = new();
     public static List<CardDataInGame> cardDatabaseInGame = new();
     public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
@@ -15,7 +17,8 @@ public class DeckManager3D : MonoBehaviour
     async void Start()
     {
         GameManager.isClickBlocked=true;
-        CardGenerator.GenerateCards();
+        cardDatabase = deckDatabase.Cards.ToList();
+        cardDatabaseInGame = deckDatabase.CreateCardsInGame();
         ShuffleDeck();
         RenderDeck();
         await MoveCards();
