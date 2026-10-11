@@ -23,7 +23,7 @@ Conventions (branch names, commit format) are in `CONTRIBUTING.md`; raw rules ar
 - **Goal**: what the task is about and why. If not in the arguments, ask the user. It is written in **Italian**, in their words; don't invent requirements.
 - **Resuming a topic**: if the wiki has a decision on the same topic, e.g. a study left `in analisi` (radar in `docs/wiki/index.md`, or `grep -rl "tipo: decisione" docs/wiki`), mention it to the user and link it in the goal note, so the work starts from there.
 - **Open questions on the topic**: find the wiki pages about the topic (root index → area index → pages) and read their `## Domande aperte` / `## Open questions` sections (`grep -rln "## Domande aperte\|## Open questions" docs/wiki` lists the pages that have one). Link those pages in the goal note and list their questions in the report (step 6), so they are answered or kept in mind during the feature.
-- **Decisions not taken** (code features only, not `study-`): if the goal touches a decision `aperta` or `in analisi` (radar), warn the user: implementing it takes that decision. During the feature the agent asks for an explicit ok before writing that code, and the ingest will record the decision as `presa` with what was implemented (see **Decisions** in `docs/CLAUDE.md`).
+- **Decisions not taken** (code features only, not `study-`): if the goal touches a decision `aperta` or `in analisi` (radar), name it to the user. In the POC phase implementing a rule does not take the decision: it stays as it is, the ingest records the implementation as the option being tried, and it becomes `presa` only if the user says explicitly that the rule is fixed (see **Decisions** in `docs/CLAUDE.md`).
 
 ## 2. Checks — stop if any fails
 
