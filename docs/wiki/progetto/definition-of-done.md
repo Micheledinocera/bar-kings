@@ -3,7 +3,9 @@ tipo: decisione
 stato: presa
 aggiornato: 2026-10-11
 verificato: 2026-10-11
+consolidato: 2026-10-11
 fonti:
+  - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
@@ -32,7 +34,7 @@ Quando una feature di codice è finita e può andare in PR.
 ## Conseguenze
 
 - Gli asset che Unity riscrive a ogni Play non risultano più modificati: `.gitattributes` forza LF (vedi [Branching, commit e pull request](./git-flow-e-convenzioni.md)). `/start` e `/close` ignorano comunque i file con `git diff` vuoto.
-- La prima feature di codice che passa da `/close` formatta tutto `Assets/Scripts/`. L'ordine dei lavori previsto ha comunque una feature dedicata a formattazione e convenzioni (vedi `tecnico/known-issues.md`).
+- Tutto `Assets/Scripts/` è stato formattato con CSharpier al `/close` di card-generator, la prima feature di codice: da lì in poi la formattazione riguarda solo i file nuovi o modificati.
 
 ## Alternative scartate
 
@@ -42,4 +44,4 @@ Quando una feature di codice è finita e può andare in PR.
 ## Domande aperte
 
 - Test: servono (il Unity Test Framework è già tra i pacchetti)? Per quali modifiche? Le regole di `AGENTS.md` separano già la logica di gioco dalla vista per poterla testare in Edit Mode.
-- Build: serve una build del gioco (es. Unity in batchmode) prima della PR? Oggi la build non compila (generatori delle carte fuori da `Editor/`).
+- Build: serve una build del gioco (es. Unity in batchmode) prima della PR? Il codice editor noto ora sta in `Editor/`, ma la build non è mai stata provata. Un'opzione è Unity in batchmode, vedi [Accesso dell'agent all'Unity Editor](./accesso-editor-agent.md).

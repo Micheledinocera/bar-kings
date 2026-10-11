@@ -11,7 +11,7 @@ public class CardDisplay3D : MonoBehaviour
     public void Setup(CardDataInGame data)
     {
         cardData = data;
-        
+
         meshRenderer = fronte.GetComponent<MeshRenderer>();
         meshRenderer.material.SetTexture("_BaseMap", cardData.cardData.immagineFronte.texture);
     }

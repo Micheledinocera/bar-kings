@@ -1,14 +1,17 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using System.Linq;
+using UnityEngine;
 
 public class DeckManagerPanchina : MonoBehaviour
 {
     public static DeckManagerPanchina instance;
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
+
+    [SerializeField]
+    private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
     public static List<CardData> cardDatabase = new();
     public static List<CardDataInGame> cardDatabaseInGame = new();
     public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
@@ -16,6 +19,7 @@ public class DeckManagerPanchina : MonoBehaviour
     List<CardDataInGame> iQuattroRe = new();
     List<CardDataInGame> altreCarte = new();
     int DECK_LIMIT = 40;
+
     async void Start()
     {
         if (instance == null)
@@ -24,7 +28,8 @@ public class DeckManagerPanchina : MonoBehaviour
         }
 
         GameManager.isClickBlocked = true;
-        CardGeneratorPanchina.GenerateCards();
+        cardDatabase = deckDatabase.Cards.ToList();
+        cardDatabaseInGame = deckDatabase.CreateCardsInGame();
         iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == 10).ToList();
         altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != 10).ToList();
         shuffledCardDatabaseInGame.AddRange(altreCarte);
@@ -41,9 +46,12 @@ public class DeckManagerPanchina : MonoBehaviour
     {
         return deckPosition.GetChild(0).GetChild(index);
     }
+
     private void AddRe()
     {
-        shuffledCardDatabaseInGame = shuffledCardDatabaseInGame.Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count()).ToList();
+        shuffledCardDatabaseInGame = shuffledCardDatabaseInGame
+            .Where((c, i) => i < DECK_LIMIT - iQuattroRe.Count())
+            .ToList();
         shuffledCardDatabaseInGame.AddRange(iQuattroRe);
     }
 
@@ -70,7 +78,12 @@ public class DeckManagerPanchina : MonoBehaviour
     {
         for (int i = shuffledCardDatabaseInGame.Count - 1; i >= 0; i--)
         {
-            GameObject nuovaCarta = Instantiate(cardPrefab, deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i, Quaternion.identity, deckPosition);
+            GameObject nuovaCarta = Instantiate(
+                cardPrefab,
+                deckPosition.position + new Vector3(0, 0.02f, 0.02f) * i,
+                Quaternion.identity,
+                deckPosition
+            );
             nuovaCarta.GetComponent<CardDisplay3D>().Setup(shuffledCardDatabaseInGame[i]);
             nuovaCarta.name = nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
             deckCards.Add(nuovaCarta);
@@ -82,7 +95,9 @@ public class DeckManagerPanchina : MonoBehaviour
         for (int i = 0; i < deckCards.Count; i++)
         {
             Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
-            await CardAnimationsPanchina.MoveAnimation(deckCards[i], cardPosition, 0.1f).ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+            await CardAnimationsPanchina
+                .MoveAnimation(deckCards[i], cardPosition, 0.1f)
+                .ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
             deckCards[i].transform.SetParent(GetSlotByIndex(i));
         }
     }

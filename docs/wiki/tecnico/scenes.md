@@ -3,6 +3,8 @@ tipo: info
 aggiornato: 2026-10-11
 verificato: 2026-10-11
 fonti:
+  - raw/compiled/card-generator/2026-10-11-obiettivo.md
+  - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
   - raw/compiled/study-new-implementations/2026-10-11-analisi-codice.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
@@ -23,7 +25,7 @@ The three scenes of the [deck modification ideas](../business/modifica-del-mazzo
 
 ## SampleScene, ScenaIndex40, ScenaTribuna
 
-Byte-identical copies of the **first POC** (plain 4-kings solitaire): camera, light, a `GameManager` GameObject ([GameManager](./shared.md#gamemanager)) and [DeckManager3D](./shared.md#deckmanager3d), which deals the 40 cards onto a 4×10 grid at Play. Nothing specific to tribuna or index>40 yet. Only `SampleScene` is in the Build Settings.
+Identical copies of the **first POC** (plain 4-kings solitaire): camera, light, a `GameManager` GameObject ([GameManager](./shared.md#gamemanager)) and [DeckManager3D](./shared.md#deckmanager3d), which deals the 40 cards onto a 4×10 grid at Play. Nothing specific to tribuna or index>40 yet. Only `SampleScene` is in the Build Settings.
 
 ## Panchina
 
@@ -41,7 +43,9 @@ The only scene worked on. Main GameObjects:
 
 ## Card assets
 
-`Assets/Instances/Cards/<valore>_<Seme>.asset`: the 40 [CardData](./shared.md#carddata), fronts from `Assets/Images/Cards/Fronte/` (`01_…` to `40_…jpg`: Denari, Coppe, Spade, Bastoni; ace to ten each). Rewritten at every Play by the card generators (see [known-issues](./known-issues.md#block-a--card-generation-and-editor-code)).
+`Assets/Instances/Cards/<valore>_<Seme>.asset`: the 40 [CardData](./shared.md#carddata), fronts from `Assets/Images/Cards/Fronte/` (`01_…` to `40_…jpg`: Denari, Coppe, Spade, Bastoni; ace to ten each). Created only by the menu `Tools/Genera Carte Napoletane` ([CardGenerator](./shared.md#cardgenerator)), which skips existing ones; Play no longer touches them.
+
+`Assets/Instances/CardDatabase.asset`: the [CardDatabase](./shared.md#carddatabase) with the 40 cards in table order. Assigned to the `deckDatabase` field of the deck manager in **all four scenes**; a new scene with a deck manager needs it too.
 
 ## Project settings
 
@@ -55,4 +59,4 @@ Settings the code depends on; change them only saying so (`AGENTS.md`).
 | DOTween settings | `Assets/Resources/DOTweenSettings.asset` | — | Rewritten by DOTween itself; not project code |
 | Unity version | `6000.4.9f1` | `ProjectSettings/ProjectVersion.txt` | — |
 
-Git line endings: `.gitattributes` forces LF for text files, matching what Unity writes, so the card assets rewritten at every Play no longer show as modified.
+Line endings: LF everywhere, matching what Unity writes: `.gitattributes` (git), `.csharpierrc.json` (CSharpier, `endOfLine: lf`), `.editorconfig` (editors). Versioned, so valid for every clone; an older clone needs a one-time re-checkout (`CONTRIBUTING.md`).

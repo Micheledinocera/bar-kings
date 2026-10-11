@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool isClickBlocked=false;
+    public static bool isClickBlocked = false;
 }

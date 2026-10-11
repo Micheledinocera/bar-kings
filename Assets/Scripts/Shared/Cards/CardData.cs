@@ -1,6 +1,13 @@
 using UnityEngine;
 
-public enum Seme { Denari, Coppe, Spade, Bastoni }
+public enum Seme
+{
+    Denari,
+    Coppe,
+    Spade,
+    Bastoni,
+}
+
 [CreateAssetMenu(fileName = "NuovaCarta", menuName = "Carte/Carta Napoletana")]
 public class CardData : ScriptableObject
 {

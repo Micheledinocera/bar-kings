@@ -166,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeckManager3D
   cardPrefab: {fileID: 8173495802806055825, guid: 716d792cf7b1ac449ab768c8332c60b0, type: 3}
   deckPosition: {fileID: 1269736080}
+  deckDatabase: {fileID: 11400000, guid: 357fde73eddf0be4394bf180b8a25d7f, type: 2}
 --- !u!114 &155963525
 MonoBehaviour:
   m_ObjectHideFlags: 0
