@@ -1,22 +1,24 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-07
+aggiornato: 2026-10-11
 verificato: 2026-10-07
 fonti:
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
+  - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
 ---
 
 # Branching, commit e pull request
 
 ## Decisione
 
-- **git-flow**: `main` solo release con tag `v*`, `develop` integrazione, un ramo `feature/<nome>` per ogni task. Le feature di sola analisi si chiamano `study-<tema>` e non toccano il codice; una feature che riprende un tema già trattato tiene il nome con un numero (`study-x-2`).
+- **git-flow**: `main` solo release con tag `v*`, `develop` integrazione, un ramo `feature/<nome>` per ogni task. Le feature di sola analisi si chiamano `study-<tema>` e non toccano il codice: possono modificare solo documentazione, cioè qualunque file `*.md` (wiki, raw, `AGENTS.md`, `CONTRIBUTING.md`, skill, template) e tutto ciò che sta in `docs/` e `.claude/`. Così regole e skill decise in uno studio si aggiornano nello studio stesso; una feature che riprende un tema già trattato tiene il nome con un numero (`study-x-2`).
 - **Commit**: Conventional Commits in inglese, **atomici**; ogni asset si committa con il suo `.meta`.
 - **PR** sempre verso `develop`, aperte da `/close` con GitHub CLI; il merge si fa su GitHub, mai con `git flow feature finish` in locale. Per ora le PR le gestisce e le rivede solo Michele.
 - **Merge**: **squash** per feature e bugfix verso `develop`; **merge normale** per release e hotfix verso `main` e per il loro ritorno su `develop`.
 - **Allineamento con `develop`**: merge di `origin/develop` nel ramo della feature, mai rebase di un ramo già pushato.
 - **Scene e prefab**: due feature aperte insieme non modificano la stessa scena o lo stesso prefab senza accordarsi prima.
+- **Regole mai bloccanti**: alcuni contributor sono persone; convenzioni, formattazione e lint non fermano il lavoro, si sistemano al `/close` (vedi [Definition of done](./definition-of-done.md)).
 - Le regole operative stanno in `CONTRIBUTING.md`, letto da persone e agenti; `AGENTS.md` ci rimanda.
 
 ## Perché

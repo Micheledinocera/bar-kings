@@ -1,12 +1,13 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-07
+aggiornato: 2026-10-11
 verificato: 2026-10-07
 fonti:
   - raw/compiled/study-initialize-llm-wiki/2026-07-01-prima-poc.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idea-balatro-like.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
+  - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
 ---
 
 # Modifica del mazzo: panchina, tribuna, index>40
@@ -18,6 +19,8 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 - Le tre idee sono tutte da implementare; si è iniziato a lavorare solo sulla **panchina**.
 - Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/ScenaTribuna.unity`, `Assets/Scenes/ScenaIndex40.unity`.
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
+- Le scene gemelle sono **temporanee**: servono a provare un'idea senza rompere la precedente. Quando se ne sceglie una, le altre (e il codice che usano solo loro) si eliminano.
+- Stato del codice al 2026-10-11: `ScenaTribuna` e `ScenaIndex40` sono ancora copie identiche della prima POC. La panchina costruisce un mazzo di 40 carte con doppioni fissi (asso–nove di denari) e quindi carte mancanti: sono casi di test voluti. Il path si ferma anche su una carta già girata. Dettagli in [tecnico/panchina](../tecnico/panchina.md).
 
 ## Opzioni
 
