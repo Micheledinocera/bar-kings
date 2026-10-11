@@ -3,6 +3,7 @@ tipo: info
 aggiornato: 2026-10-11
 verificato: 2026-10-11
 fonti:
+  - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
   - raw/compiled/study-new-implementations/2026-10-11-analisi-codice.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
 ---
@@ -54,4 +55,4 @@ Settings the code depends on; change them only saying so (`AGENTS.md`).
 | DOTween settings | `Assets/Resources/DOTweenSettings.asset` | — | Rewritten by DOTween itself; not project code |
 | Unity version | `6000.4.9f1` | `ProjectSettings/ProjectVersion.txt` | — |
 
-Git line endings: `core.autocrlf=true` while Unity writes LF, so after a Play git may list unchanged assets as modified (empty `git diff`). The skills ignore that noise.
+Git line endings: `.gitattributes` forces LF for text files, matching what Unity writes, so the card assets rewritten at every Play no longer show as modified.

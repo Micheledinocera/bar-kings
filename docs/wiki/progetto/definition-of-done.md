@@ -4,6 +4,7 @@ stato: presa
 aggiornato: 2026-10-11
 verificato: 2026-10-11
 fonti:
+  - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
   - raw/compiled/study-new-implementations/2026-10-11-proposta-regole.md
@@ -30,7 +31,7 @@ Quando una feature di codice è finita e può andare in PR.
 
 ## Conseguenze
 
-- Dopo un Play, Unity riscrive alcuni asset con fine riga LF mentre git usa `core.autocrlf=true`: `git status` li mostra modificati con `git diff` vuoto. `/start` e `/close` ignorano questo rumore.
+- Gli asset che Unity riscrive a ogni Play non risultano più modificati: `.gitattributes` forza LF (vedi [Branching, commit e pull request](./git-flow-e-convenzioni.md)). `/start` e `/close` ignorano comunque i file con `git diff` vuoto.
 - La prima feature di codice che passa da `/close` formatta tutto `Assets/Scripts/`. L'ordine dei lavori previsto ha comunque una feature dedicata a formattazione e convenzioni (vedi `tecnico/known-issues.md`).
 
 ## Alternative scartate

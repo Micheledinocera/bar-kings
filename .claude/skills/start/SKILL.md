@@ -42,7 +42,7 @@ git stash list                          # work set aside, maybe meant for this f
 gh pr list --state open                 # open PRs (skip if gh is missing or not logged in)
 ```
 
-- Local branches whose remote is `gone`: merged; suggest `git branch -D feature/<name>`.
+- Local branches whose remote is `gone`: GitHub deletes the remote branch after the merge (auto-delete is on). Delete the local one automatically, but only if its PR is merged: `gh pr list --state merged --head feature/<name> --json number` must return a PR; then `git branch -D feature/<name>` (never the current branch; switch to `develop` first if needed). A `gone` branch without a merged PR: only mention it, never delete it. Report the branches deleted.
 - Other local features and open PRs: work not merged yet; the new feature may conflict with it on the wiki (`/close` handles that).
 - Stashes: mention them; one may be meant for this feature (`git stash pop` after step 3).
 

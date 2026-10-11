@@ -52,7 +52,7 @@ Esempi: `feat(deck): shuffle the deck at game start`, `fix(cards): keep card rot
 
 - feature e bugfix verso `develop`: **squash** (un commit per feature, con il titolo della PR);
 - release e hotfix verso `main`, e il loro ritorno su `develop`: **merge normale**, altrimenti `main` e `develop` divergono;
-- dopo il merge il ramo remoto si cancella (da GitHub o in automatico se attivo); quello locale con `git branch -D feature/<nome>` (dopo lo squash git non lo vede come unito). `/start` segnala i rami locali già uniti.
+- dopo il merge GitHub cancella il ramo remoto in automatico (impostazione del repo). Quello locale lo cancella `/start` al prossimo avvio, se la sua PR risulta unita; a mano: `git branch -D feature/<nome>` (dopo lo squash git non lo vede come unito). In locale conviene `git config fetch.prune true`, così i rami remoti cancellati spariscono a ogni fetch.
 
 ## Documentazione
 
