@@ -27,7 +27,7 @@ Conventions (branch names, commit format) are in `CONTRIBUTING.md`; raw rules ar
 
 ## 2. Checks — stop if any fails
 
-1. **Clean working tree**: `git status --porcelain` must be empty. Otherwise stop and ask the user to commit or stash first.
+1. **Clean working tree**: `git status --porcelain` must be empty. Otherwise stop and ask the user to commit or stash first. Files listed as modified while `git diff --quiet -- <path>` succeeds are line-ending noise (Unity rewrites assets with LF at every Play): ignore them.
 2. **git-flow initialized**: `git config gitflow.branch.develop` must print `develop`. Otherwise stop and tell the user to run `git flow init -d` (defaults: `main`, `develop`, `feature/`).
 3. **Name free**: no local or remote branch `feature/<name>` (`git branch -a --list "*feature/<name>"`), and no `docs/raw/<name>/` or `docs/raw/compiled/<name>/`. If taken, propose the next numbered name (see *Continuing a topic*).
 
@@ -78,4 +78,4 @@ End the commit message with the attribution line required by the session.
 
 ## 6. Report
 
-Branch created, path of the goal note, open work found in step 2b, the decisions and open questions on the topic, and a reminder: add notes to `docs/raw/<name>/` whenever needed; `/close` will process them. For a `study-` feature, also remind that it touches no code (only `docs/`, `.claude/`, `*.md`).
+Branch created, path of the goal note, open work found in step 2b, the decisions and open questions on the topic, and a reminder: add notes to `docs/raw/<name>/` whenever needed; `/close` will process them. For a `study-` feature, also remind that it touches no code (only documentation: any `*.md` file, `docs/`, `.claude/`).

@@ -1,24 +1,44 @@
 ---
 tipo: decisione
-stato: aperta
-aggiornato: 2026-10-07
-verificato: 2026-10-07
+stato: presa
+aggiornato: 2026-10-11
+verificato: 2026-10-11
 fonti:
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
+  - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
+  - raw/compiled/study-new-implementations/2026-10-11-proposta-regole.md
 ---
 
 # Definition of done delle feature di codice
 
 Quando una feature di codice è finita e può andare in PR.
 
-## Cosa sappiamo
+## Decisione
 
-- Oggi `/close` esegue `dotnet csharpier check Assets/Scripts` (CSharpier è un tool locale in `dotnet-tools.json`), chiede all'utente di confermare che la Console di Unity non ha errori di compilazione e che la feature funziona in Play mode, e controlla che ogni asset aggiunto abbia il suo `.meta` (vedi `.claude/skills/close/SKILL.md` e `.github/pull_request_template.md`).
-- La compilazione si verifica solo nell'Editor: l'agent non può lanciarla da solo.
-- Oggi il check di formattazione fallisce su 15 file su 16 di `Assets/Scripts/`: il primo `/close` di una feature di codice si fermerebbe lì finché gli script non vengono formattati.
+- **Nessuna regola è bloccante.** Alcuni contributor sono persone. Formattazione, convenzioni di `AGENTS.md`, lint del wiki e `.meta` mancanti non fermano mai il `/close`. L'agent sistema quello che può, anche sul lavoro fatto a mano nella feature, e il resto va nelle *Notes* della PR.
+- **Formattazione**: `/close` esegue `dotnet csharpier format Assets/Scripts` e committa il risultato (`style: …`). Per le persone è facoltativa.
+- **`.meta`**: `/close` committa quelli che mancano, se esistono su disco; gli altri li segnala nella PR (si generano aprendo Unity).
+- **Codice scritto dalle persone**: `/close` lo confronta con le regole di `AGENTS.md`, applica i fix piccoli e sicuri che non cambiano il comportamento e segnala il resto. Non rinomina mai gli identificatori e non chiede di rifare il lavoro.
+- **Unity**: l'agent non può compilare. `/close` chiede all'utente se la Console è senza errori e se la feature funziona in Play mode. I problemi segnalati vanno nella PR, e l'utente decide se sistemarli subito o dopo.
+- **Stop veri** (senza, la PR sarebbe sbagliata): ramo diverso da `feature/*`, lavoro non committato, `gh` non autenticato, conflitti di merge fuori dal wiki. Per uno studio che contiene file diversi dalla documentazione, `/close` chiede se spostarli.
+- Riferimenti: `.claude/skills/close/SKILL.md`, `.github/pull_request_template.md`, `CONTRIBUTING.md`.
+
+## Perché
+
+- I contributor umani non devono essere rallentati da controlli pensati per l'agent (indicazione dell'utente, 2026-10-11).
+- Il check di formattazione falliva su 15 script su 16: il primo `/close` di una feature di codice si sarebbe fermato lì.
+
+## Conseguenze
+
+- Dopo un Play, Unity riscrive alcuni asset con fine riga LF mentre git usa `core.autocrlf=true`: `git status` li mostra modificati con `git diff` vuoto. `/start` e `/close` ignorano questo rumore.
+- La prima feature di codice che passa da `/close` formatta tutto `Assets/Scripts/`. L'ordine dei lavori previsto ha comunque una feature dedicata a formattazione e convenzioni (vedi `tecnico/known-issues.md`).
+
+## Alternative scartate
+
+- **`dotnet csharpier check` bloccante al `/close`** — scartata il 2026-10-11: nessuna regola deve fermare il lavoro delle persone; si formatta invece di controllare (fonte: raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md)
+- **Errori in Console e `.meta` mancanti come stop del `/close`** — scartata il 2026-10-11: diventano note nella PR, per lo stesso motivo (fonte: raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md)
 
 ## Domande aperte
 
-- Test: servono (il Unity Test Framework è già tra i pacchetti)? Per quali modifiche?
-- Build: serve una build del gioco (es. Unity in batchmode) prima della PR?
-- Formattazione: si formatta tutto `Assets/Scripts/` in una feature dedicata prima delle feature di codice?
+- Test: servono (il Unity Test Framework è già tra i pacchetti)? Per quali modifiche? Le regole di `AGENTS.md` separano già la logica di gioco dalla vista per poterla testare in Edit Mode.
+- Build: serve una build del gioco (es. Unity in batchmode) prima della PR? Oggi la build non compila (generatori delle carte fuori da `Editor/`).
