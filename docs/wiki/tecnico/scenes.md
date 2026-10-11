@@ -59,4 +59,4 @@ Settings the code depends on; change them only saying so (`AGENTS.md`).
 | DOTween settings | `Assets/Resources/DOTweenSettings.asset` | — | Rewritten by DOTween itself; not project code |
 | Unity version | `6000.4.9f1` | `ProjectSettings/ProjectVersion.txt` | — |
 
-Git line endings: `.gitattributes` forces LF for text files, matching what Unity writes, so the card assets rewritten at every Play no longer show as modified.
+Line endings: LF everywhere, matching what Unity writes: `.gitattributes` (git), `.csharpierrc.json` (CSharpier, `endOfLine: lf`), `.editorconfig` (editors). Versioned, so valid for every clone; an older clone needs a one-time re-checkout (`CONTRIBUTING.md`).
