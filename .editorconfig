@@ -1,0 +1,6 @@
+# Editors (VS Code, Rider, Visual Studio) write LF like Unity and .gitattributes.
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
