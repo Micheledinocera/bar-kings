@@ -3,6 +3,7 @@ tipo: info
 aggiornato: 2026-10-11
 verificato: 2026-10-11
 fonti:
+  - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
   - raw/compiled/study-new-implementations/2026-10-11-analisi-codice.md
   - raw/compiled/study-new-implementations/2026-10-11-risposte-verifiche.md
@@ -28,7 +29,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 ## Block C — Game state in hierarchy and statics
 
-- `debt` — Table state read from the Transform hierarchy (`GetChild(0).GetChild(i)`, then `GetChild(1)`); cards don't change parent during a path, so the hierarchy no longer matches the table after the first path. `Assets/Scripts/Panchina/DeckManager.cs`, `Assets/Scripts/Panchina/CardAnimations.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
+- `debt` — Slot Transforms found by child order (`GetSlotByIndex`: `GetChild(0).GetChild(i)`); only used to parent cards, the table state is in [PanchinaTable](./panchina.md#panchinatable). `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
 - `dead-code` — `CardSlot.index` and `CardSlotContainer.CardSlotList` never read. `Assets/Scripts/Panchina/CardSlot.cs`, `Assets/Scripts/Panchina/CardSlotContainer.cs` — [CardSlot](./panchina.md#cardslot)
 - `debt` — Public static lists, flag and singleton never cleared; safe only while Play mode reloads the domain. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Panchina/DeckManager.cs`, `Assets/Scripts/Shared/GameManager.cs` — [scenes](./scenes.md#project-settings)
 - `debt` — `GameManager` is a MonoBehaviour placed in every scene but holds only a static field. `Assets/Scripts/Shared/GameManager.cs` — [GameManager](./shared.md#gamemanager)
@@ -39,9 +40,9 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 ## Block E — Async and animations
 
-- `debt` — `async void` and `System.Threading.Tasks.Task` instead of UniTask; the click path has no cancellation token. `Assets/Scripts/Shared/Animations/CardAnimations.cs`, `Assets/Scripts/Panchina/CardAnimations.cs` — [CardAnimations](./shared.md#cardanimations)
-- `bug` — `MoveCardsAtom` sequences have no `SetLink`: tweens outlive a destroyed card. Same files — [CardAnimations](./shared.md#cardanimations)
-- `dead-code` — `FlipAnimation` never called; unused `using`s. Same files — [CardAnimations](./shared.md#cardanimations)
+- `debt` — `async void` and `System.Threading.Tasks.Task` instead of UniTask; the click path has no cancellation token. `Assets/Scripts/Shared/Animations/CardAnimations.cs`, `Assets/Scripts/Shared/Cards3D/CardController.cs` (Panchina: only `Start` and `OnMouseDown` are `async void`, the path is a cancellable `UniTask`) — [CardAnimations](./shared.md#cardanimations)
+- `bug` — `MoveCardsAtom` sequences have no `SetLink`: tweens outlive a destroyed card. `Assets/Scripts/Shared/Animations/CardAnimations.cs` — [CardAnimations](./shared.md#cardanimations)
+- `dead-code` — `FlipAnimation` never called; unused `using`s. `Assets/Scripts/Shared/Animations/CardAnimations.cs`, `Assets/Scripts/Panchina/CardAnimations.cs` — [CardAnimations](./shared.md#cardanimations)
 - `performance` — `meshRenderer.material` creates a material instance per card, never destroyed. `Assets/Scripts/Shared/Cards3D/CardDisplay.cs` — [CardDisplay3D](./shared.md#carddisplay3d)
 
 ## Block F — Cleanup and conventions
