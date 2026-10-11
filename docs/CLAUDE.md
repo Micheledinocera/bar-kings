@@ -141,7 +141,7 @@ A partial analysis is a decision `in analisi`: what is known, options considered
 
 If no alternative was considered, the section says "Nessuna alternativa considerata.". Decisions `aperta` and `in analisi` keep their candidates under `## Opzioni` and may already list ruled-out ones here. Only discarded facts or choices go here, never rewordings. Finding every discarded alternative is `grep -rn -A20 "## Alternative scartate" docs/wiki`: there is no separate index page.
 
-**Implementing a decision not taken.** Code that implements a game rule whose decision is `aperta` or `in analisi` takes that decision. Before writing such code the agent stops, says which decision is involved, waits for an explicit ok, and warns that at the ingest the wiki will record the decision as `presa`, with what was implemented as the choice. `/start` flags these decisions when it opens a code feature.
+**Implementing a decision not taken.** The game is in a POC phase: code is written to **try** rules and help decide, so implementing a game rule whose decision is `aperta` or `in analisi` does **not** take that decision. The decision stays as it is, and the ingest records what was implemented as the option being tried (in `## Cosa sappiamo` / `## Opzioni`). A decision becomes `presa` only when the user says explicitly that a rule is fixed. Before writing such code the agent names the decision involved, so the user knows which rule is being tried. `/start` flags these decisions when it opens a code feature.
 
 ## Outputs
 
@@ -211,7 +211,7 @@ What the ingest does, in order:
 
 If there is nothing new to process (no new raw, no custom code), make no changes and no commit.
 
-A code feature that implemented a decision `aperta` or `in analisi` (see **Decisions**) sets it to `presa`, with what was implemented as the choice, and removes it from the radar.
+A code feature that implemented a rule of a decision `aperta` or `in analisi` records it as the option being tried; the decision becomes `presa` (and leaves the radar) only if the user said explicitly during the feature that the rule is fixed (see **Decisions**).
 
 ### Two features on the wiki at the same time
 

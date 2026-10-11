@@ -2,7 +2,9 @@
 tipo: info
 aggiornato: 2026-10-11
 verificato: 2026-10-11
+consolidato: 2026-10-11
 fonti:
+  - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
   - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/git-line-endings/2026-10-11-obiettivo.md
@@ -32,7 +34,7 @@ Identical copies of the **first POC** (plain 4-kings solitaire): camera, light, 
 The only scene worked on. Main GameObjects:
 
 - `Tavolo`: the table;
-- `SlotContainer`: [CardSlotContainer](./panchina.md#cardslotcontainer) with 40 instances of `Assets/Prefab/CardSlot.prefab` ([CardSlot](./panchina.md#cardslot)); must be child 0 of the deck manager's `deckPosition`, and every slot's child 0 must be its `Cube`, because [DeckManagerPanchina](./panchina.md#deckmanagerpanchina) finds slots and cards by child index;
+- `SlotContainer`: [CardSlotContainer](./panchina.md#cardslotcontainer) with 40 instances of `Assets/Prefab/CardSlot.prefab` ([CardSlot](./panchina.md#cardslot)); must be child 0 of the deck manager's `deckPosition`, with the slots in grid order, because [DeckManagerPanchina](./panchina.md#deckmanagerpanchina) finds the slot Transforms by child index to parent the cards (the table state itself is in [PanchinaTable](./panchina.md#panchinatable));
 - `CardsContainer`, `GameManager`, `Main Camera`, `Directional Light`; many GameObjects have no name.
 
 ## Prefabs
