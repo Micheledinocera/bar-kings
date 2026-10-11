@@ -16,7 +16,7 @@
 
 ## How to verify
 
-- [ ] `dotnet csharpier check Assets/Scripts`
+- [ ] Scripts formatted with CSharpier (`/close` runs `dotnet csharpier format Assets/Scripts`)
 - [ ] Unity: no compilation errors in the Console
 - [ ] Play mode: <!-- scene to open and what to do to see the change working -->
 

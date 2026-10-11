@@ -25,3 +25,10 @@ Si segue la proposta dell'analisi:
 1. generatore delle carte (cartella `Editor/`, nessuna rigenerazione di asset esistenti, nessuna chiamata a runtime);
 2. formattazione e convenzioni in una feature dedicata;
 3. nucleo condiviso (modello / vista / regola della variante), prima di lavorare su tribuna e index>40.
+
+## Applicato in questo studio (2026-10-11)
+
+- `AGENTS.md`: nuove sezioni *Rules are never blocking*, *Scripts*, *Unity Editor* con le regole confermate dalla [proposta](./2026-10-11-proposta-regole.md); identificatori misti accettati. Namespace e assembly definition **non** adottati per ora: si decidono nella feature del nucleo condiviso.
+- `CONTRIBUTING.md` e `.github/pull_request_template.md`: la formattazione è facoltativa per le persone, la applica `/close`.
+- `.claude/skills/close/SKILL.md`: i controlli di repo (passo 5) non fermano più la chiusura. CSharpier fa `format` invece di `check` e committa, i `.meta` mancanti vengono committati o segnalati, il codice scritto dalle persone viene sistemato se il fix è sicuro, gli errori in Console finiscono nelle *Notes* della PR; il lint del wiki non ferma più. Restano stop veri solo: ramo non `feature/*`, lavoro non committato (ignorando il rumore dei fine riga di Unity), `gh` non autenticato.
+- **Non applicato** (modifica negata dai permessi dell'agent, da fare a mano o autorizzare): in `/close` passo 1, il controllo "studio senza codice" deve chiedere invece di fermarsi, e "raw intoccati" deve avvisare invece di fermarsi. Stesso discorso per `/start` (working tree pulito: ignorare il rumore dei fine riga) e `/ingest`.

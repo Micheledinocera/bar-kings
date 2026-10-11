@@ -43,7 +43,7 @@ Esempi: `feat(deck): shuffle the deck at game start`, `fix(cards): keep card rot
 
 ## Pull request
 
-1. Prima di aprirla, in locale: `dotnet tool restore` e `dotnet csharpier check Assets/Scripts` (formattazione), poi apri il progetto in Unity e verifica che la Console non abbia errori di compilazione. Per le feature `study-` non servono: `/close` verifica invece che non abbiano toccato codice.
+1. Prima di aprirla conviene aprire il progetto in Unity e verificare che la Console non abbia errori di compilazione. La formattazione (`dotnet csharpier format Assets/Scripts`) è facoltativa: la applica `/close`. **Nessuna regola è bloccante**: formattazione, convenzioni di `AGENTS.md`, lint del wiki e `.meta` mancanti si sistemano al `/close` (anche sul lavoro fatto a mano), e quello che resta aperto finisce nelle *Notes* della PR.
 2. Si apre verso `develop` con `/close`, che aggiorna il wiki (commit `docs(wiki): …`), fa il push e crea la PR. A mano: `gh pr create --base develop`.
 3. Titolo nello stesso formato dei commit; descrizione dal template (`.github/pull_request_template.md`).
 4. Nessun merge senza revisione. Nella revisione si rilegge anche il commit del wiki.
