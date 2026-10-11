@@ -115,4 +115,4 @@ gh pr create --base develop --head feature/<name> --title "<title>" --body-file 
 
 ## 8. Report
 
-PR URL, checks passed, fixed by the agent or left in the PR *Notes* (or skipped, for a study), wiki pages touched, conflicts to look at in review, and whether the wiki was regenerated after a conflict with `develop`. Remind the user that the merge is theirs, on GitHub, after review; GitHub deletes the remote branch after the merge, the local one goes with `git branch -D feature/<name>`.
+PR URL, checks passed, fixed by the agent or left in the PR *Notes* (or skipped, for a study), wiki pages touched, conflicts to look at in review, and whether the wiki was regenerated after a conflict with `develop`. Remind the user that the merge is theirs, on GitHub, after review; GitHub deletes the remote branch after the merge (auto-delete is on); the next `/start` deletes the local one, or by hand `git branch -D feature/<name>`.
