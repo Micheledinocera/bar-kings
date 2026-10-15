@@ -31,6 +31,7 @@
   - Every Editor change of a feature is listed **separately** from the code changes; the agent runs it **only after the user confirms** that list. Reading and checking (Console, scene captures, inspecting the hierarchy) need no confirmation.
   - After a change, the agent saves the scene or prefab from the Editor and checks the Console (`Unity_GetConsoleLogs`); after changing code, it checks the Console for compilation errors itself.
   - The Editor must be open on the project: if `unity-mcp` is not connected or does not respond, ask the user to open it; never fall back to the YAML.
+  - `unity-mcp` refuses deletions that would ask for confirmation (`result.DestroyObject`, `AssetDatabase.DeleteAsset`): remove GameObjects with `Undo.DestroyObjectImmediate`; delete an asset or folder from disk together with its `.meta`, then `AssetDatabase.Refresh()` through `unity-mcp`.
   - Commands run through `Unity_RunCommand` are throwaway: they are not committed. Repeatable operations (asset generators) are menu items in `Editor/` (see *Scripts*), which the agent can run through `unity-mcp`.
   - Out of bounds without asking, as before: the protected Project Settings (*Unity Editor*), packages, `Assets/Plugins/`.
   - New `.meta` files for scripts and folders the agent creates: let Unity generate them (asset refresh through `unity-mcp`); write one by hand only if the Editor is unavailable: `fileFormatVersion: 2` and a new random `guid` (folders also `folderAsset: yes` and the `DefaultImporter` block).
