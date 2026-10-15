@@ -1,15 +1,20 @@
 using System.Collections.Generic;
 
 // Logical state of the Panchina table: the cards in each slot (a stack: duplicates end up one on top of the
-// other) and whether the slot is face up. An empty slot is a hole. The scene mirrors this state
-// (DeckManagerPanchina); rules read it, never the Transform hierarchy.
+// other) and whether the slot is face up. An empty slot is a hole. The cards beyond the table wait in the
+// panchina (bench), which fills the holes left by paths. The scene mirrors this state (DeckManagerPanchina);
+// rules read it, never the Transform hierarchy.
 public class PanchinaTable
 {
     readonly List<CardDataInGame>[] stacks;
     readonly bool[] faceUp;
+    readonly Queue<CardDataInGame> bench;
 
-    // dealtCards[i] is the card dealt to slot i, face down.
-    public PanchinaTable(IReadOnlyList<CardDataInGame> dealtCards)
+    // dealtCards[i] is the card dealt to slot i, face down. benchCards are drawn in order to fill holes.
+    public PanchinaTable(
+        IReadOnlyList<CardDataInGame> dealtCards,
+        IEnumerable<CardDataInGame> benchCards
+    )
     {
         stacks = new List<CardDataInGame>[dealtCards.Count];
         faceUp = new bool[dealtCards.Count];
@@ -17,9 +22,12 @@ public class PanchinaTable
         {
             stacks[i] = new List<CardDataInGame> { dealtCards[i] };
         }
+        bench = new Queue<CardDataInGame>(benchCards);
     }
 
     public int SlotCount => stacks.Length;
+
+    public int BenchCount => bench.Count;
 
     // Top card of the slot, null for a hole.
     public CardDataInGame GetCard(int slot) => stacks[slot].Count > 0 ? stacks[slot][^1] : null;
@@ -53,9 +61,23 @@ public class PanchinaTable
     // - Stops when the slot of the card in hand is a hole: the card goes face up into it.
     // - Stops when the slot of the card in hand is already face up (a duplicate is there): the card goes on top
     //   of it.
-    // When the path stops, the starting slot stays empty (a new hole). POC rules, see wiki
+    // When the path stops, the starting slot is left empty: the next card of the panchina fills it face down
+    // (PathEnd.FilledFromBench). With the panchina empty, the slot stays a hole. POC rules, see wiki
     // business/modifica-del-mazzo.md.
     public List<PathMove> PlayPath(int startSlot)
+    {
+        List<PathMove> moves = PlayPathMoves(startSlot);
+        if (IsHole(startSlot) && bench.Count > 0)
+        {
+            CardDataInGame benchCard = bench.Dequeue();
+            stacks[startSlot].Add(benchCard);
+            faceUp[startSlot] = false;
+            moves.Add(new PathMove(benchCard, startSlot, 0, PathEnd.FilledFromBench));
+        }
+        return moves;
+    }
+
+    List<PathMove> PlayPathMoves(int startSlot)
     {
         List<PathMove> moves = new();
         CardDataInGame inHand = stacks[startSlot][^1];
@@ -108,6 +130,7 @@ public enum PathEnd
     Closed, // the card went back to the starting slot
     FilledHole, // the card went into a hole; the starting slot is a hole
     StackedOnDuplicate, // the card went on top of a duplicate; the starting slot is a hole
+    FilledFromBench, // after the path, a panchina card went face down into the starting slot
 }
 
 public readonly struct PathMove
