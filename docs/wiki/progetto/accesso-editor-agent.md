@@ -1,37 +1,59 @@
 ---
 tipo: decisione
-stato: aperta
-aggiornato: 2026-10-11
-verificato: 2026-10-11
+stato: presa
+aggiornato: 2026-10-15
+verificato: 2026-10-15
 fonti:
   - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
+  - raw/compiled/unity-mcp/2026-10-15-obiettivo.md
+  - raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md
+  - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
 ---
 
 # Accesso dell'agent all'Unity Editor
 
-Come l'agent può fare modifiche nell'Editor e verificare il progetto (compilazione, Console, Play) invece di passare ogni volta dall'utente. L'utente la studierà più avanti.
+Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Console) invece di passare ogni volta dall'utente.
 
-## Cosa sappiamo
+## Decisione
 
-- Oggi l'agent non ha accesso all'Editor: compilazione, Console e Play li verifica l'utente (vedi [Definition of done](./definition-of-done.md)).
-- **Regola in vigore nel frattempo** (`AGENTS.md`, *Writing code*): in ogni feature le modifiche all'Editor si elencano a parte rispetto al codice.
-  - Quelle **facili** l'agent le fa nel YAML, **solo dopo conferma** dell'utente, che le verifica subito in Unity: assegnare un riferimento a un asset esistente (una riga con il GUID preso dal `.meta`), cambiare il valore di un campo di un componente esistente, ripetere la stessa modifica su scene identiche.
-  - Il resto (creare GameObject o componenti, istanze di prefab e override, struttura dei prefab) diventa istruzioni passo passo per l'utente.
-- Primo caso: in card-generator l'agent ha assegnato `deckDatabase` in `ScenaIndex40` e `ScenaTribuna` copiando la riga che l'utente aveva prodotto nelle altre due scene.
+- L'agent accede all'Editor tramite il **server MCP ufficiale di Unity**: pacchetto `com.unity.ai.assistant` (`Packages/manifest.json`, impostazioni in `ProjectSettings/Packages/com.unity.ai.assistant/`), relay `relay_win.exe --mcp` registrato in Claude Code come server `unity-mcp`.
+- La registrazione è per macchina (scope utente di Claude Code, fuori dal repo): ogni persona la fa una volta con `claude mcp add unity-mcp --scope user -- "<home>/.unity/relay/relay_win.exe" --mcp`.
+- Funziona solo con l'Editor aperto sul progetto.
+- **Regola** (`AGENTS.md`, *Writing code*): le modifiche a scene, prefab e ScriptableObject passano da `unity-mcp` (`Unity_RunCommand`), **mai** dallo YAML a mano.
+  - Le modifiche all'Editor di una feature si elencano a parte rispetto al codice; l'agent le esegue **solo dopo la conferma** dell'utente. Leggere e verificare (Console, catture, gerarchia) non richiede conferma.
+  - Dopo una modifica l'agent salva scena o prefab dall'Editor e legge la Console; dopo modifiche al codice controlla da solo la compilazione.
+  - MCP non collegato: l'agent chiede di aprire l'Editor, non ripiega sullo YAML.
+  - I comandi `Unity_RunCommand` sono usa e getta, non si committano; le operazioni ripetibili (generatori di asset) restano voci di menu in `Editor/`, che l'agent lancia via MCP.
+  - Project Settings protetti, pacchetti e `Assets/Plugins/`: si chiede prima.
+- `/close` legge da solo la Console (`.claude/skills/close/SKILL.md`); all'utente resta la prova in Play mode (vedi [Definition of done](./definition-of-done.md)).
 
-## Opzioni
+## Strumenti e limiti
 
-| Opzione | Come | Pro | Contro |
-|---|---|---|---|
-| **Script editor da menu** | L'agent scrive un comando `Tools/…` che fa la modifica, l'utente lo lancia | Nessuna dipendenza nuova; modifiche fatte da Unity, quindi corrette | Serve sempre un clic dell'utente |
-| **Unity in batchmode** | `Unity.exe -batchmode -projectPath … -executeMethod …`, log letto dall'agent | L'agent verifica da solo la compilazione e lancia script editor; risponde alla domanda sulla build della Definition of done | Solo a Editor chiuso (Unity blocca il progetto aperto); avvio lento |
-| **Server MCP per Unity** | Pacchetto nell'Editor che espone strumenti all'agent (es. CoplayDev/unity-mcp) | Accesso all'Editor aperto: Console, GameObject, menu, Play | Pacchetto nuovo (decisione da prendere, `AGENTS.md`); codice di terzi che controlla l'Editor; da verificare quale sia il più maturo e se Unity ne offra uno ufficiale per la 6.4 |
+| Strumento | Uso |
+|---|---|
+| `Unity_RunCommand` | Esegue una classe C# `CommandScript : IRunCommand` nell'Editor: modifiche, ispezione della scena, prove della logica di gioco |
+| `Unity_GetConsoleLogs` | Errori, warning e log della Console |
+| `Unity_Camera_Capture`, `Unity_SceneView_*` | Catture per verificare a colpo d'occhio |
+| `Unity_AssetGeneration_*` | Generazione di asset (non usata finora) |
+
+- **Cancellazioni bloccate**: `result.DestroyObject` e `AssetDatabase.DeleteAsset` falliscono ("User interactions are not supported for MCP tool calls"). GameObject: `Undo.DestroyObjectImmediate`. Asset e cartelle: si cancellano dal disco insieme al `.meta`, poi `AssetDatabase.Refresh()` via MCP.
+- Warning innocui in Console a ogni connessione: "Failed to collect Windows signature" per `claude.exe`.
+- `Unity_RunCommand` segnala le API deprecate di Unity 6.4 (es. `GetInstanceID()` → `GetEntityId()`, `FindFirstObjectByType` → `FindAnyObjectByType`).
+- Prova del 2026-10-15: proposta della modifica, conferma, esecuzione, salvataggio e verifica dell'utente nell'Editor funzionano.
+
+## Perché
+
+- L'utente ha scelto l'MCP di Unity e ha detto esplicitamente che la decisione è presa (2026-10-15).
+- È il server ufficiale per Unity 6.4 e lavora sull'Editor aperto: Console, gerarchia, salvataggio, senza un clic dell'utente per ogni modifica.
+- Le modifiche fatte da Unity sono corrette per costruzione; lo YAML a mano funzionava solo per le modifiche più semplici (primo caso: `deckDatabase` assegnato in `ScenaIndex40` e `ScenaTribuna` in card-generator).
 
 ## Alternative scartate
 
-Nessuna alternativa scartata finora.
+- **Modifiche facili nello YAML dopo conferma, il resto istruzioni passo passo per l'utente** — scartata il 2026-10-15: era la regola provvisoria in attesa di un accesso diretto; con l'MCP non serve più (fonte: raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md)
+- **Script editor da menu lanciati dall'utente come modo di modificare l'Editor** — scartata il 2026-10-15: serviva un clic dell'utente per ogni modifica; restano solo per i generatori di asset, che ora lancia l'agent (fonte: raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md)
+- **Unity in batchmode per il lavoro sull'Editor** — scartata il 2026-10-15: funziona solo a Editor chiuso e l'MCP copre già compilazione e Console; resta un'opzione solo per la build (fonte: raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md)
 
 ## Domande aperte
 
-- Quale opzione, o quale combinazione (es. batchmode per la compilazione al `/close`, MCP per il lavoro sulle scene)?
-- Con un accesso diretto, quali modifiche all'Editor l'agent può fare senza conferma?
+- Play mode: l'MCP permette di entrare in Play e verificare il gameplay? Finché non si prova, la prova in Play resta all'utente.
+- Il pacchetto è una pre-release (`2.20.0-pre.2`): passare alla versione stabile quando esce.
