@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -16,14 +16,16 @@ public class DeckManager3D : MonoBehaviour
     public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
     public static List<GameObject> deckCards = new();
 
-    async void Start()
+    void Start() => SetupTableAsync(destroyCancellationToken).Forget();
+
+    async UniTaskVoid SetupTableAsync(CancellationToken cancellationToken)
     {
         GameManager.isClickBlocked = true;
         cardDatabase = deckDatabase.Cards.ToList();
         cardDatabaseInGame = deckDatabase.CreateCardsInGame();
         ShuffleDeck();
         RenderDeck();
-        await MoveCards();
+        await MoveCards(cancellationToken);
         GameManager.isClickBlocked = false;
     }
 
@@ -54,14 +56,14 @@ public class DeckManager3D : MonoBehaviour
         }
     }
 
-    async Task MoveCards()
+    async UniTask MoveCards(CancellationToken cancellationToken)
     {
         for (int i = 0; i < deckCards.Count; i++)
         {
             Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
             await CardAnimations
                 .MoveAnimation(deckCards[i], cardPosition, 0.1f)
-                .ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+                .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
         }
     }
 }

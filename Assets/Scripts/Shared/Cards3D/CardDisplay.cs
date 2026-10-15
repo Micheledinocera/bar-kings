@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CardDisplay3D : MonoBehaviour
 {
+    static readonly int BaseMapId = Shader.PropertyToID("_BaseMap");
+
     public CardDataInGame cardData;
     public GameObject fronte;
     public GameObject retro;
@@ -12,7 +14,11 @@ public class CardDisplay3D : MonoBehaviour
     {
         cardData = data;
 
+        // A property block instead of renderer.material: no material instance per card to destroy.
         meshRenderer = fronte.GetComponent<MeshRenderer>();
-        meshRenderer.material.SetTexture("_BaseMap", cardData.cardData.immagineFronte.texture);
+        MaterialPropertyBlock properties = new();
+        meshRenderer.GetPropertyBlock(properties);
+        properties.SetTexture(BaseMapId, cardData.cardData.immagineFronte.texture);
+        meshRenderer.SetPropertyBlock(properties);
     }
 }

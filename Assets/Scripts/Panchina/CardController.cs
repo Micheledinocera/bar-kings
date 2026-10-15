@@ -1,8 +1,11 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CardControllerPanchina : MonoBehaviour
 {
-    async void OnMouseDown()
+    void OnMouseDown() => PlayPathAsync().Forget();
+
+    async UniTaskVoid PlayPathAsync()
     {
         if (GameManager.isClickBlocked)
             return;

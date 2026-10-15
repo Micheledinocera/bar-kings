@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -33,7 +32,9 @@ public class DeckManagerPanchina : MonoBehaviour
     PanchinaTable table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
 
-    async void Start()
+    void Start() => SetupTableAsync(destroyCancellationToken).Forget();
+
+    async UniTaskVoid SetupTableAsync(CancellationToken cancellationToken)
     {
         if (instance == null)
         {
@@ -51,7 +52,7 @@ public class DeckManagerPanchina : MonoBehaviour
         AddRe();
         ShuffleDeck();
         RenderDeck();
-        await MoveCards();
+        await MoveCards(cancellationToken);
         BuildTable();
         GameManager.isClickBlocked = false;
     }
@@ -83,7 +84,7 @@ public class DeckManagerPanchina : MonoBehaviour
         }
 
         List<PathMove> moves = table.PlayPath(startSlot);
-        CancellationToken cancellationToken = this.GetCancellationTokenOnDestroy();
+        CancellationToken cancellationToken = destroyCancellationToken;
         for (int i = 0; i < moves.Count; i++)
         {
             CardDisplay3D card = cardViews[moves[i].Card];
@@ -149,14 +150,14 @@ public class DeckManagerPanchina : MonoBehaviour
         }
     }
 
-    async Task MoveCards()
+    async UniTask MoveCards(CancellationToken cancellationToken)
     {
         for (int i = 0; i < deckCards.Count; i++)
         {
             Vector3 cardPosition = SlotPosition(i);
             await CardAnimationsPanchina
                 .MoveAnimation(deckCards[i], cardPosition, dealMoveDuration)
-                .ToUniTask(TweenCancelBehaviour.Kill, this.GetCancellationTokenOnDestroy());
+                .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
             deckCards[i].transform.SetParent(GetSlotByIndex(i));
         }
     }
