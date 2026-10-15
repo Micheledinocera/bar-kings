@@ -1,9 +1,11 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-11
+aggiornato: 2026-10-15
 verificato: 2026-10-07
+consolidato: 2026-10-15
 fonti:
+  - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-obiettivo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/study-initialize-llm-wiki/2026-07-01-prima-poc.md
@@ -41,5 +43,6 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 
 ## Domande aperte
 
+- Panchina: cosa fa la carta in mano quando il suo posto è un buco (lo riempie scoperta e il path si chiude?). Oggi nella POC il path va in errore ([tecnico/known-issues](../tecnico/known-issues.md#block-g--panchina-path-rules)).
 - Panchina: le carte che riempiono i buchi entrano coperte o scoperte? Cosa succede oltre un tot di carte in panchina?
 - Quale idea si tiene, o se si combinano: dipende dalle prove nelle tre scene.

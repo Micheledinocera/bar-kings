@@ -1,8 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-11
-verificato: 2026-10-11
+aggiornato: 2026-10-15
+verificato: 2026-10-15
+consolidato: 2026-10-15
 fonti:
+  - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-obiettivo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
@@ -33,6 +35,7 @@ Scripts in `Assets/Scripts/Panchina/`, used by the scene `Assets/Scenes/Panchina
   - the card in hand goes face up to the slot of its `index`; the card there becomes the card in hand;
   - **closed** (`PathEnd.Closed`): the card in hand belongs to the starting slot and fills it;
   - **stacked on a duplicate** (`PathEnd.StackedOnDuplicate`): the slot of the card in hand is already face up, so a card with the same index is there; the card goes on top of it, and the starting slot stays a **hole**. Filling holes from the panchina is not implemented.
+- **Bug**: a path whose card in hand belongs to a hole throws `ArgumentOutOfRangeException` (it takes the top card of an empty stack). Frequent in play with 9 duplicates; the rule for a card reaching a hole is missing ([known-issues](./known-issues.md#block-g--panchina-path-rules)).
 - **Used by**: [DeckManagerPanchina](#deckmanagerpanchina).
 
 ## DeckManagerPanchina

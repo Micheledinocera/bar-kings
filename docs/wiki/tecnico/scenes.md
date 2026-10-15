@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-11
-verificato: 2026-10-11
+aggiornato: 2026-10-15
+verificato: 2026-10-15
 consolidato: 2026-10-11
 fonti:
+  - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
   - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
@@ -27,7 +28,9 @@ The three scenes of the [deck modification ideas](../business/modifica-del-mazzo
 
 ## SampleScene, ScenaIndex40, ScenaTribuna
 
-Identical copies of the **first POC** (plain 4-kings solitaire): camera, light, a `GameManager` GameObject ([GameManager](./shared.md#gamemanager)) and [DeckManager3D](./shared.md#deckmanager3d), which deals the 40 cards onto a 4×10 grid at Play. Nothing specific to tribuna or index>40 yet. Only `SampleScene` is in the Build Settings.
+Identical copies of the **first POC** (plain 4-kings solitaire): camera, light, a `GameManager` GameObject ([GameManager](./shared.md#gamemanager)) and [DeckManager3D](./shared.md#deckmanager3d), which deals the 40 cards onto a 4×10 grid at Play. Nothing specific to tribuna or index>40 yet.
+
+All four scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`): `SampleScene`, `Panchina`, `ScenaTribuna`, `ScenaIndex40`.
 
 ## Panchina
 
