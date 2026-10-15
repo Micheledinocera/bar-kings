@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 
-// Logical state of the Panchina table: the cards in each slot (a stack: duplicates end up one on top of the
-// other) and whether the slot is face up. An empty slot is a hole. The cards beyond the table wait in the
-// panchina (bench), which fills the holes left by paths. The scene mirrors this state (DeckManagerPanchina);
-// rules read it, never the Transform hierarchy.
-public class PanchinaTable
+// Logical state of the table (Panchina and Tribuna scenes): the cards in each slot (a stack: duplicates end up
+// one on top of the other) and whether the slot is face up. An empty slot is a hole. In the Panchina the cards
+// beyond the table wait in the bench, which fills the holes left by paths; in the Tribuna the bench is empty and
+// holes stay. The scene mirrors this state (TableDeckManager); rules read it, never the Transform hierarchy.
+public class TableState
 {
     readonly List<CardDataInGame>[] stacks;
     readonly bool[] faceUp;
     readonly Queue<CardDataInGame> bench;
 
     // dealtCards[i] is the card dealt to slot i, face down. benchCards are drawn in order to fill holes.
-    public PanchinaTable(
+    public TableState(
         IReadOnlyList<CardDataInGame> dealtCards,
         IEnumerable<CardDataInGame> benchCards
     )

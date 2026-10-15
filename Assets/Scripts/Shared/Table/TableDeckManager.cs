@@ -4,9 +4,17 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class DeckManagerPanchina : MonoBehaviour
+// Setup and view of the table scenes (Panchina, Tribuna): deals the deck, mirrors TableState, animates paths.
+public class TableDeckManager : MonoBehaviour
 {
-    public static DeckManagerPanchina instance;
+    // What happens to the cards beyond the 40 on the table: the deck-modification idea tried by the scene.
+    public enum ExcessCards
+    {
+        Bench, // Panchina: they wait face down in the pile and fill the holes left by paths
+        Discard, // Tribuna: they are thrown away, holes stay
+    }
+
+    public static TableDeckManager instance;
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
 
@@ -18,11 +26,15 @@ public class DeckManagerPanchina : MonoBehaviour
     public static List<GameObject> deckCards = new();
     List<CardDataInGame> iQuattroRe = new();
     List<CardDataInGame> altreCarte = new();
-    const int DECK_LIMIT = 40; // cards on the table; the others wait in the panchina
+    const int DECK_LIMIT = 40; // cards on the table; the others go to the bench or are discarded
     const int KingValue = 10;
     const int KingCount = 4;
 
+    [SerializeField]
+    private ExcessCards excessCards = ExcessCards.Bench;
+
     // Cards beyond the table, face down in the pile at deckPosition: they fill the holes left by paths.
+    // Always empty with ExcessCards.Discard.
     readonly List<CardDataInGame> benchCards = new();
 
     [SerializeField, Range(0, 36)]
@@ -37,7 +49,7 @@ public class DeckManagerPanchina : MonoBehaviour
     const float StackOffset = 0.02f; // height of a card on top of a duplicate
 
     // Logical table state, built after dealing; cards on screen mirror it.
-    PanchinaTable table;
+    TableState table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
 
     void Start() => SetupTableAsync(destroyCancellationToken).Forget();
@@ -101,7 +113,7 @@ public class DeckManagerPanchina : MonoBehaviour
             CardDisplay3D view = card.GetComponent<CardDisplay3D>();
             cardViews.Add(view.cardData, view);
         }
-        table = new PanchinaTable(shuffledCardDatabaseInGame, benchCards);
+        table = new TableState(shuffledCardDatabaseInGame, benchCards);
     }
 
     // Plays the path starting from a clicked card: the table computes the moves, the scene animates them.
@@ -123,7 +135,7 @@ public class DeckManagerPanchina : MonoBehaviour
             if (moves[i].End == PathEnd.FilledFromBench)
             {
                 // From the panchina pile to the hole, face down.
-                await CardAnimationsPanchina
+                await TableCardAnimations
                     .MoveAnimation(card.gameObject, target, pathMoveDuration)
                     .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
             }
@@ -133,7 +145,7 @@ public class DeckManagerPanchina : MonoBehaviour
                 CardDisplay3D displaced =
                     moves[i].End == PathEnd.None ? cardViews[moves[i + 1].Card] : null;
                 card.isFlipped = true;
-                await CardAnimationsPanchina
+                await TableCardAnimations
                     .PathMoveAnimation(card, displaced, target, i == 0, pathMoveDuration)
                     .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
             }
@@ -147,11 +159,14 @@ public class DeckManagerPanchina : MonoBehaviour
     }
 
     // The table always has the 4 kings: they are added after the cut. The cards in excess (non-kings only, duplicates
-    // included) go to the panchina.
+    // included) go to the bench, or are discarded (ExcessCards).
     private void AddRe()
     {
         int tableCards = DECK_LIMIT - iQuattroRe.Count;
-        benchCards.AddRange(shuffledCardDatabaseInGame.Skip(tableCards));
+        if (excessCards == ExcessCards.Bench)
+        {
+            benchCards.AddRange(shuffledCardDatabaseInGame.Skip(tableCards));
+        }
         shuffledCardDatabaseInGame = shuffledCardDatabaseInGame.Take(tableCards).ToList();
         shuffledCardDatabaseInGame.AddRange(iQuattroRe);
     }
@@ -202,7 +217,7 @@ public class DeckManagerPanchina : MonoBehaviour
         for (int i = 0; i < DECK_LIMIT; i++)
         {
             Vector3 cardPosition = SlotPosition(i);
-            await CardAnimationsPanchina
+            await TableCardAnimations
                 .MoveAnimation(deckCards[i], cardPosition, dealMoveDuration)
                 .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
             deckCards[i].transform.SetParent(GetSlotByIndex(i));

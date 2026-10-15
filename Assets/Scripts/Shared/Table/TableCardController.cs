@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class CardControllerPanchina : MonoBehaviour
+public class TableCardController : MonoBehaviour
 {
     void OnMouseDown() => PlayPathAsync().Forget();
 
@@ -14,7 +14,7 @@ public class CardControllerPanchina : MonoBehaviour
         GameManager.isClickBlocked = true;
         try
         {
-            await DeckManagerPanchina.instance.PlayPath(cardDisplay);
+            await TableDeckManager.instance.PlayPath(cardDisplay);
         }
         finally
         {
