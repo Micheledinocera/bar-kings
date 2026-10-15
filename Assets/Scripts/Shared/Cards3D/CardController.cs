@@ -1,8 +1,11 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    async void OnMouseDown()
+    void OnMouseDown() => MoveCardsAsync().Forget();
+
+    async UniTaskVoid MoveCardsAsync()
     {
         CardDisplay3D cardDisplay = GetComponentInParent<CardDisplay3D>();
 
@@ -10,12 +13,17 @@ public class CardController : MonoBehaviour
             return;
 
         GameManager.isClickBlocked = true;
-
-        await CardAnimations.MoveCards(
-            cardDisplay.gameObject,
-            DeckManager3D.deckCards[cardDisplay.cardData.index]
-        );
-
-        GameManager.isClickBlocked = false;
+        try
+        {
+            await CardAnimations.MoveCards(
+                cardDisplay.gameObject,
+                DeckManager3D.deckCards[cardDisplay.cardData.index],
+                destroyCancellationToken
+            );
+        }
+        finally
+        {
+            GameManager.isClickBlocked = false;
+        }
     }
 }

@@ -4,6 +4,7 @@ aggiornato: 2026-10-15
 verificato: 2026-10-15
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-obiettivo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
@@ -34,8 +35,9 @@ Scripts in `Assets/Scripts/Panchina/`, used by the scene `Assets/Scenes/Panchina
 - `PlayPath(startSlot)` applies a path to the state and returns its `PathMove`s (card, target slot, position in the stack, `PathEnd`). Rule being tried (POC, decision [in analisi](../business/modifica-del-mazzo.md)):
   - the card in hand goes face up to the slot of its `index`; the card there becomes the card in hand;
   - **closed** (`PathEnd.Closed`): the card in hand belongs to the starting slot and fills it;
-  - **stacked on a duplicate** (`PathEnd.StackedOnDuplicate`): the slot of the card in hand is already face up, so a card with the same index is there; the card goes on top of it, and the starting slot stays a **hole**. Filling holes from the panchina is not implemented.
-- **Bug**: a path whose card in hand belongs to a hole throws `ArgumentOutOfRangeException` (it takes the top card of an empty stack). Frequent in play with 9 duplicates; the rule for a card reaching a hole is missing ([known-issues](./known-issues.md#block-g--panchina-path-rules)).
+  - **stacked on a duplicate** (`PathEnd.StackedOnDuplicate`): the slot of the card in hand is already face up, so a card with the same index is there; the card goes on top of it, and the starting slot stays a **hole**;
+  - **filled a hole** (`PathEnd.FilledHole`): the slot of the card in hand is a hole; the card goes face up into it, and the starting slot becomes a new hole.
+  - Checks in this order: starting slot, hole, face-up slot, normal move. Filling holes from the panchina is not implemented.
 - **Used by**: [DeckManagerPanchina](#deckmanagerpanchina).
 
 ## DeckManagerPanchina
@@ -47,7 +49,9 @@ Scripts in `Assets/Scripts/Panchina/`, used by the scene `Assets/Scenes/Panchina
 3. instantiates `cardPrefab` as a pile, deals each card to `SlotPosition(i)` and makes it a child of slot `i`;
 4. builds the [PanchinaTable](#panchinatable) from the dealt cards and a map card → `CardDisplay3D`, unblocks clicks.
 
-- `PlayPath(clickedCard)` (`UniTask`): ignores face-up cards; asks the table for the moves and animates them one by one with [CardAnimationsPanchina](#cardanimationspanchina) (a card on a duplicate is raised by `StackOffset` per card below it), then re-parents each moved card to its slot, so the hierarchy follows the table. Cancelled if the manager is destroyed.
+`Start` runs these steps as an `async UniTaskVoid` with `.Forget()`; dealing (`MoveCards`, `UniTask`) is cancelled by `destroyCancellationToken`, and a cancellation is not logged as an error.
+
+- `PlayPath(clickedCard)` (`UniTask`): ignores face-up cards; asks the table for the moves and animates them one by one with [CardAnimationsPanchina](#cardanimationspanchina) (a card on a duplicate is raised by `StackOffset` per card below it), then re-parents each moved card to its slot, so the hierarchy follows the table. Cancelled by the manager's `destroyCancellationToken`.
 - `SlotPosition(slot)` (static): grid position of a slot, 4 rows of 10.
 - **Serialized fields**: `cardPrefab` (`Assets/Prefab/3DCardPanchina.prefab`), `deckPosition` (its child 0 must be the slot container, see [scenes](./scenes.md#panchina)), `deckDatabase` (`Assets/Instances/CardDatabase.asset`; if empty, `Start` throws), `dealMoveDuration` (seconds per card when dealing, default 0.1), `pathMoveDuration` (seconds per flip or move in a path, default 0.5). In the scene YAML the component still has the old class identifier `DeckManager3DTest`.
 - `GetSlotByIndex(index)`: `deckPosition.GetChild(0).GetChild(index)`, the slot Transform by child order; used only to parent cards, not to read the state.
@@ -57,7 +61,7 @@ Scripts in `Assets/Scripts/Panchina/`, used by the scene `Assets/Scenes/Panchina
 
 ## CardControllerPanchina
 
-`Assets/Scripts/Panchina/CardController.cs`. On `OnMouseDown`, when clicks are not blocked ([GameManager](./shared.md#gamemanager)), blocks them, runs `DeckManagerPanchina.instance.PlayPath(card)` and unblocks them in a `finally`.
+`Assets/Scripts/Panchina/CardController.cs`. On `OnMouseDown`, when clicks are not blocked ([GameManager](./shared.md#gamemanager)), blocks them, runs `DeckManagerPanchina.instance.PlayPath(card)` and unblocks them in a `finally`. `OnMouseDown` calls an `async UniTaskVoid` method with `.Forget()`.
 
 - **Prefab**: `Assets/Prefab/3DCardPanchina.prefab` (with [CardDisplay3D](./shared.md#carddisplay3d)).
 
@@ -67,7 +71,6 @@ Scripts in `Assets/Scripts/Panchina/`, used by the scene `Assets/Scenes/Panchina
 
 - `MoveAnimation(card, target, duration)`: lift and move; used to deal.
 - `PathMoveAnimation(card, displaced, target, liftCard, duration)`: one move of a path, same look as the first POC: the clicked card is lifted (first move only), the card flips face up, the displaced card (if any) is lifted, then the card moves to the target. `SetLink` on the card.
-- `FlipAnimation`: unused.
 - **Used by**: [DeckManagerPanchina](#deckmanagerpanchina).
 
 ## CardSlot

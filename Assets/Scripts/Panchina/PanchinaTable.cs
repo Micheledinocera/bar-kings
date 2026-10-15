@@ -50,8 +50,11 @@ public class PanchinaTable
     // Plays a path from a face-down card and returns the moves in order. The card in hand goes face up to the
     // slot of its index, and the card it displaces becomes the card in hand.
     // - Closes when the card in hand belongs to the starting slot: it fills it.
+    // - Stops when the slot of the card in hand is a hole: the card goes face up into it.
     // - Stops when the slot of the card in hand is already face up (a duplicate is there): the card goes on top
-    //   of it, and the starting slot stays empty (a hole). POC rule, see wiki business/modifica-del-mazzo.md.
+    //   of it.
+    // When the path stops, the starting slot stays empty (a new hole). POC rules, see wiki
+    // business/modifica-del-mazzo.md.
     public List<PathMove> PlayPath(int startSlot)
     {
         List<PathMove> moves = new();
@@ -66,6 +69,13 @@ public class PanchinaTable
                 stacks[startSlot].Add(inHand);
                 faceUp[startSlot] = true;
                 moves.Add(new PathMove(inHand, startSlot, 0, PathEnd.Closed));
+                return moves;
+            }
+            if (IsHole(target))
+            {
+                stacks[target].Add(inHand);
+                faceUp[target] = true;
+                moves.Add(new PathMove(inHand, target, 0, PathEnd.FilledHole));
                 return moves;
             }
             if (faceUp[target])
@@ -96,6 +106,7 @@ public enum PathEnd
 {
     None, // the path goes on
     Closed, // the card went back to the starting slot
+    FilledHole, // the card went into a hole; the starting slot is a hole
     StackedOnDuplicate, // the card went on top of a duplicate; the starting slot is a hole
 }
 

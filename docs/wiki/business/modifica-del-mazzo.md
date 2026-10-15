@@ -5,6 +5,7 @@ aggiornato: 2026-10-15
 verificato: 2026-10-07
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-obiettivo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
@@ -25,7 +26,7 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
 - Le scene gemelle sono **temporanee**: servono a provare un'idea senza rompere la precedente. Quando se ne sceglie una, le altre (e il codice che usano solo loro) si eliminano.
 - Stato del codice al 2026-10-11: `ScenaTribuna` e `ScenaIndex40` sono ancora copie identiche della prima POC. La panchina costruisce un mazzo di 40 carte con doppioni fissi (asso–nove di denari) e quindi carte mancanti: sono casi di test voluti. Dettagli in [tecnico/panchina](../tecnico/panchina.md).
-- **Regola del path in prova nella POC della panchina** (2026-10-11, non decisa): il path si chiude quando la carta in mano appartiene allo slot di partenza; se invece il posto della carta in mano è già scoperto (c'è il suo doppione), la carta finisce **sopra** il doppione e lo slot di partenza resta un **buco**. Riempire i buchi con la panchina non è ancora implementato.
+- **Regola del path in prova nella POC della panchina** (2026-10-11, non decisa): il path si chiude quando la carta in mano appartiene allo slot di partenza; se invece il posto della carta in mano è già scoperto (c'è il suo doppione), la carta finisce **sopra** il doppione e lo slot di partenza resta un **buco**. Se il posto della carta in mano è un **buco**, la carta ci va **scoperta** e il path si interrompe; anche in questo caso lo slot di partenza diventa un nuovo buco (2026-10-15, non decisa). Riempire i buchi con la panchina non è ancora implementato.
 
 ## Opzioni
 
@@ -43,6 +44,6 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 
 ## Domande aperte
 
-- Panchina: cosa fa la carta in mano quando il suo posto è un buco (lo riempie scoperta e il path si chiude?). Oggi nella POC il path va in errore ([tecnico/known-issues](../tecnico/known-issues.md#block-g--panchina-path-rules)).
+- Panchina: la regola in prova per la carta che arriva su un buco (lo riempie scoperta, il path si ferma) è quella definitiva?
 - Panchina: le carte che riempiono i buchi entrano coperte o scoperte? Cosa succede oltre un tot di carte in panchina?
 - Quale idea si tiene, o se si combinano: dipende dalle prove nelle tre scene.
