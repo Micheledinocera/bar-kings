@@ -4,6 +4,8 @@ aggiornato: 2026-10-15
 verificato: 2026-10-15
 consolidato: 2026-10-11
 fonti:
+  - raw/compiled/panchina-reprise/2026-10-15-implementazione.md
+  - raw/compiled/panchina-reprise/2026-10-15-obiettivo.md
   - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
@@ -38,7 +40,9 @@ The only scene worked on. Main GameObjects:
 
 - `Tavolo`: the table;
 - `SlotContainer`: [CardSlotContainer](./panchina.md#cardslotcontainer) with 40 instances of `Assets/Prefab/CardSlot.prefab` ([CardSlot](./panchina.md#cardslot)); must be child 0 of the deck manager's `deckPosition`, with the slots in grid order, because [DeckManagerPanchina](./panchina.md#deckmanagerpanchina) finds the slot Transforms by child index to parent the cards (the table state itself is in [PanchinaTable](./panchina.md#panchinatable));
-- `CardsContainer`, `GameManager`, `Main Camera`, `Directional Light`; many GameObjects have no name.
+- `CardsContainer`, `GameManager`, `Main Camera`, `Directional Light`; many GameObjects have no name;
+- `UI`: Canvas (Screen Space Overlay, scaled with screen size) with `ResetButton` (TextMeshPro text "Reset", top right), whose persistent `OnClick` calls `DeckManagerPanchina.ResetTable` on `GameManager` ([DeckManagerPanchina](./panchina.md#deckmanagerpanchina));
+- `EventSystem` with `InputSystemUIInputModule` (the Input System UI module, the only input handler enabled).
 
 ## Prefabs
 

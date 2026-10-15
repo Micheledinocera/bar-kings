@@ -4,6 +4,8 @@ aggiornato: 2026-10-15
 verificato: 2026-10-15
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/panchina-reprise/2026-10-15-implementazione.md
+  - raw/compiled/panchina-reprise/2026-10-15-obiettivo.md
   - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/unity-mcp/2026-10-15-test-e-controllo.md
   - raw/compiled/panchina-start/2026-10-11-fix-path.md
@@ -33,7 +35,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 - `debt` — Slot Transforms found by child order (`GetSlotByIndex`: `GetChild(0).GetChild(i)`); only used to parent cards, the table state is in [PanchinaTable](./panchina.md#panchinatable). `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
 - `dead-code` — `CardSlot.index` and `CardSlotContainer.CardSlotList` never read. `Assets/Scripts/Panchina/CardSlot.cs`, `Assets/Scripts/Panchina/CardSlotContainer.cs` — [CardSlot](./panchina.md#cardslot)
-- `debt` — Public static lists, flag and singleton never cleared; safe only while Play mode reloads the domain. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Panchina/DeckManager.cs`, `Assets/Scripts/Shared/GameManager.cs` — [scenes](./scenes.md#project-settings)
+- `debt` — Public static lists, flag and singleton not reset on entering Play mode (Panchina clears its lists at every setup, the first POC never does); safe only while Play mode reloads the domain. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Panchina/DeckManager.cs`, `Assets/Scripts/Shared/GameManager.cs` — [scenes](./scenes.md#project-settings)
 - `debt` — `GameManager` is a MonoBehaviour placed in every scene but holds only a static field. `Assets/Scripts/Shared/GameManager.cs` — [GameManager](./shared.md#gamemanager)
 
 ## Block D — Input
@@ -44,5 +46,5 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 - `dead-code` — `Assets/Scripts/ScriptProva.cs` (test script) and `Assets/Scripts/Shared/Camera/CameraOrbit.cs` (in no scene, legacy input) — [CameraOrbit](./shared.md#cameraorbit)
 - `debt` — File names differ from class names (`CardDisplay.cs` → `CardDisplay3D`, …); no warning in Unity. [shared](./shared.md)
-- `debt` — Magic numbers: grid layout, deck size, duplicates count, king value. `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
+- `debt` — Magic numbers: grid layout of `SlotPosition` (deck size, king value and duplicates count are now constants or serialized). `Assets/Scripts/Panchina/DeckManager.cs` — [DeckManagerPanchina](./panchina.md#deckmanagerpanchina)
 - `debt` — `com.unity.ai.assistant` (the `unity-mcp` server) is a pre-release, `2.20.0-pre.2`: move to the stable version when it is out. `Packages/manifest.json` — [Accesso dell'agent all'Unity Editor](../progetto/accesso-editor-agent.md)
