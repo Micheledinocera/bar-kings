@@ -15,5 +15,5 @@ Opzione in prova per la decisione [Modifica del mazzo](../../wiki/business/modif
 
 ## Scena `ScenaTribuna`
 
-- Ora ha la stessa struttura della Panchina: `SlotContainer` con i 40 slot copiato dentro `CardsContainer`, `TableDeckManager` su `GameManager` al posto di `DeckManager3D` (`excessCards = Discard`, stesso prefab carta `3DCardPanchina`, stesso `CardDatabase`), `UI` con `ResetButton` collegato al suo `TableDeckManager`, `EventSystem` con `InputSystemUIInputModule`.
-- Il prefab delle carte si chiama ancora `3DCardPanchina` ma è usato da entrambe le scene.
+- Ora ha la stessa struttura della Panchina: `SlotContainer` con i 40 slot copiato dentro `CardsContainer`, `TableDeckManager` su `GameManager` al posto di `DeckManager3D` (`excessCards = Discard`, stesso prefab carta `3DCardTable`, stesso `CardDatabase`), `UI` con `ResetButton` collegato al suo `TableDeckManager`, `EventSystem` con `InputSystemUIInputModule`.
+- Il prefab delle carte `3DCardPanchina` è stato rinominato `Assets/Prefab/3DCardTable.prefab` (stesso GUID): è usato da entrambe le scene.
