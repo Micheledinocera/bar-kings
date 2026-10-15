@@ -27,10 +27,13 @@
 
 - **Libraries already in use**: Odin Inspector for inspector attributes, DOTween for tweens and animations, UniTask for async (`async UniTask`, not coroutines, in new code), TextMeshPro for text, the new Input System. Prefer them over adding new packages; a new package is a decision to ask about.
 - **`.meta` files**: every asset has one, and it holds the GUID that scenes and prefabs reference. Move or rename assets from the Unity Editor (or move the `.meta` with the file), never delete a `.meta` by hand, always commit it with its asset.
-- **Scenes, prefabs, ScriptableObject assets** are YAML serialized by Unity. The agent has no access to the Editor, so every Editor change of a feature is listed **separately** from the code changes, and:
-  - **easy changes**, the agent can make them in the YAML, **only after the user confirms** that list: assigning a reference to an existing asset (`{fileID: …, guid: <from its .meta>, type: …}`), changing the value of a field of an existing component, applying the same one-line change to identical scenes. Then the user checks them right away in the Editor;
-  - **everything else** (creating GameObjects or components, prefab instances and overrides, changing the structure of a prefab): step-by-step instructions for the user, never by hand.
-  - New `.meta` files for scripts and folders the agent creates: `fileFormatVersion: 2` and a new random `guid` (folders also `folderAsset: yes` and the `DefaultImporter` block).
+- **Editor changes go through `unity-mcp`**: scenes, prefabs and ScriptableObject assets are YAML serialized by Unity, and the agent changes them only from the Editor through the `unity-mcp` server (`Unity_RunCommand`), **never by editing the YAML by hand**.
+  - Every Editor change of a feature is listed **separately** from the code changes; the agent runs it **only after the user confirms** that list. Reading and checking (Console, scene captures, inspecting the hierarchy) need no confirmation.
+  - After a change, the agent saves the scene or prefab from the Editor and checks the Console (`Unity_GetConsoleLogs`); after changing code, it checks the Console for compilation errors itself.
+  - The Editor must be open on the project: if `unity-mcp` is not connected or does not respond, ask the user to open it; never fall back to the YAML.
+  - Commands run through `Unity_RunCommand` are throwaway: they are not committed. Repeatable operations (asset generators) are menu items in `Editor/` (see *Scripts*), which the agent can run through `unity-mcp`.
+  - Out of bounds without asking, as before: the protected Project Settings (*Unity Editor*), packages, `Assets/Plugins/`.
+  - New `.meta` files for scripts and folders the agent creates: let Unity generate them (asset refresh through `unity-mcp`); write one by hand only if the Editor is unavailable: `fileFormatVersion: 2` and a new random `guid` (folders also `folderAsset: yes` and the `DefaultImporter` block).
 - **Formatting**: [CSharpier](https://csharpier.com) (local tool in `dotnet-tools.json`): `dotnet tool restore`, then `dotnet csharpier format Assets/Scripts`.
 - **Comments and identifiers**: the agent writes them in English. Existing names in Italian or mixed (`CardData.nome`, `valore`, `seme`, …) stay as they are: never flag or rename names chosen by people. Renaming a serialized field needs `[FormerlySerializedAs("oldName")]`. Raw notes and the wiki outside `docs/wiki/tecnico/`: Italian.
 
