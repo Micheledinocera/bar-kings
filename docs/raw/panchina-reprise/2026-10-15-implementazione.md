@@ -19,4 +19,10 @@ Opzione in prova per la decisione [Modifica del mazzo](../../wiki/business/modif
 
 - `PanchinaTable`: nuovo mazzo panchina (coda), `BenchCount`, riempimento dello slot di partenza alla fine di `PlayPath`.
 - `DeckManagerPanchina`: `duplicateCount`, carte in eccesso alla panchina, mazzo unico con il tavolo sopra e la panchina sotto, animazione della carta dalla panchina; le liste statiche si svuotano a ogni avvio.
+- I 4 re sono sempre sul tavolo (aggiunti dopo il taglio) e non hanno mai doppioni (i doppioni si prendono solo dalle 36 carte non re); se il database non ha 4 re l'avvio si ferma con un errore.
 - Non deciso, non implementato: la fine della partita.
+
+## Reset
+
+- Pulsante **Reset** in alto a destra nella scena Panchina (Canvas `UI`, `EventSystem` con `InputSystemUIInputModule`, `ResetButton` con testo TextMeshPro): chiama `DeckManagerPanchina.ResetTable`, che distrugge le carte e rifà la distribuzione senza uscire dal Play.
+- Mentre si distribuisce o si gioca un path (click bloccati) il reset è ignorato.
