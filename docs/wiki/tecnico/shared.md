@@ -1,8 +1,9 @@
 ---
 tipo: info
-aggiornato: 2026-10-11
-verificato: 2026-10-11
+aggiornato: 2026-10-15
+verificato: 2026-10-15
 fonti:
+  - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/card-generator/2026-10-11-obiettivo.md
   - raw/compiled/card-generator/2026-10-11-scelta-card-database.md
   - raw/compiled/study-new-implementations/2026-10-11-analisi-codice.md
@@ -62,21 +63,21 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 
 `Assets/Scripts/Shared/Cards3D/CardDisplay.cs`. Root component of the 3D card. Fields: `cardData` ([CardDataInGame](#carddataingame), set by `Setup`), `fronte` / `retro` (child GameObjects), `isFlipped` (true once the card took part in a path).
 
-- `Setup(data)` sets the front texture on `fronte`'s material (`_BaseMap`, URP Lit); `meshRenderer.material` creates one material instance per card.
+- `Setup(data)` sets the front texture (`_BaseMap`, URP Lit) on `fronte`'s renderer through a `MaterialPropertyBlock`: every card shares the material asset, no instance per card ([MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html)).
 - **Prefabs**: `Assets/Prefab/3DCard.prefab`, `Assets/Prefab/3DCardPanchina.prefab`.
 - **Used by**: [DeckManager3D](#deckmanager3d), [CardController](#cardcontroller), [CardAnimations](#cardanimations) and the Panchina copies.
 
 ## CardController
 
-`Assets/Scripts/Shared/Cards3D/CardController.cs`. On `OnMouseDown` of a face-down card, when clicks are not blocked ([GameManager](#gamemanager)), runs the path: `CardAnimations.MoveCards(card, DeckManager3D.deckCards[card.index])`.
+`Assets/Scripts/Shared/Cards3D/CardController.cs`. On `OnMouseDown` of a face-down card, when clicks are not blocked ([GameManager](#gamemanager)), blocks them, runs the path `CardAnimations.MoveCards(card, DeckManager3D.deckCards[card.index], destroyCancellationToken)` and unblocks them in a `finally`.
 
 - **Prefab**: `Assets/Prefab/3DCard.prefab`.
 - `OnMouseDown` works in practice (the POCs are played by clicking) although the project enables only the Input System package.
-- `async void`, no cancellation token.
+- `OnMouseDown` calls an `async UniTaskVoid` method with `.Forget()`: a cancelled path is not logged as an error.
 
 ## DeckManager3D
 
-`Assets/Scripts/Shared/Cards3D/DeckManager.cs`. First-POC game setup, in `Start`: blocks clicks, builds `cardDatabase` / `cardDatabaseInGame` from `deckDatabase` ([CardDatabase](#carddatabase)), shuffles the 40 cards, instantiates `cardPrefab` as a pile under `deckPosition`, animates each card to a 4×10 grid (`x = -5 + 1.2·(i % 10)`, `z = 4.5 - 1.5·(i / 10)`), unblocks clicks.
+`Assets/Scripts/Shared/Cards3D/DeckManager.cs`. First-POC game setup, in `Start`: blocks clicks, builds `cardDatabase` / `cardDatabaseInGame` from `deckDatabase` ([CardDatabase](#carddatabase)), shuffles the 40 cards, instantiates `cardPrefab` as a pile under `deckPosition`, animates each card to a 4×10 grid (`x = -5 + 1.2·(i % 10)`, `z = 4.5 - 1.5·(i / 10)`), unblocks clicks. `Start` runs this as an `async UniTaskVoid` with `.Forget()`, cancelled by `destroyCancellationToken`.
 
 - **Serialized fields**: `cardPrefab` (the `3DCard` prefab), `deckPosition` (Transform of the pile), `deckDatabase` ([CardDatabase](#carddatabase); if left empty, `Start` throws).
 - **Static state**: `cardDatabase`, `cardDatabaseInGame`, `shuffledCardDatabaseInGame` (the same list object as `cardDatabaseInGame`, shuffled in place), `deckCards` (instantiated cards, in grid order). The first two are rebuilt from `deckDatabase` at every `Start`; `deckCards` is never cleared: safe only because Play mode reloads the domain (see [scenes](./scenes.md#project-settings)).
@@ -88,9 +89,8 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 `Assets/Scripts/Shared/Animations/CardAnimations.cs`. Static DOTween helpers ([DOTween docs](https://dotween.demigiant.com/documentation.php)):
 
 - `MoveAnimation(card, target, duration)`: lift and move, `SetLink(card)`. Used by [DeckManager3D](#deckmanager3d) to deal.
-- `MoveCards(start, end, duration)`: the **path**. Lifts the clicked card, then repeatedly moves the current card onto the position of the next one (`MoveCardsAtom`) and continues with the card found at `DeckManager3D.deckCards[index]`, until it gets back to the clicked card's index; the last card flips and goes to the starting position. Marks every card it touches `isFlipped`.
-- `MoveCardsAtom`: one step of the path; its `Sequence` has no `SetLink`.
-- `FlipAnimation`: unused.
+- `MoveCards(start, end, cancellationToken, duration)` (`UniTask`): the **path**. Lifts the clicked card, then repeatedly moves the current card onto the position of the next one (`MoveCardsAtom`) and continues with the card found at `DeckManager3D.deckCards[index]`, until it gets back to the clicked card's index; the last card flips and goes to the starting position. Marks every card it touches `isFlipped`. Every tween is linked to its card and killed on cancellation.
+- `MoveCardsAtom`: one step of the path, `SetLink(startingCard)`.
 - **Used by**: [CardController](#cardcontroller), [DeckManager3D](#deckmanager3d). Copy: `CardAnimationsPanchina`.
 
 ## GameManager

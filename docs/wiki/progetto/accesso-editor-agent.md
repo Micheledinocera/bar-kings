@@ -4,6 +4,7 @@ stato: presa
 aggiornato: 2026-10-15
 verificato: 2026-10-15
 fonti:
+  - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/unity-mcp/2026-10-15-obiettivo.md
   - raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md
@@ -40,6 +41,7 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 - Warning innocui in Console a ogni connessione: "Failed to collect Windows signature" per `claude.exe`.
 - `Unity_RunCommand` segnala le API deprecate di Unity 6.4 (es. `GetInstanceID()` → `GetEntityId()`, `FindFirstObjectByType` → `FindAnyObjectByType`).
 - Prova del 2026-10-15: proposta della modifica, conferma, esecuzione, salvataggio e verifica dell'utente nell'Editor funzionano.
+- **Play mode**: l'agent ci entra con `EditorApplication.isPlaying = true` via `Unity_RunCommand`; durante il domain reload il server non risponde per qualche secondo ("Unity not detected"), poi torna. In Play può leggere lo stato del gioco, la Console e catturare la camera; giocare e giudicare il gameplay resta all'utente.
 
 ## Perché
 
@@ -55,5 +57,4 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 
 ## Domande aperte
 
-- Play mode: l'MCP permette di entrare in Play e verificare il gameplay? Finché non si prova, la prova in Play resta all'utente.
 - Il pacchetto è una pre-release (`2.20.0-pre.2`): passare alla versione stabile quando esce.
