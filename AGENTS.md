@@ -7,8 +7,8 @@
 ```
 ├── Assets/
 │   ├── Scripts/          # project code (C#)
-│   │   ├── Shared/       # code shared across scenes: cards, camera, animations, GameManager
-│   │   └── Panchina/     # code of the Panchina scene
+│   │   └── Shared/       # code shared across scenes: cards, camera, animations, GameManager
+│   │       └── Table/    # table of the deck variants (Panchina, Tribuna scenes)
 │   ├── Scenes/           # scenes (.unity)
 │   ├── Prefab/           # prefabs
 │   ├── Instances/        # asset instances (e.g. card ScriptableObjects in Instances/Cards)

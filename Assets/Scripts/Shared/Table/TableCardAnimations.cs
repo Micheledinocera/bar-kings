@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public static class CardAnimationsPanchina
+public static class TableCardAnimations
 {
     public static Sequence MoveAnimation(
         GameObject card,
