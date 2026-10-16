@@ -8,7 +8,9 @@
 ├── Assets/
 │   ├── Scripts/          # project code (C#)
 │   │   └── Shared/       # code shared across scenes: cards, camera, animations, GameManager
-│   │       └── Table/    # table of the deck variants (Panchina, Tribuna scenes)
+│   │       ├── Deck/     # deck presets and deal of the table scenes (seeded)
+│   │       ├── Stats/    # game log and autoplay simulation (CSV)
+│   │       └── Table/    # table of the deck variants (Panchina, Tribuna, Index40 scenes)
 │   ├── Scenes/           # scenes (.unity)
 │   ├── Prefab/           # prefabs
 │   ├── Instances/        # asset instances (e.g. card ScriptableObjects in Instances/Cards)

@@ -4,9 +4,14 @@ using System.Linq;
 using System.Text;
 
 // CSV files of a simulation (TableSimulationRunner): the paths of the first games of each preset, as a snapshot,
-// and one row of averages per preset over all its games. Comma separated, dot as decimal mark.
+// and one row of averages per preset over all its games. Italian Excel format, so a double click opens them right:
+// ';' as separator, ',' as decimal mark. What follows from the preset (deck size, holes at the start) is left out.
 public static class SimulationCsv
 {
+    const string Separator = ";";
+
+    static readonly NumberFormatInfo DecimalComma = new() { NumberDecimalSeparator = "," };
+
     public static string Runs(
         IEnumerable<(DeckPreset preset, IReadOnlyList<SimulatedGame> games)> results,
         string mode,
@@ -15,7 +20,19 @@ public static class SimulationCsv
     {
         StringBuilder csv = new();
         csv.AppendLine(
-            "preset,mode,game,seed,deck_size,table_duplicates,start_holes,path,start_slot,length,end,bench_fill,kings_face_up,cards"
+            Row(
+                "preset",
+                "mode",
+                "game",
+                "seed",
+                "table_duplicates",
+                "path",
+                "length",
+                "end",
+                "bench_fill",
+                "kings_face_up",
+                "cards"
+            )
         );
         foreach ((DeckPreset preset, IReadOnlyList<SimulatedGame> games) in results)
         {
@@ -26,9 +43,19 @@ public static class SimulationCsv
                 {
                     string cards = string.Join(" > ", path.Cards.Select(GameLogFormatter.CardName));
                     csv.AppendLine(
-                        $"{preset.name},{mode},{i + 1},{game.Seed},{game.Deal.DeckSize},{game.Deal.TableDuplicates},"
-                            + $"{game.Deal.Holes},{path.Number},{path.StartSlot},{path.Length},{path.End},"
-                            + $"{(path.FilledFromBench ? 1 : 0)},{path.FaceUpKings},\"{cards}\""
+                        Row(
+                            preset.name,
+                            mode,
+                            i + 1,
+                            game.Seed,
+                            game.Deal.TableDuplicates,
+                            path.Number,
+                            path.Length,
+                            path.End,
+                            path.FilledFromBench ? 1 : 0,
+                            path.FaceUpKings,
+                            $"\"{cards}\""
+                        )
                     );
                 }
             }
@@ -44,23 +71,32 @@ public static class SimulationCsv
     {
         StringBuilder csv = new();
         csv.AppendLine(
-            "preset,mode,simulation_seed,games,deck_size,table_duplicates,start_holes,paths_per_game,avg_path_length,"
-                + "first_path_length,longest_path,closed_paths_pct,all_kings_games_pct,all_kings_at_path"
+            Row(
+                "preset",
+                "mode",
+                "simulation_seed",
+                "games",
+                "table_duplicates",
+                "paths_per_game",
+                "avg_path_length",
+                "first_path_length",
+                "longest_path",
+                "closed_paths_pct",
+                "all_kings_games_pct",
+                "all_kings_at_path"
+            )
         );
         foreach ((DeckPreset preset, IReadOnlyList<SimulatedGame> games) in results)
         {
             List<SimulatedPath> paths = games.SelectMany(game => game.Paths).ToList();
             List<SimulatedGame> allKings = games.Where(game => game.AllKingsPath > 0).ToList();
             csv.AppendLine(
-                string.Join(
-                    ",",
+                Row(
                     preset.name,
                     mode,
                     simulationSeed,
                     games.Count,
-                    Number(games.Average(game => game.Deal.DeckSize)),
                     Number(games.Average(game => game.Deal.TableDuplicates)),
-                    Number(games.Average(game => game.Deal.Holes)),
                     Number(games.Average(game => game.Paths.Count)),
                     Number(paths.Average(path => path.Length)),
                     Number(games.Average(game => game.Paths[0].Length)),
@@ -74,5 +110,7 @@ public static class SimulationCsv
         return csv.ToString();
     }
 
-    static string Number(double value) => value.ToString("0.###", CultureInfo.InvariantCulture);
+    static string Row(params object[] cells) => string.Join(Separator, cells);
+
+    static string Number(double value) => value.ToString("0.###", DecimalComma);
 }
