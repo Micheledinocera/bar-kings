@@ -6,7 +6,7 @@ Due build di fila danno lo stesso identico diff: non è rumore che cambia ogni v
 
 - `Assets/Settings/Universal Render Pipeline Asset.asset`: prefiltering delle varianti shader URP, ricalcolato a ogni build dalle feature usate.
 - `Assets/UniversalRenderPipelineGlobalSettings.asset`: lista delle runtime settings URP incluse nel player.
-- `ProjectSettings/ProjectSettings.asset`: `preloadedAssets` con `Assets/InputSystem_Actions.inputactions` (le azioni project-wide dell'Input System, aggiunte dalla build) e il batching di default per Standalone (static on, dynamic off).
+- `ProjectSettings/ProjectSettings.asset`: il batching di default per Standalone (static on, dynamic off). Il `preloadedAssets` con `Assets/InputSystem_Actions.inputactions` invece **non** è stabile: corretto dopo, vedi `2026-10-16-modifiche-non-salvate.md`.
 - `ProjectSettings/UnityConnectSettings.asset`: `m_Enabled: 1`. Il progetto è collegato a un progetto cloud (`cloudProjectId`, organizzazione `panzattack`) e l'Editor riaccende il flag: spegnerlo non regge. I singoli servizi (Analytics, Ads, Purchasing, Performance reporting) restano spenti.
 
 Quindi niente skill per "rimettere a posto" i file: sono committati nello stato che la build produce.
