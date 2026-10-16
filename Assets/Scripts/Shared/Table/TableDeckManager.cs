@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-// Setup and view of the table scenes (Panchina, Tribuna): deals the deck, mirrors TableState, animates paths.
+// Setup and view of the table scenes (Panchina, Tribuna): builds the deck from a preset, deals it, mirrors
+// TableState, animates paths and writes the game log.
 public class TableDeckManager : MonoBehaviour
 {
     // What happens to the cards beyond the 40 on the table: the deck-modification idea tried by the scene.
@@ -20,25 +22,20 @@ public class TableDeckManager : MonoBehaviour
 
     [SerializeField]
     private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
-    public static List<CardData> cardDatabase = new();
-    public static List<CardDataInGame> cardDatabaseInGame = new();
-    public static List<CardDataInGame> shuffledCardDatabaseInGame = new();
-    public static List<GameObject> deckCards = new();
-    List<CardDataInGame> iQuattroRe = new();
-    List<CardDataInGame> altreCarte = new();
-    const int DECK_LIMIT = 40; // cards on the table; the others go to the bench or are discarded
-    const int KingValue = 10;
-    const int KingCount = 4;
+
+    [SerializeField, Required]
+    private DeckPreset deckPreset; // Assets/Instances/DeckPresets
+
+    // Seed of the deck: 0 draws a new one at every game. The seed is logged, so a game can be replayed.
+    [SerializeField]
+    private int seed;
 
     [SerializeField]
     private ExcessCards excessCards = ExcessCards.Bench;
 
-    // Cards beyond the table, face down in the pile at deckPosition: they fill the holes left by paths.
-    // Always empty with ExcessCards.Discard.
-    readonly List<CardDataInGame> benchCards = new();
-
-    [SerializeField, Range(0, 36)]
-    private int duplicateCount = 9; // duplicates of the first non-king cards (ace, two, ... of Denari)
+    // On-screen log; optional, the Console always gets the log.
+    [SerializeField]
+    private GameLogView gameLog;
 
     [SerializeField, Range(0.02f, 1f)]
     private float dealMoveDuration = 0.1f; // seconds per card when dealing
@@ -48,9 +45,18 @@ public class TableDeckManager : MonoBehaviour
 
     const float StackOffset = 0.02f; // height of a card on top of a duplicate
 
+    // Card GameObjects of the game, table cards first, then the bench pile.
+    readonly List<GameObject> deckCards = new();
+
     // Logical table state, built after dealing; cards on screen mirror it.
     TableState table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
+    int pathCount;
+    bool allKingsLogged;
+
+    public CardDatabase DeckDatabase => deckDatabase;
+
+    public ExcessCards Excess => excessCards;
 
     void Start() => SetupTableAsync(destroyCancellationToken).Forget();
 
@@ -62,27 +68,27 @@ public class TableDeckManager : MonoBehaviour
         }
 
         GameManager.isClickBlocked = true;
-        cardDatabase = deckDatabase.Cards.ToList();
-        cardDatabaseInGame = deckDatabase.CreateCardsInGame();
-        iQuattroRe = cardDatabaseInGame.Where(c => c.cardData.valore == KingValue).ToList();
-        altreCarte = cardDatabaseInGame.Where(c => c.cardData.valore != KingValue).ToList();
-        if (iQuattroRe.Count != KingCount)
+        int gameSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
+        DeckDeal deal = DeckBuilder.Build(
+            deckDatabase.CreateCardsInGame(),
+            deckPreset.RemovedCards,
+            deckPreset.Duplicates,
+            new System.Random(gameSeed)
+        );
+        bool excessToBench = excessCards == ExcessCards.Bench;
+        List<CardDataInGame> benchCards = excessToBench ? deal.Excess.ToList() : new();
+
+        pathCount = 0;
+        allKingsLogged = false;
+        if (gameLog != null)
         {
-            throw new System.InvalidOperationException(
-                $"{deckDatabase.name} has {iQuattroRe.Count} kings, expected {KingCount}"
-            );
+            gameLog.Clear();
         }
-        shuffledCardDatabaseInGame.Clear();
-        deckCards.Clear();
-        benchCards.Clear();
-        shuffledCardDatabaseInGame.AddRange(altreCarte);
-        AddDoppioni();
-        ShuffleDeck();
-        AddRe();
-        ShuffleDeck();
-        RenderDeck();
-        await MoveCards(cancellationToken);
-        BuildTable();
+        Log(GameLogFormatter.FormatDeal(deckPreset.name, gameSeed, deal, excessToBench));
+
+        RenderDeck(deal.TableSlots, benchCards);
+        await MoveCards(deal.TableSlots, cancellationToken);
+        table = new TableState(deal.TableSlots, benchCards);
         GameManager.isClickBlocked = false;
     }
 
@@ -105,17 +111,6 @@ public class TableDeckManager : MonoBehaviour
     public static Vector3 SlotPosition(int slot) =>
         new(-5 + (1.2f * (slot % 10)), 0.25f, 4.5f - (1.5f * (slot / 10)));
 
-    void BuildTable()
-    {
-        cardViews.Clear();
-        foreach (GameObject card in deckCards)
-        {
-            CardDisplay3D view = card.GetComponent<CardDisplay3D>();
-            cardViews.Add(view.cardData, view);
-        }
-        table = new TableState(shuffledCardDatabaseInGame, benchCards);
-    }
-
     // Plays the path starting from a clicked card: the table computes the moves, the scene animates them.
     public async UniTask PlayPath(CardDisplay3D clickedCard)
     {
@@ -126,6 +121,15 @@ public class TableDeckManager : MonoBehaviour
         }
 
         List<PathMove> moves = table.PlayPath(startSlot);
+        pathCount++;
+        int faceUpKings = table.FaceUpKings;
+        Log(GameLogFormatter.FormatPath(pathCount, startSlot, moves, faceUpKings));
+        if (!allKingsLogged && faceUpKings == DeckRules.KingCount)
+        {
+            allKingsLogged = true;
+            Log(GameLogFormatter.FormatAllKings(pathCount));
+        }
+
         CancellationToken cancellationToken = destroyCancellationToken;
         for (int i = 0; i < moves.Count; i++)
         {
@@ -137,7 +141,7 @@ public class TableDeckManager : MonoBehaviour
                 // From the panchina pile to the hole, face down.
                 await TableCardAnimations
                     .MoveAnimation(card.gameObject, target, pathMoveDuration)
-                    .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+                    .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             }
             else
             {
@@ -147,7 +151,7 @@ public class TableDeckManager : MonoBehaviour
                 card.isFlipped = true;
                 await TableCardAnimations
                     .PathMoveAnimation(card, displaced, target, i == 0, pathMoveDuration)
-                    .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+                    .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             }
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
         }
@@ -158,46 +162,24 @@ public class TableDeckManager : MonoBehaviour
         return deckPosition.GetChild(0).GetChild(index);
     }
 
-    // The table always has the 4 kings: they are added after the cut. The cards in excess (non-kings only, duplicates
-    // included) go to the bench, or are discarded (ExcessCards).
-    private void AddRe()
+    void Log(string entry)
     {
-        int tableCards = DECK_LIMIT - iQuattroRe.Count;
-        if (excessCards == ExcessCards.Bench)
+        Debug.Log(entry);
+        if (gameLog != null)
         {
-            benchCards.AddRange(shuffledCardDatabaseInGame.Skip(tableCards));
-        }
-        shuffledCardDatabaseInGame = shuffledCardDatabaseInGame.Take(tableCards).ToList();
-        shuffledCardDatabaseInGame.AddRange(iQuattroRe);
-    }
-
-    private void AddDoppioni()
-    {
-        for (int i = 0; i < duplicateCount; i++)
-        {
-            // Duplicates of non-king cards only. A new instance: on the table every card, duplicates included, is a
-            // distinct object.
-            shuffledCardDatabaseInGame.Add(
-                new CardDataInGame(altreCarte[i].cardData, altreCarte[i].index)
-            );
+            gameLog.Append(entry);
         }
     }
 
-    void ShuffleDeck()
+    // One pile: the table cards on top, in slot order, the panchina below them.
+    void RenderDeck(IReadOnlyList<CardDataInGame> tableSlots, List<CardDataInGame> benchCards)
     {
-        for (int i = 0; i < shuffledCardDatabaseInGame.Count; i++)
-        {
-            CardDataInGame temp = shuffledCardDatabaseInGame[i];
-            int randomIndex = Random.Range(i, shuffledCardDatabaseInGame.Count);
-            shuffledCardDatabaseInGame[i] = shuffledCardDatabaseInGame[randomIndex];
-            shuffledCardDatabaseInGame[randomIndex] = temp;
-        }
-    }
-
-    // One pile: the table cards on top (deckCards[i] goes to slot i), the panchina below them.
-    void RenderDeck()
-    {
-        List<CardDataInGame> pile = shuffledCardDatabaseInGame.Concat(benchCards).ToList();
+        deckCards.Clear();
+        cardViews.Clear();
+        List<CardDataInGame> pile = tableSlots
+            .Where(card => card != null)
+            .Concat(benchCards)
+            .ToList();
         for (int i = 0; i < pile.Count; i++)
         {
             GameObject nuovaCarta = Instantiate(
@@ -206,21 +188,31 @@ public class TableDeckManager : MonoBehaviour
                 Quaternion.identity,
                 deckPosition
             );
-            nuovaCarta.GetComponent<CardDisplay3D>().Setup(pile[i]);
-            nuovaCarta.name = nuovaCarta.GetComponent<CardDisplay3D>().cardData.cardData.nome;
+            CardDisplay3D view = nuovaCarta.GetComponent<CardDisplay3D>();
+            view.Setup(pile[i]);
+            nuovaCarta.name = pile[i].cardData.nome;
             deckCards.Add(nuovaCarta);
+            cardViews.Add(pile[i], view);
         }
     }
 
-    async UniTask MoveCards(CancellationToken cancellationToken)
+    // Deals the table cards to their slots; holes get no card.
+    async UniTask MoveCards(
+        IReadOnlyList<CardDataInGame> tableSlots,
+        CancellationToken cancellationToken
+    )
     {
-        for (int i = 0; i < DECK_LIMIT; i++)
+        for (int slot = 0; slot < tableSlots.Count; slot++)
         {
-            Vector3 cardPosition = SlotPosition(i);
+            if (tableSlots[slot] == null)
+            {
+                continue;
+            }
+            GameObject card = cardViews[tableSlots[slot]].gameObject;
             await TableCardAnimations
-                .MoveAnimation(deckCards[i], cardPosition, dealMoveDuration)
-                .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
-            deckCards[i].transform.SetParent(GetSlotByIndex(i));
+                .MoveAnimation(card, SlotPosition(slot), dealMoveDuration)
+                .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
+            card.transform.SetParent(GetSlotByIndex(slot));
         }
     }
 }
