@@ -4,6 +4,9 @@ aggiornato: 2026-10-16
 verificato: 2026-10-16
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/build/2026-10-16-sistemazione.md
+  - raw/compiled/build/2026-10-16-comando-build.md
+  - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/demo-1/2026-10-16-build.md
   - raw/compiled/demo-1/2026-10-16-opzioni.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
@@ -95,8 +98,13 @@ TextMeshPro's dynamic fallback font (`Assets/TextMesh Pro/Resources/Fonts & Mate
 
 ## Build
 
-Windows build (Standalone, 64 bit) tried on 2026-10-16 from the Editor (`BuildPipeline.BuildPlayer`), output in `Builds/` (git-ignored): it builds and runs with no errors or warnings. Known points (detail in `docs/raw/compiled/demo-1/2026-10-16-build.md`, to study in a build feature):
+Windows build (Standalone, 64 bit) from the menu **`Tools/Build Windows`** ([WindowsBuilder](./shared.md#windowsbuilder)): the scenes enabled in the Build Settings, in `Builds/Windows/KingBar.exe` (git-ignored). `/close` runs it before every PR ([Definition of done](../progetto/definition-of-done.md)). Last known size: **145 MB**, 0 errors, 0 warnings (2026-10-16): about 80 MB is the Unity runtime and the managed DLLs (`UnityPlayer.dll`, `Managed/` with Odin, `MonoBleedingEdge`), about 41 MB textures. Use the menu item, not *File > Build*: only the menu item saves the Player Settings after the build (see below).
 
-- size about 331 MB, almost all textures: the 40 card fronts (`Assets/Images/Cards/Fronte/`, about 4.4 MB each, full resolution and uncompressed) and the three 4K table textures (`Assets/Images/textures/gingham_check_*`);
-- a build rewrites `Assets/Settings/Universal Render Pipeline Asset.asset`, `Assets/UniversalRenderPipelineGlobalSettings.asset`, `ProjectSettings/ProjectSettings.asset` and `ProjectSettings/UnityConnectSettings.asset` (Unity services turned on): check `git status` after a build and do not commit them by accident;
-- Company in the Player Settings is still `DefaultCompany`: `Player.log` and the CSV of a build go to `AppData\LocalLow\DefaultCompany\King Bar\`.
+- **Textures**: BC compression needs sides that are multiples of 4; otherwise Unity falls back to an uncompressed format, even with compression on in the import settings. A jump of several MB in the build size is usually this.
+  - card fronts (`Assets/Images/Cards/Fronte/`, 960x1586): max size 1024, high quality compression, so 620x1024 BC7 (about 0.6 MB). They stay Sprites ([CardData](./shared.md#carddata) `immagineFronte`);
+  - `gingham_check_nor_gl_4k.exr` (base map of `Mat_Tavolo`, imported as Default), `gingham_check_rough_4k.exr` (bump of `Mat_Tavolo`), `gingham_check_disp_4k.png` (bump of `Mat_Carta_Retro`): NPOT scale "to nearest", max size 2048, so 2048x2048 compressed with mipmaps. The other five `gingham_check_*` are not used and are not in the build;
+  - card back `Assets/Images/Cards/Carte_Napoletane_retro.jpg` (330x525): small, left uncompressed.
+- **Settings written by a build**: committed as the build writes them, so a build leaves `git status` clean: URP shader prefiltering (`Assets/Settings/Universal Render Pipeline Asset.asset`), URP runtime settings (`Assets/UniversalRenderPipelineGlobalSettings.asset`), Standalone batching (`ProjectSettings/ProjectSettings.asset`), `m_Enabled: 1` in `ProjectSettings/UnityConnectSettings.asset` (the project is linked to a Unity cloud project and the Editor turns it back on; Analytics, Ads, Purchasing and Performance reporting stay off).
+- **Input System preloaded actions**: when a build starts the Input System adds its project-wide actions (`Assets/InputSystem_Actions.inputactions`) to `preloadedAssets` and saves the Player Settings; when it ends it removes them in memory only. The committed state is the clean one (`preloadedAssets: []`), and `Tools/Build Windows` saves the assets after the build to write it back.
+- Company in the Player Settings is still `DefaultCompany`, kept for now: `Player.log` and the CSV of a build go to `AppData\LocalLow\DefaultCompany\King Bar\`.
+- Not done: IL2CPP and code stripping, which would reduce the runtime part of the size.

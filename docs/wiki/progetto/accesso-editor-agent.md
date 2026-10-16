@@ -1,9 +1,12 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-15
+aggiornato: 2026-10-16
 verificato: 2026-10-15
+consolidato: 2026-10-16
 fonti:
+  - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
+  - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/panchina-continue/2026-10-15-implementazione.md
   - raw/compiled/card-generator/2026-10-11-modifiche-editor.md
   - raw/compiled/unity-mcp/2026-10-15-obiettivo.md
@@ -23,6 +26,7 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 - **Regola** (`AGENTS.md`, *Writing code*): le modifiche a scene, prefab e ScriptableObject passano da `unity-mcp` (`Unity_RunCommand`), **mai** dallo YAML a mano.
   - Le modifiche all'Editor di una feature si elencano a parte rispetto al codice; l'agent le esegue **solo dopo la conferma** dell'utente. Leggere e verificare (Console, catture, gerarchia) non richiede conferma.
   - Dopo una modifica l'agent salva scena o prefab dall'Editor e legge la Console; dopo modifiche al codice controlla da solo la compilazione.
+  - **Niente di non salvato**: alla fine di una sessione di lavoro sull'Editor, e prima dei controlli di `/close`, l'agent salva tutto (`EditorSceneManager.SaveOpenScenes()`, `AssetDatabase.SaveAssets()`) e guarda `git status`, invece di fidarsi dell'asterisco: Unity segna spesso una scena modificata senza cambiarla. Un file che cambia davvero e che l'agent non voleva toccare va mostrato all'utente, mai committato alla cieca.
   - MCP non collegato: l'agent chiede di aprire l'Editor, non ripiega sullo YAML.
   - I comandi `Unity_RunCommand` sono usa e getta, non si committano; le operazioni ripetibili (generatori di asset) restano voci di menu in `Editor/`, che l'agent lancia via MCP.
   - Project Settings protetti, pacchetti e `Assets/Plugins/`: si chiede prima.
@@ -41,7 +45,8 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 - Warning innocui in Console a ogni connessione: "Failed to collect Windows signature" per `claude.exe`.
 - `Unity_RunCommand` segnala le API deprecate di Unity 6.4 (es. `GetInstanceID()` → `GetEntityId()`, `FindFirstObjectByType` → `FindAnyObjectByType`).
 - Prova del 2026-10-15: proposta della modifica, conferma, esecuzione, salvataggio e verifica dell'utente nell'Editor funzionano.
-- **Play mode**: l'agent ci entra con `EditorApplication.isPlaying = true` via `Unity_RunCommand`; durante il domain reload il server non risponde per qualche secondo ("Unity not detected"), poi torna. In Play può leggere lo stato del gioco, la Console e catturare la camera; giocare e giudicare il gameplay resta all'utente.
+- **Play mode**: l'agent ci entra con `EditorApplication.isPlaying = true` via `Unity_RunCommand`; durante il domain reload il server non risponde per qualche secondo ("Unity not detected"), poi torna. In Play può leggere lo stato del gioco, la Console e catturare la camera; giocare e giudicare il gameplay resta all'utente. Con l'Editor non a fuoco il Play non avanza (fermo al frame 1): `Application.runInBackground = true` a runtime, durante la sessione, lo fa girare senza toccare i Player Settings.
+- **Comando in sospeso a lungo**: di solito una finestra di dialogo si è aperta nell'Editor e aspetta un clic dell'utente. Non si riprova: si chiede all'utente cosa dice. Meglio non lanciare comandi Unity in parallelo a operazioni git su file serializzati da Unity, e tenere build e salvataggi in comandi separati.
 
 ## Perché
 
