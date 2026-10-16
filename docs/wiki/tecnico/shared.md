@@ -4,6 +4,7 @@ aggiornato: 2026-10-16
 verificato: 2026-10-16
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/index40/2026-10-16-regole.md
   - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
   - raw/compiled/tribuna/2026-10-15-obiettivo.md
@@ -16,7 +17,7 @@ fonti:
 
 # Shared scripts
 
-Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator (editor only), the 3D card, the first POC (plain 4-kings solitaire) and small helpers. Despite the folder name, `DeckManager3D`, `CardController` and `CardAnimations` are the **first POC**, used only by `SampleScene` and `ScenaIndex40` (see [scenes](./scenes.md)); the Panchina and Tribuna scenes use their copies in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
+Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator (editor only), the 3D card, the first POC (plain 4-kings solitaire) and small helpers. Despite the folder name, `DeckManager3D`, `CardController` and `CardAnimations` are the **first POC**, used only by `SampleScene` (see [scenes](./scenes.md)); the Panchina, Tribuna and Index40 scenes use their copies in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
 
 | Class | Path | Kind |
 |---|---|---|
@@ -85,7 +86,7 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 
 - **Serialized fields**: `cardPrefab` (the `3DCard` prefab), `deckPosition` (Transform of the pile), `deckDatabase` ([CardDatabase](#carddatabase); if left empty, `Start` throws).
 - **Static state**: `cardDatabase`, `cardDatabaseInGame`, `shuffledCardDatabaseInGame` (the same list object as `cardDatabaseInGame`, shuffled in place), `deckCards` (instantiated cards, in grid order). The first two are rebuilt from `deckDatabase` at every `Start`; `deckCards` is never cleared: safe only because Play mode reloads the domain (see [scenes](./scenes.md#project-settings)).
-- **Scenes**: `Assets/Scenes/SampleScene.unity`, `Assets/Scenes/ScenaIndex40.unity`.
+- **Scenes**: `Assets/Scenes/SampleScene.unity`.
 - **Used by**: [CardController](#cardcontroller) and [CardAnimations](#cardanimations) read `deckCards`.
 
 ## CardAnimations

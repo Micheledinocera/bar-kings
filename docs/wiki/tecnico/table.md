@@ -4,6 +4,8 @@ aggiornato: 2026-10-16
 verificato: 2026-10-16
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/index40/2026-10-16-regole.md
+  - raw/compiled/index40/2026-10-16-obiettivo.md
   - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/stats/2026-10-15-task.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
@@ -21,7 +23,7 @@ fonti:
 
 # Table scripts
 
-Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Panchina.unity` and `Assets/Scenes/ScenaTribuna.unity`: the POCs of the **panchina** and **tribuna** ideas of [Modifica del mazzo](../business/modifica-del-mazzo.md) (decision in analysis). One code for both scenes: the only difference is `TableDeckManager.excessCards` (`Bench` for the panchina, `Discard` for the tribuna). `TableDeckManager`, `TableCardController` and `TableCardAnimations` started as **copies** of the first-POC [shared](./shared.md) classes (`DeckManager3D`, `CardController`, `CardAnimations`, still used by `SampleScene` and `ScenaIndex40`); the shared [CardData](./shared.md#carddata), [CardDatabase](./shared.md#carddatabase), [CardDataInGame](./shared.md#carddataingame), [CardDisplay3D](./shared.md#carddisplay3d) and [GameManager](./shared.md#gamemanager) are reused. Issues: [known-issues](./known-issues.md).
+Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Panchina.unity`, `Assets/Scenes/ScenaTribuna.unity` and `Assets/Scenes/ScenaIndex40.unity`: the POCs of the **panchina**, **tribuna** and **index>40** ideas of [Modifica del mazzo](../business/modifica-del-mazzo.md) (decision in analysis). One code for the three scenes: they differ in `TableDeckManager.excessCards` ([ExcessCards](./deck.md#excesscards): `Bench`, `Discard`, `Index`), the preset, and in ScenaIndex40 the 80 slots and the camera. `TableDeckManager`, `TableCardController` and `TableCardAnimations` started as **copies** of the first-POC [shared](./shared.md) classes (`DeckManager3D`, `CardController`, `CardAnimations`, still used by `SampleScene`); the shared [CardData](./shared.md#carddata), [CardDatabase](./shared.md#carddatabase), [CardDataInGame](./shared.md#carddataingame), [CardDisplay3D](./shared.md#carddisplay3d) and [GameManager](./shared.md#gamemanager) are reused. Issues: [known-issues](./known-issues.md).
 
 | Class | Path | Copy of |
 |---|---|---|
@@ -34,7 +36,7 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 
 ## TableState
 
-`Assets/Scripts/Shared/Table/TableState.cs`. Plain C# **logical state of the table** (no MonoBehaviour, no DOTween): for each of the 40 slots a stack of [CardDataInGame](./shared.md#carddataingame) (duplicates end up one on top of the other; an empty slot is a **hole**) and whether it is face up, plus the **bench** (panchina): a queue of the cards beyond the table, empty in the tribuna. The scene mirrors it; rules read it, never the hierarchy.
+`Assets/Scripts/Shared/Table/TableState.cs`. Plain C# **logical state of the table** (no MonoBehaviour, no DOTween): for each slot (40, up to 80 in index>40) a stack of [CardDataInGame](./shared.md#carddataingame) (duplicates end up one on top of the other; an empty slot is a **hole**) and whether it is face up, plus the **bench** (panchina): a queue of the cards beyond the table, empty in the tribuna and in index>40. The scene mirrors it; rules read it, never the hierarchy.
 
 - Built by [TableDeckManager](#tabledeckmanager) after dealing, from the dealt cards (slot `i` holds the card dealt there, face down; `null` leaves it a hole, for decks under 40 cards) and the bench cards (drawn in order).
 - `GetCard(slot)` (top card, null for a hole), `StackSize`, `IsHole`, `IsFaceUp`, `SlotOf(card)` (by reference: duplicates are distinct instances; bench cards are not found), `BenchCount`, `FaceUpKings` (kings in face-up slots; a king is never covered, kings have no duplicates).
@@ -52,22 +54,22 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 `Assets/Scripts/Shared/Table/TableDeckManager.cs`. Game setup and view of the Panchina and Tribuna scenes. In `Start`:
 
 1. sets the singleton `instance`, blocks clicks, draws the game seed (`seed`, or a random one when 0);
-2. builds the deck with [DeckBuilder](./deck.md#deckbuilder) from `deckDatabase` ([CardDatabase](./shared.md#carddatabase)) and `deckPreset` ([DeckPreset](./deck.md#deckpreset)): 40 table slots with the 4 kings, holes when the deck is under 40 cards. The excess follows `excessCards`: `Bench` → the **bench**; `Discard` → thrown away, never instantiated. Duplicates and missing cards on the table are **intended test cases**;
+2. builds the deck with `DeckBuilder.Build(excessCards, …)` ([DeckBuilder](./deck.md#deckbuilder)) from `deckDatabase` ([CardDatabase](./shared.md#carddatabase)) and `deckPreset` ([DeckPreset](./deck.md#deckpreset)). `Bench` and `Discard`: 40 table slots with the 4 kings, holes in the last slots when the deck is under 40 cards; the excess goes to the **bench** (`Bench`) or is thrown away, never instantiated (`Discard`). `Index`: one slot per card index (40 + duplicates), holes at the indices of the removed cards, no excess. Duplicates and missing cards on the table are **intended test cases**;
 3. clears the [game log](./stats.md#gamelogview) and logs the deal ([GameLogFormatter](./stats.md#gamelogformatter): preset, seed, removed cards, duplicates) in the Console and on screen;
-4. instantiates `cardPrefab` as one pile at `deckPosition`, table cards on top and bench below, with a map card → `CardDisplay3D`; deals every table card to `SlotPosition(slot)`, each a child of its slot (holes get none); the bench cards stay face down in the pile;
+4. shows the slots of the deal and hides the others (`ShowSlots`: ScenaIndex40 has 80, a smaller deck uses fewer); instantiates `cardPrefab` as one pile at `deckPosition`, table cards on top and bench below, with a map card → `CardDisplay3D`; deals every table card to `SlotPosition(slot)`, each a child of its slot (holes get none); the bench cards stay face down in the pile;
 5. builds the [TableState](#tablestate) from the table slots and bench cards, unblocks clicks.
 
 `Start` runs these steps as an `async UniTaskVoid` with `.Forget()`; dealing (`MoveCards`, `UniTask`) is cancelled by `destroyCancellationToken` (`TweenCancelBehaviour.KillAndCancelAwait`: the await stops, no destroyed card is touched), and a cancellation is not logged as an error.
 
-- `ExcessCards` (nested enum): `Bench` (panchina), `Discard` (tribuna). Read by [TableSimulationRunner](./stats.md#tablesimulationrunner) through `Excess`, with `DeckDatabase`.
+- `Excess` ([ExcessCards](./deck.md#excesscards)) and `DeckDatabase`: read by [TableSimulationRunner](./stats.md#tablesimulationrunner).
 - `PlayPath(clickedCard)` (`UniTask`): ignores face-up cards and the bench pile; asks the table for the moves, logs the path (length, cards, kings face up; once all 4 kings are face up, a line with the path number), then animates the moves one by one with [TableCardAnimations](#tablecardanimations) (`PathMoveAnimation`; a card on a duplicate is raised by `StackOffset` per card below it; a bench card uses `MoveAnimation`, face down, from the pile to the hole) and re-parents each moved card to its slot, so the hierarchy follows the table. Cancelled by the manager's `destroyCancellationToken`.
-- `ResetTable()`: called by the `ResetButton` of each scene ([scenes](./scenes.md#panchina-and-scenatribuna)); destroys every card and runs the setup again (new seed when `seed` is 0), without leaving Play mode. Ignored while clicks are blocked (dealing or a path running), so no card is destroyed mid-animation.
-- `SlotPosition(slot)` (static): grid position of a slot, 4 rows of 10.
-- **Serialized fields**: `cardPrefab` (`Assets/Prefab/3DCardTable.prefab`), `deckPosition` (its child 0 must be the slot container, see [scenes](./scenes.md#panchina-and-scenatribuna)), `deckDatabase` (`Assets/Instances/CardDatabase.asset`), `deckPreset` (`Preset45` in both scenes), `seed` (0 = random; set it to the seed of a log or CSV row to replay that deal), `excessCards` (`Bench` in Panchina, `Discard` in ScenaTribuna), `gameLog` (optional, the `GameLog` panel), `dealMoveDuration` (seconds per card when dealing, default 0.1), `pathMoveDuration` (seconds per flip or move in a path, default 0.5; 0.05 in both scenes). In the Panchina scene YAML the component still has the old class identifier `DeckManager3DTest`.
+- `ResetTable()`: called by the `ResetButton` of each scene ([scenes](./scenes.md#panchina-scenatribuna-and-scenaindex40)); destroys every card and runs the setup again (new seed when `seed` is 0), without leaving Play mode. Ignored while clicks are blocked (dealing or a path running), so no card is destroyed mid-animation.
+- `SlotPosition(slot)` (static): grid position of a slot, rows of `DeckRules.SlotsPerRow` (10): 4 rows, up to 8 in index>40.
+- **Serialized fields**: `cardPrefab` (`Assets/Prefab/3DCardTable.prefab`), `deckPosition` (its child 0 must be the slot container, see [scenes](./scenes.md#panchina-scenatribuna-and-scenaindex40)), `deckDatabase` (`Assets/Instances/CardDatabase.asset`), `deckPreset` (`Preset32` in Panchina, `Preset71` in ScenaTribuna, `Preset45` in ScenaIndex40), `seed` (0 = random; set it to the seed of a log or CSV row to replay that deal), `excessCards` (`Bench` in Panchina, `Discard` in ScenaTribuna, `Index` in ScenaIndex40), `gameLog` (optional, the `GameLog` panel), `dealMoveDuration` (seconds per card when dealing, default 0.1), `pathMoveDuration` (seconds per flip or move in a path, default 0.5; 0.05 in the three scenes). In the Panchina scene YAML the component still has the old class identifier `DeckManager3DTest`.
 - `GetSlotByIndex(index)`: `deckPosition.GetChild(0).GetChild(index)`, the slot Transform by child order; used only to parent cards, not to read the state.
 - **Static state**: only `instance`; the card lists are instance fields. A script recompile during Play nulls `instance`: clicks then throw until Play is restarted.
 - **Constants**: deck and table numbers in [DeckRules](./deck.md#deckrules), `StackOffset`; the grid layout in `SlotPosition` is still literal numbers.
-- **Used by**: [TableCardController](#tablecardcontroller) (`instance.PlayPath`), the `ResetButton` of both scenes (`ResetTable`, persistent `OnClick`), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`tableDeckManager`).
+- **Used by**: [TableCardController](#tablecardcontroller) (`instance.PlayPath`), the `ResetButton` of the three scenes (`ResetTable`, persistent `OnClick`), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`tableDeckManager`).
 
 ## TableCardController
 
@@ -85,8 +87,8 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 
 ## CardSlot
 
-`Assets/Scripts/Shared/Table/CardSlot.cs`. `int index` on each of the 40 slots (`Assets/Prefab/CardSlot.prefab` instances in both scenes; the component is on the instances, not on the prefab). **Never read by the code**: slots are found by child order. The scene values are not in child order, by choice (test data); ScenaTribuna's slots are a copy of Panchina's.
+`Assets/Scripts/Shared/Table/CardSlot.cs`. `int index` on each of the 40 slots of Panchina and ScenaTribuna (`Assets/Prefab/CardSlot.prefab` instances; the component is on the instances, not on the prefab). **Never read by the code**: slots are found by child order. The scene values are not in child order, by choice (test data); ScenaTribuna's slots are a copy of Panchina's. ScenaIndex40's 80 slot instances have no `CardSlot` component.
 
 ## CardSlotContainer
 
-`Assets/Scripts/Shared/Table/CardSlotContainer.cs`. `List<GameObject> CardSlotList` on the slot container of both scenes. **Never read by the code.**
+`Assets/Scripts/Shared/Table/CardSlotContainer.cs`. `List<GameObject> CardSlotList` on the slot container of Panchina and ScenaTribuna (not in ScenaIndex40). **Never read by the code.**

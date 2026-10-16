@@ -4,6 +4,7 @@ aggiornato: 2026-10-16
 verificato: 2026-10-16
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/index40/2026-10-16-regole.md
   - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
   - raw/compiled/tribuna/2026-10-15-obiettivo.md
@@ -31,9 +32,9 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 ## Block B — Shared / Panchina duplication
 
-- `duplicate` — `DeckManager3D`, `CardController`, `CardAnimations` (first POC) copied into `Assets/Scripts/Shared/Table/` as `TableDeckManager`, `TableCardController`, `TableCardAnimations`; panchina and tribuna share the copies, the first POC remains for `SampleScene` and `ScenaIndex40`. [table](./table.md)
+- `duplicate` — `DeckManager3D`, `CardController`, `CardAnimations` (first POC) copied into `Assets/Scripts/Shared/Table/` as `TableDeckManager`, `TableCardController`, `TableCardAnimations`; panchina, tribuna and index>40 share the copies, the first POC remains for `SampleScene` only. [table](./table.md)
 - `duplicate` — `Assets/Prefab/3DCardTable.prefab` is a copy of `Assets/Prefab/3DCard.prefab`, not a Prefab Variant. [scenes](./scenes.md#prefabs)
-- `debt` — `Assets/Scripts/Shared/` holds the first POC (`DeckManager3D`, `CardController`, `CardAnimations`), used only by the twin scenes. [shared](./shared.md)
+- `debt` — `Assets/Scripts/Shared/` holds the first POC (`DeckManager3D`, `CardController`, `CardAnimations`), used only by `SampleScene`: candidate for removal with it. [shared](./shared.md)
 
 ## Block C — Game state in hierarchy and statics
 
