@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 // Logical state of the table (Panchina and Tribuna scenes): the cards in each slot (a stack: duplicates end up
 // one on top of the other) and whether the slot is face up. An empty slot is a hole. In the Panchina the cards
@@ -10,7 +11,8 @@ public class TableState
     readonly bool[] faceUp;
     readonly Queue<CardDataInGame> bench;
 
-    // dealtCards[i] is the card dealt to slot i, face down. benchCards are drawn in order to fill holes.
+    // dealtCards[i] is the card dealt to slot i, face down; null leaves slot i a hole (a deck smaller than the
+    // table). benchCards are drawn in order to fill holes.
     public TableState(
         IReadOnlyList<CardDataInGame> dealtCards,
         IEnumerable<CardDataInGame> benchCards
@@ -20,7 +22,11 @@ public class TableState
         faceUp = new bool[dealtCards.Count];
         for (int i = 0; i < dealtCards.Count; i++)
         {
-            stacks[i] = new List<CardDataInGame> { dealtCards[i] };
+            stacks[i] = new List<CardDataInGame>();
+            if (dealtCards[i] != null)
+            {
+                stacks[i].Add(dealtCards[i]);
+            }
         }
         bench = new Queue<CardDataInGame>(benchCards);
     }
@@ -37,6 +43,23 @@ public class TableState
     public bool IsHole(int slot) => stacks[slot].Count == 0;
 
     public bool IsFaceUp(int slot) => faceUp[slot];
+
+    // Kings in face-up slots. A king is never covered: kings have no duplicates, so nothing stacks on them.
+    public int FaceUpKings
+    {
+        get
+        {
+            int kings = 0;
+            for (int i = 0; i < stacks.Length; i++)
+            {
+                if (faceUp[i])
+                {
+                    kings += stacks[i].Count(card => card.cardData.valore == DeckRules.KingValue);
+                }
+            }
+            return kings;
+        }
+    }
 
     // Slot of a card, wherever it is in its stack. Duplicates are distinct CardDataInGame instances, so the
     // reference identifies one card on the table.

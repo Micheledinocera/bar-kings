@@ -47,11 +47,11 @@ public static class CardAnimations
             .transform.DOMoveY(startingCard.transform.position.y + alzata, duration / 3)
             .SetEase(Ease.OutQuad)
             .SetLink(startingCard)
-            .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+            .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
         while (tempEndingCardIndex != firstCardIndex)
         {
             await MoveCardsAtom(tempStartingCard, tempEndingCard)
-                .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+                .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             tempStartingCard = tempEndingCard;
             tempEndingCard = DeckManager3D.deckCards[tempEndingCardIndex];
             tempEndingCardIndex = tempEndingCard.GetComponent<CardDisplay3D>().cardData.index;
@@ -60,12 +60,12 @@ public static class CardAnimations
             .transform.DORotate(new Vector3(0, 0, 180), duration, RotateMode.WorldAxisAdd)
             .SetEase(Ease.InOutBack)
             .SetLink(tempStartingCard)
-            .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+            .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
         await tempStartingCard
             .transform.DOMove(startingPosition, duration)
             .SetEase(Ease.InOutBack)
             .SetLink(tempStartingCard)
-            .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+            .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
     }
 
     public static Sequence MoveCardsAtom(

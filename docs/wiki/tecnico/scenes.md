@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-15
-verificato: 2026-10-15
-consolidato: 2026-10-11
+aggiornato: 2026-10-16
+verificato: 2026-10-16
+consolidato: 2026-10-16
 fonti:
+  - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
   - raw/compiled/tribuna/2026-10-15-obiettivo.md
   - raw/compiled/panchina-reprise/2026-10-15-implementazione.md
@@ -19,7 +20,7 @@ fonti:
 
 # Scenes, prefabs and data assets
 
-Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md).
+Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/`, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md).
 
 The three scenes of the [deck modification ideas](../business/modifica-del-mazzo.md) (`Panchina`, `ScenaTribuna`, `ScenaIndex40`) are **temporary**: they let each idea be explored without breaking the previous version. When one idea is chosen, the other scenes and the code only they use are deleted.
 
@@ -38,12 +39,15 @@ All four scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.
 
 ## Panchina and ScenaTribuna
 
-Same structure, same [table scripts](./table.md); they differ only in `TableDeckManager.excessCards` (`Bench` in Panchina, `Discard` in ScenaTribuna). ScenaTribuna's slots, UI and EventSystem were copied from Panchina. Main GameObjects:
+Same structure, same [table scripts](./table.md); they differ only in `TableDeckManager.excessCards` (`Bench` in Panchina, `Discard` in ScenaTribuna). Both deal `Preset45` ([DeckPreset](./deck.md#deckpreset)) with a random seed and use `pathMoveDuration` 0.05. ScenaTribuna's slots, UI and EventSystem were copied from Panchina. Main GameObjects:
 
 - `Tavolo`: the table;
 - `SlotContainer`: [CardSlotContainer](./table.md#cardslotcontainer) with 40 instances of `Assets/Prefab/CardSlot.prefab` ([CardSlot](./table.md#cardslot)); must be child 0 of the deck manager's `deckPosition` (`CardsContainer`), with the slots in grid order, because [TableDeckManager](./table.md#tabledeckmanager) finds the slot Transforms by child index to parent the cards (the table state itself is in [TableState](./table.md#tablestate));
 - `CardsContainer`, `GameManager` (with [GameManager](./shared.md#gamemanager) and [TableDeckManager](./table.md#tabledeckmanager)), `Main Camera`, `Directional Light`; many GameObjects have no name;
-- `UI`: Canvas (Screen Space Overlay, scaled with screen size) with `ResetButton` (TextMeshPro text "Reset", top right), whose persistent `OnClick` calls `TableDeckManager.ResetTable` on the scene's own `GameManager` ([TableDeckManager](./table.md#tabledeckmanager));
+- `UI`: Canvas (Screen Space Overlay, scaled with screen size) with:
+  - `GameLog` (instance of `Assets/Prefab/GameLog.prefab`, left side): the game log, assigned to `TableDeckManager.gameLog`;
+  - `ResetButton` (TextMeshPro text "Reset", top right), whose persistent `OnClick` calls `TableDeckManager.ResetTable` on the scene's own `GameManager` ([TableDeckManager](./table.md#tabledeckmanager));
+  - `SimulationButton` (instance of `Assets/Prefab/SimulationButton.prefab`, under the Reset button), with the scene's `TableDeckManager` and `GameLog` as overrides of its [TableSimulationRunner](./stats.md#tablesimulationrunner);
 - `EventSystem` with `InputSystemUIInputModule` (the Input System UI module, the only input handler enabled).
 
 ## Prefabs
@@ -51,12 +55,16 @@ Same structure, same [table scripts](./table.md); they differ only in `TableDeck
 - `Assets/Prefab/3DCard.prefab`: root with [CardDisplay3D](./shared.md#carddisplay3d) and [CardController](./shared.md#cardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`).
 - `Assets/Prefab/3DCardTable.prefab` (was `3DCardPanchina`): a **copy** of `3DCard` (not a Prefab Variant) with [TableCardController](./table.md#tablecardcontroller) instead of `CardController`; used by Panchina and ScenaTribuna.
 - `Assets/Prefab/CardSlot.prefab`: `CardSlot` root with a `Cube` child (`Mat_Card_Slot`).
+- `Assets/Prefab/GameLog.prefab`: scrollable panel (`ScrollRect`, `Viewport` with `RectMask2D`, `Content` with a TMP `Text`, vertical `Scrollbar`) anchored to the left of the Canvas, 520 px wide, with [GameLogView](./stats.md#gamelogview).
+- `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the four presets; `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
 
 ## Card assets
 
 `Assets/Instances/Cards/<valore>_<Seme>.asset`: the 40 [CardData](./shared.md#carddata), fronts from `Assets/Images/Cards/Fronte/` (`01_…` to `40_…jpg`: Denari, Coppe, Spade, Bastoni; ace to ten each). Created only by the menu `Tools/Genera Carte Napoletane` ([CardGenerator](./shared.md#cardgenerator)), which skips existing ones; Play no longer touches them.
 
 `Assets/Instances/CardDatabase.asset`: the [CardDatabase](./shared.md#carddatabase) with the 40 cards in table order. Assigned to the `deckDatabase` field of the deck manager in **all four scenes**; a new scene with a deck manager needs it too.
+
+`Assets/Instances/DeckPresets/Preset32.asset`, `Preset45.asset`, `Preset60.asset`, `Preset80.asset`: the [DeckPreset](./deck.md#deckpreset) assets, created only by the menu `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)).
 
 ## Project settings
 
@@ -71,3 +79,5 @@ Settings the code depends on; change them only saying so (`AGENTS.md`).
 | Unity version | `6000.4.9f1` | `ProjectSettings/ProjectVersion.txt` | — |
 
 Line endings: LF everywhere, matching what Unity writes: `.gitattributes` (git), `.csharpierrc.json` (CSharpier, `endOfLine: lf`), `.editorconfig` (editors). Versioned, so valid for every clone; an older clone needs a one-time re-checkout (`CONTRIBUTING.md`).
+
+TextMeshPro's dynamic fallback font (`Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset`) is versioned, because the default `LiberationSans SDF` references it: it changes when a text shows characters missing from the atlas, so the code's texts stay ASCII ([GameLogFormatter](./stats.md#gamelogformatter)). Simulation output goes to `Simulations/` in the project root, git-ignored ([TableSimulationRunner](./stats.md#tablesimulationrunner)).

@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-15
-verificato: 2026-10-15
+aggiornato: 2026-10-16
+verificato: 2026-10-16
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
   - raw/compiled/tribuna/2026-10-15-obiettivo.md
   - raw/compiled/panchina-reprise/2026-10-15-implementazione.md
@@ -18,7 +19,7 @@ fonti:
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), E (async and animations) and G (path into a hole) are done; next cleanup and conventions (**F**; formatting is done), then a shared core (**B** + **C**, with **D** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), E (async and animations) and G (path into a hole) are done; next cleanup and conventions (**F**; formatting is done), then a shared core (**B** + **C**, with **D** inside it) before working on tribuna and index>40. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
@@ -26,6 +27,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 | [C — Game state in hierarchy and statics](#block-c--game-state-in-hierarchy-and-statics) | 4 | debt, dead-code | — |
 | [D — Input](#block-d--input) | 1 | debt | — |
 | [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 4 | dead-code, debt | — |
+| [H — Stats and simulation](#block-h--stats-and-simulation) | 2 | ux, duplicate | — |
 
 ## Block B — Shared / Panchina duplication
 
@@ -37,7 +39,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 - `debt` — Slot Transforms found by child order (`GetSlotByIndex`: `GetChild(0).GetChild(i)`); only used to parent cards, the table state is in [TableState](./table.md#tablestate). `Assets/Scripts/Shared/Table/TableDeckManager.cs` — [TableDeckManager](./table.md#tabledeckmanager)
 - `dead-code` — `CardSlot.index` and `CardSlotContainer.CardSlotList` never read. `Assets/Scripts/Shared/Table/CardSlot.cs`, `Assets/Scripts/Shared/Table/CardSlotContainer.cs` — [CardSlot](./table.md#cardslot)
-- `debt` — Public static lists, flag and singleton not reset on entering Play mode (Panchina clears its lists at every setup, the first POC never does); safe only while Play mode reloads the domain. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Shared/Table/TableDeckManager.cs`, `Assets/Scripts/Shared/GameManager.cs` — [scenes](./scenes.md#project-settings)
+- `debt` — Public static lists, flag and singletons not reset on entering Play mode (the first POC's lists are never cleared; the table scenes keep only the `TableDeckManager.instance` singleton); safe only while Play mode reloads the domain. `Assets/Scripts/Shared/Cards3D/DeckManager.cs`, `Assets/Scripts/Shared/Table/TableDeckManager.cs`, `Assets/Scripts/Shared/GameManager.cs` — [scenes](./scenes.md#project-settings)
 - `debt` — `GameManager` is a MonoBehaviour placed in every scene but holds only a static field. `Assets/Scripts/Shared/GameManager.cs` — [GameManager](./shared.md#gamemanager)
 
 ## Block D — Input
@@ -48,5 +50,10 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 - `dead-code` — `Assets/Scripts/ScriptProva.cs` (test script) and `Assets/Scripts/Shared/Camera/CameraOrbit.cs` (in no scene, legacy input) — [CameraOrbit](./shared.md#cameraorbit)
 - `debt` — File names differ from class names (`CardDisplay.cs` → `CardDisplay3D`, …); no warning in Unity. [shared](./shared.md)
-- `debt` — Magic numbers: grid layout of `SlotPosition` (deck size, king value and duplicates count are now constants or serialized). `Assets/Scripts/Shared/Table/TableDeckManager.cs` — [TableDeckManager](./table.md#tabledeckmanager)
+- `debt` — Magic numbers: grid layout of `SlotPosition` (deck and table numbers are in `DeckRules`, deck sizes in the presets). `Assets/Scripts/Shared/Table/TableDeckManager.cs` — [TableDeckManager](./table.md#tabledeckmanager)
 - `debt` — `com.unity.ai.assistant` (the `unity-mcp` server) is a pre-release, `2.20.0-pre.2`: move to the stable version when it is out. `Packages/manifest.json` — [Accesso dell'agent all'Unity Editor](../progetto/accesso-editor-agent.md)
+
+## Block H — Stats and simulation
+
+- `ux` — The simulation stops while the Editor is in the background: it yields a frame every 50 games and the Editor runs no frames unfocused (`Application.runInBackground` off). Run it with the Editor focused, or run it without yielding. `Assets/Scripts/Shared/Stats/TableSimulationRunner.cs` — [TableSimulationRunner](./stats.md#tablesimulationrunner)
+- `duplicate` — `TableDeckManager.Log` and `TableSimulationRunner.Log` are the same helper (Console plus optional `GameLogView`). `Assets/Scripts/Shared/Table/TableDeckManager.cs`, `Assets/Scripts/Shared/Stats/TableSimulationRunner.cs` — [GameLogView](./stats.md#gamelogview)

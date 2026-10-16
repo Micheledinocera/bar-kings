@@ -63,7 +63,7 @@ public class DeckManager3D : MonoBehaviour
             Vector3 cardPosition = new(-5 + (1.2f * (i % 10)), 0.25f, 4.5f - (1.5f * (i / 10)));
             await CardAnimations
                 .MoveAnimation(deckCards[i], cardPosition, 0.1f)
-                .ToUniTask(TweenCancelBehaviour.Kill, cancellationToken);
+                .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
         }
     }
 }
