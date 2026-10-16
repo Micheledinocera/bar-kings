@@ -5,17 +5,10 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-// Setup and view of the table scenes (Panchina, Tribuna): builds the deck from a preset, deals it, mirrors
+// Setup and view of the table scenes (Panchina, Tribuna, Index40): builds the deck from a preset, deals it, mirrors
 // TableState, animates paths and writes the game log.
 public class TableDeckManager : MonoBehaviour
 {
-    // What happens to the cards beyond the 40 on the table: the deck-modification idea tried by the scene.
-    public enum ExcessCards
-    {
-        Bench, // Panchina: they wait face down in the pile and fill the holes left by paths
-        Discard, // Tribuna: they are thrown away, holes stay
-    }
-
     public static TableDeckManager instance;
     public GameObject cardPrefab; // Trascina qui il Prefab "Carta"
     public Transform deckPosition; // Posizione dove creare il mazzo
@@ -70,13 +63,12 @@ public class TableDeckManager : MonoBehaviour
         GameManager.isClickBlocked = true;
         int gameSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
         DeckDeal deal = DeckBuilder.Build(
+            excessCards,
             deckDatabase.CreateCardsInGame(),
-            deckPreset.RemovedCards,
-            deckPreset.Duplicates,
+            deckPreset,
             new System.Random(gameSeed)
         );
-        bool excessToBench = excessCards == ExcessCards.Bench;
-        List<CardDataInGame> benchCards = excessToBench ? deal.Excess.ToList() : new();
+        List<CardDataInGame> benchCards = deal.BenchCards(excessCards).ToList();
 
         pathCount = 0;
         allKingsLogged = false;
@@ -84,8 +76,9 @@ public class TableDeckManager : MonoBehaviour
         {
             gameLog.Clear();
         }
-        Log(GameLogFormatter.FormatDeal(deckPreset.name, gameSeed, deal, excessToBench));
+        Log(GameLogFormatter.FormatDeal(deckPreset.name, gameSeed, deal, excessCards));
 
+        ShowSlots(deal.TableSlots.Count);
         RenderDeck(deal.TableSlots, benchCards);
         await MoveCards(deal.TableSlots, cancellationToken);
         table = new TableState(deal.TableSlots, benchCards);
@@ -107,9 +100,13 @@ public class TableDeckManager : MonoBehaviour
         SetupTableAsync(destroyCancellationToken).Forget();
     }
 
-    // Grid position of a slot: 4 rows of 10.
+    // Grid position of a slot: rows of 10, 4 for the base table, more in index>40.
     public static Vector3 SlotPosition(int slot) =>
-        new(-5 + (1.2f * (slot % 10)), 0.25f, 4.5f - (1.5f * (slot / 10)));
+        new(
+            -5 + (1.2f * (slot % DeckRules.SlotsPerRow)),
+            0.25f,
+            4.5f - (1.5f * (slot / DeckRules.SlotsPerRow))
+        );
 
     // Plays the path starting from a clicked card: the table computes the moves, the scene animates them.
     public async UniTask PlayPath(CardDisplay3D clickedCard)
@@ -160,6 +157,16 @@ public class TableDeckManager : MonoBehaviour
     public Transform GetSlotByIndex(int index)
     {
         return deckPosition.GetChild(0).GetChild(index);
+    }
+
+    // Index40 has a slot for every index up to DeckRules.MaxTableSlots: the slots beyond the deal are hidden.
+    void ShowSlots(int slotCount)
+    {
+        Transform slots = deckPosition.GetChild(0);
+        for (int i = 0; i < slots.childCount; i++)
+        {
+            slots.GetChild(i).gameObject.SetActive(i < slotCount);
+        }
     }
 
     void Log(string entry)

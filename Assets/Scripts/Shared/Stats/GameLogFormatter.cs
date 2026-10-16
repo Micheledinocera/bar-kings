@@ -7,14 +7,18 @@ using System.Text;
 // missing from the font atlas to the dynamic fallback font asset, which would then change at every Play.
 public static class GameLogFormatter
 {
-    public static string FormatDeal(string presetName, int seed, DeckDeal deal, bool excessToBench)
+    public static string FormatDeal(string presetName, int seed, DeckDeal deal, ExcessCards excess)
     {
         StringBuilder text = new();
         text.AppendLine($"New game | preset {presetName} | seed {seed}");
         text.AppendLine(
             $"Deck: {deal.DeckSize} cards ({DeckRules.KingCount} kings) | table {deal.TableCards} | holes {deal.Holes} | "
-                + (excessToBench ? "bench" : "discarded")
-                + $" {deal.Excess.Count}"
+                + excess switch
+                {
+                    ExcessCards.Bench => $"bench {deal.Excess.Count}",
+                    ExcessCards.Discard => $"discarded {deal.Excess.Count}",
+                    _ => $"slots {deal.TableSlots.Count}",
+                }
         );
         text.AppendLine($"Removed ({deal.Removed.Count}): {CardList(deal.Removed)}");
         text.Append($"Duplicates ({deal.Duplicates.Count}): {CardList(deal.Duplicates)}");

@@ -10,21 +10,13 @@ public static class GameSimulator
     public static SimulatedGame Play(
         IReadOnlyList<CardDataInGame> baseCards,
         DeckPreset preset,
-        bool excessToBench,
+        ExcessCards excess,
         int gameSeed,
         Random choices
     )
     {
-        DeckDeal deal = DeckBuilder.Build(
-            baseCards,
-            preset.RemovedCards,
-            preset.Duplicates,
-            new Random(gameSeed)
-        );
-        TableState table = new(
-            deal.TableSlots,
-            excessToBench ? deal.Excess : Array.Empty<CardDataInGame>()
-        );
+        DeckDeal deal = DeckBuilder.Build(excess, baseCards, preset, new Random(gameSeed));
+        TableState table = new(deal.TableSlots, deal.BenchCards(excess));
 
         List<SimulatedPath> paths = new();
         int allKingsPath = 0;
@@ -40,7 +32,6 @@ public static class GameSimulator
             paths.Add(
                 new SimulatedPath(
                     paths.Count + 1,
-                    startSlot,
                     pathMoves.Select(move => move.Card).ToList(),
                     pathMoves[^1].End,
                     pathMoves.Count < moves.Count,

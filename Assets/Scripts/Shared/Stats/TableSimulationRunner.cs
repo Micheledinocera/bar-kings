@@ -39,7 +39,10 @@ public class TableSimulationRunner : MonoBehaviour
     const int GamesPerFrame = 50; // games simulated before yielding a frame, so the scene stays responsive
     const string OutputFolder = "Simulations"; // in the project root (git-ignored); persistentDataPath in a build
 
-    public void Run() => RunAsync(destroyCancellationToken).Forget();
+    public void Run()
+    {
+        RunAsync(destroyCancellationToken).Forget();
+    }
 
     async UniTaskVoid RunAsync(CancellationToken cancellationToken)
     {
@@ -48,7 +51,6 @@ public class TableSimulationRunner : MonoBehaviour
         {
             int simulationSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
             System.Random random = new(simulationSeed);
-            bool excessToBench = tableDeckManager.Excess == TableDeckManager.ExcessCards.Bench;
             string mode = tableDeckManager.Excess.ToString();
             List<CardDataInGame> baseCards = tableDeckManager.DeckDatabase.CreateCardsInGame();
             Log(
@@ -63,7 +65,13 @@ public class TableSimulationRunner : MonoBehaviour
                 {
                     int gameSeed = random.Next(1, int.MaxValue);
                     played.Add(
-                        GameSimulator.Play(baseCards, preset, excessToBench, gameSeed, random)
+                        GameSimulator.Play(
+                            baseCards,
+                            preset,
+                            tableDeckManager.Excess,
+                            gameSeed,
+                            random
+                        )
                     );
                     if ((i + 1) % GamesPerFrame == 0)
                     {

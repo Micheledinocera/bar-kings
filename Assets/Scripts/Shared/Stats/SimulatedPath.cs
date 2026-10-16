@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class SimulatedPath
 {
     public int Number { get; }
-    public int StartSlot { get; }
 
     // Cards moved by the path, in order; a bench card filling the starting slot is not one of them.
     public IReadOnlyList<CardDataInGame> Cards { get; }
@@ -18,7 +17,6 @@ public class SimulatedPath
 
     public SimulatedPath(
         int number,
-        int startSlot,
         IReadOnlyList<CardDataInGame> cards,
         PathEnd end,
         bool filledFromBench,
@@ -26,7 +24,6 @@ public class SimulatedPath
     )
     {
         Number = number;
-        StartSlot = startSlot;
         Cards = cards;
         End = end;
         FilledFromBench = filledFromBench;
