@@ -110,3 +110,6 @@ InitTestScene*.unity*
 
 # Claude Code: personal local settings
 .claude/settings.local.json
+
+# CSV files of the table simulations (TableSimulationRunner)
+/[Ss]imulations/
