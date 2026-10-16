@@ -27,6 +27,10 @@ public static class WindowsBuilder
             }
         );
 
+        // The Input System adds its project-wide actions to the preloaded assets and saves the Player Settings when the
+        // build starts, then removes them in memory only when it ends: save again so the file on disk stays clean.
+        AssetDatabase.SaveAssets();
+
         BuildSummary summary = report.summary;
         string message =
             $"Windows build {summary.result}: {summary.totalSize / BytesPerMegabyte} MB, "
