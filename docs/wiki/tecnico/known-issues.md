@@ -2,8 +2,10 @@
 tipo: info
 aggiornato: 2026-10-16
 verificato: 2026-10-16
-consolidato: 2026-10-15
+consolidato: 2026-10-16
 fonti:
+  - raw/compiled/build/2026-10-16-sistemazione.md
+  - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/demo-1/2026-10-16-build.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-regole.md
@@ -22,7 +24,7 @@ fonti:
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it, and the build (**I**). Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done, and the build (**I**) is done except the company name; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
@@ -30,7 +32,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 | [D — Input](#block-d--input) | 1 | debt | — |
 | [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 3 | debt | — |
 | [H — Stats and simulation](#block-h--stats-and-simulation) | 2 | ux, duplicate | — |
-| [I — Build](#block-i--build) | 3 | performance, debt | — |
+| [I — Build](#block-i--build) | 1 | debt | — |
 
 ## Block C — Game state in hierarchy and statics
 
@@ -51,11 +53,9 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 ## Block H — Stats and simulation
 
-- `ux` — The simulation stops while the Editor is in the background: it yields a frame every 50 games and the Editor runs no frames unfocused (`Application.runInBackground` off). Run it with the Editor focused, or run it without yielding. `Assets/Scripts/Shared/Stats/TableSimulationRunner.cs` — [TableSimulationRunner](./stats.md#tablesimulationrunner)
+- `ux` — The simulation stops while the Editor is in the background: it yields a frame every 50 games and the Editor runs no frames unfocused (`Application.runInBackground` off). Run it with the Editor focused, or run it without yielding; `Application.runInBackground = true` set at runtime during the Play session (not in the Player Settings) also keeps it running. `Assets/Scripts/Shared/Stats/TableSimulationRunner.cs` — [TableSimulationRunner](./stats.md#tablesimulationrunner)
 - `duplicate` — `TableDeckManager.Log` and `TableSimulationRunner.Log` are the same helper (Console plus optional `GameLogView`). `Assets/Scripts/Shared/Table/TableDeckManager.cs`, `Assets/Scripts/Shared/Stats/TableSimulationRunner.cs` — [GameLogView](./stats.md#gamelogview)
 
 ## Block I — Build
 
-- `performance` — The Windows build weighs about 331 MB, almost all textures: the 40 card fronts are full resolution and uncompressed (about 4.4 MB each), the table uses three 4K textures. To fix with import settings (max size, compression). `Assets/Images/Cards/Fronte/`, `Assets/Images/textures/` — [scenes](./scenes.md#build)
-- `debt` — A build rewrites the URP asset, the URP global settings, `ProjectSettings/ProjectSettings.asset` and `ProjectSettings/UnityConnectSettings.asset` (Unity services on): they show up in `git status` after every build. `Assets/Settings/Universal Render Pipeline Asset.asset` — [scenes](./scenes.md#build)
-- `debt` — Company in the Player Settings is `DefaultCompany`, which also names the folder of the build's logs and CSV. `ProjectSettings/ProjectSettings.asset` — [scenes](./scenes.md#build)
+- `debt` — Company in the Player Settings is `DefaultCompany`, which also names the folder of the build's logs and CSV; kept for now (user, 2026-10-16). `ProjectSettings/ProjectSettings.asset` — [scenes](./scenes.md#build)

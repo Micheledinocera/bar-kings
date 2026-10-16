@@ -2,8 +2,10 @@
 tipo: info
 aggiornato: 2026-10-16
 verificato: 2026-10-16
-consolidato: 2026-10-15
+consolidato: 2026-10-16
 fonti:
+  - raw/compiled/build/2026-10-16-comando-build.md
+  - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-regole.md
   - raw/compiled/stats/2026-10-16-sessione.md
@@ -18,7 +20,7 @@ fonti:
 
 # Shared scripts
 
-Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator (editor only), the 3D card, the click flag and the scene loader of the Menu. The table scenes have their own scripts in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
+Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator and the Windows build (editor only), the 3D card, the click flag and the scene loader of the Menu. The table scenes have their own scripts in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
 
 | Class | Path | Kind |
 |---|---|---|
@@ -26,6 +28,7 @@ Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card g
 | [CardDataInGame](#carddataingame) | `Assets/Scripts/Shared/Cards/CardDataInGame.cs` | plain C# class |
 | [CardDatabase](#carddatabase) | `Assets/Scripts/Shared/Cards/CardDatabase.cs` | ScriptableObject |
 | [CardGenerator](#cardgenerator) | `Assets/Scripts/Shared/Editor/CardGenerator.cs` | static editor class (menu item) |
+| [WindowsBuilder](#windowsbuilder) | `Assets/Scripts/Shared/Editor/WindowsBuilder.cs` | static editor class (menu item) |
 | [CardDisplay3D](#carddisplay3d) | `Assets/Scripts/Shared/Cards3D/CardDisplay.cs` | MonoBehaviour |
 | [GameManager](#gamemanager) | `Assets/Scripts/Shared/GameManager.cs` | MonoBehaviour |
 | [SceneLoader](#sceneloader) | `Assets/Scripts/Shared/Menu/SceneLoader.cs` | MonoBehaviour |
@@ -61,6 +64,14 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`)
 - sorts the `.jpg` files of `Assets/Images/Cards/Fronte` by name and derives suit and value from the position (`01_`…`40_`: 10 cards per suit in `Seme` order, ace to king);
 - creates the [CardData](#carddata) assets that **don't exist yet** in `Assets/Instances/Cards/`; existing ones are kept as they are (no overwrite, GUIDs unchanged);
 - creates or updates [CardDatabase](#carddatabase) (`Assets/Instances/CardDatabase.asset`) with the 40 cards in order, and logs how many cards were new.
+
+## WindowsBuilder
+
+`Assets/Scripts/Shared/Editor/WindowsBuilder.cs`. Editor only. Menu `Tools/Build Windows`; run by people from the menu and by the agent through `unity-mcp` (`EditorApplication.ExecuteMenuItem`), and by `/close` before every PR:
+
+- builds the scenes enabled in the Build Settings for Standalone Windows 64 bit into `Builds/Windows/KingBar.exe` ([BuildPipeline.BuildPlayer](https://docs.unity3d.com/ScriptReference/BuildPipeline.BuildPlayer.html));
+- then calls `AssetDatabase.SaveAssets()`, so the Player Settings on disk drop the Input System actions the build added ([scenes, Build](./scenes.md#build));
+- logs one line `Windows build <result>: <MB>, <errors>, <warnings>, <seconds>, <scenes>` (an error log if the build failed). No list of the heaviest assets: an incremental build reports only the content it packs again.
 
 ## CardDisplay3D
 

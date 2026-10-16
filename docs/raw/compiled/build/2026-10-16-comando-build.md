@@ -1,0 +1,8 @@
+# Comando di build e build in /close (2026-10-16)
+
+- **Decisione dell'utente** (regola fissata, non prova): la build del gioco si fa a ogni `/close`, prima della PR. Risponde alla domanda aperta "Build: serve una build del gioco prima della PR?" della [Definition of done](../../wiki/progetto/definition-of-done.md). Come gli altri controlli di `/close` non blocca mai: i problemi vanno nelle Note della PR. Si salta per le feature `study-` senza codice.
+- Al posto di una guida in `docs/output/` (non versionata, temporanea), un comando: menu item **`Tools/Build Windows`** (`Assets/Scripts/Shared/Editor/WindowsBuilder.cs`). Fa la build delle scene attive nelle Build Settings in `Builds/Windows/KingBar.exe` e scrive in Console una riga `Windows build <esito>: <MB>, <errori>, <warning>, <secondi>, <scene>`. Lo usa una persona dal menu, o l'agent via `unity-mcp` (`EditorApplication.ExecuteMenuItem`).
+- `/close`, passo 5.5: lancia il comando, controlla esito, errori e warning, peso rispetto all'ultimo noto (un salto di MB è di solito una texture non compressa) e che `git status` non cambi. Template della PR: nuova voce nella checklist con il peso.
+- Provato: build incrementale in circa 7 secondi (144 la prima dopo una ricompilazione), 145 MB, 0 errori, 0 warning, `git status` pulito.
+- Scartato: la lista degli asset più pesanti nel log. Con la build incrementale Unity elenca solo il contenuto che ri-impacchetta (spesso nulla), quindi la lista sarebbe vuota o parziale; servirebbe una build pulita ogni volta, molto più lenta.
+- La guida per chi fa la build a mano va nel wiki (sezione Build di `tecnico/scenes.md`), all'ingest.
