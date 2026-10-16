@@ -16,6 +16,7 @@ public class TableDeckManager : MonoBehaviour
     [SerializeField]
     private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
 
+    // Preset of the next game: the options panel changes it, the game in progress keeps its own until Reset.
     [SerializeField, Required]
     private DeckPreset deckPreset; // Assets/Instances/DeckPresets
 
@@ -30,11 +31,18 @@ public class TableDeckManager : MonoBehaviour
     [SerializeField]
     private GameLogView gameLog;
 
-    [SerializeField, Range(0.02f, 1f)]
-    private float dealMoveDuration = 0.1f; // seconds per card when dealing
+    // Animation durations per speed level; the options panel changes the level, the next animation uses it.
+    [SerializeField]
+    private AnimationSpeed animationSpeed = AnimationSpeed.Normal;
 
-    [SerializeField, Range(0.05f, 2f)]
-    private float pathMoveDuration = 0.5f; // seconds per flip / move in a path
+    [SerializeField]
+    private AnimationTiming slowTiming = new(0.2f, 0.5f);
+
+    [SerializeField]
+    private AnimationTiming normalTiming = new(0.1f, 0.2f);
+
+    [SerializeField]
+    private AnimationTiming fastTiming = new(0.03f, 0.05f);
 
     const float StackOffset = 0.02f; // height of a card on top of a duplicate
 
@@ -44,12 +52,32 @@ public class TableDeckManager : MonoBehaviour
     // Logical table state, built after dealing; cards on screen mirror it.
     TableState table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
+    DeckPreset currentPreset; // preset of the game in progress
     int pathCount;
     bool allKingsLogged;
 
     public CardDatabase DeckDatabase => deckDatabase;
 
     public ExcessCards Excess => excessCards;
+
+    public DeckPreset CurrentPreset => currentPreset;
+
+    public DeckPreset NextPreset => deckPreset;
+
+    public AnimationSpeed Speed => animationSpeed;
+
+    // The preset of the next game, from the next Reset.
+    public void SetNextPreset(DeckPreset preset) => deckPreset = preset;
+
+    public void SetSpeed(AnimationSpeed speed) => animationSpeed = speed;
+
+    AnimationTiming Timing =>
+        animationSpeed switch
+        {
+            AnimationSpeed.Slow => slowTiming,
+            AnimationSpeed.Fast => fastTiming,
+            _ => normalTiming,
+        };
 
     void Start() => SetupTableAsync(destroyCancellationToken).Forget();
 
@@ -62,10 +90,11 @@ public class TableDeckManager : MonoBehaviour
 
         GameManager.isClickBlocked = true;
         int gameSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
+        currentPreset = deckPreset;
         DeckDeal deal = DeckBuilder.Build(
             excessCards,
             deckDatabase.CreateCardsInGame(),
-            deckPreset,
+            currentPreset,
             new System.Random(gameSeed)
         );
         List<CardDataInGame> benchCards = deal.BenchCards(excessCards).ToList();
@@ -76,7 +105,7 @@ public class TableDeckManager : MonoBehaviour
         {
             gameLog.Clear();
         }
-        Log(GameLogFormatter.FormatDeal(deckPreset.name, gameSeed, deal, excessCards));
+        Log(GameLogFormatter.FormatDeal(currentPreset.name, gameSeed, deal, excessCards));
 
         ShowSlots(deal.TableSlots.Count);
         RenderDeck(deal.TableSlots, benchCards);
@@ -137,7 +166,7 @@ public class TableDeckManager : MonoBehaviour
             {
                 // From the panchina pile to the hole, face down.
                 await TableCardAnimations
-                    .MoveAnimation(card.gameObject, target, pathMoveDuration)
+                    .MoveAnimation(card.gameObject, target, Timing.pathMoveDuration)
                     .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             }
             else
@@ -147,7 +176,7 @@ public class TableDeckManager : MonoBehaviour
                     moves[i].End == PathEnd.None ? cardViews[moves[i + 1].Card] : null;
                 card.isFlipped = true;
                 await TableCardAnimations
-                    .PathMoveAnimation(card, displaced, target, i == 0, pathMoveDuration)
+                    .PathMoveAnimation(card, displaced, target, i == 0, Timing.pathMoveDuration)
                     .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             }
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
@@ -217,7 +246,7 @@ public class TableDeckManager : MonoBehaviour
             }
             GameObject card = cardViews[tableSlots[slot]].gameObject;
             await TableCardAnimations
-                .MoveAnimation(card, SlotPosition(slot), dealMoveDuration)
+                .MoveAnimation(card, SlotPosition(slot), Timing.dealMoveDuration)
                 .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             card.transform.SetParent(GetSlotByIndex(slot));
         }
