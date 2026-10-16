@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-07
+aggiornato: 2026-10-16
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-gameplay.md
   - raw/compiled/study-initialize-llm-wiki/2026-07-01-prima-poc.md
@@ -24,7 +25,7 @@ Si parte dall'**idea 3** delle note di gameplay: i **cicli** sul solitario dei 4
 - **Manuale e automatico insieme**: si sceglie una sola carta, poi il path procede da solo; quando si ferma si sceglie un'altra carta da cui ripartire.
 - **Cicli come risorsa**: i cicli possono dare più punti (moltiplicatori) o proteggere dal re. Le carte potrebbero non essere mescolate a caso ma secondo dei pattern (es. uno shift di n posti).
 
-La prima POC (2026-07-01) implementa il solitario dei 4 re di base.
+La prima POC (2026-07-01) implementava il solitario dei 4 re di base; il suo codice non c'è più: le prove ora sono le scene del tavolo di [Modifica del mazzo](./modifica-del-mazzo.md).
 
 ## Perché
 

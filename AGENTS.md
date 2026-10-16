@@ -7,8 +7,9 @@
 ```
 ├── Assets/
 │   ├── Scripts/          # project code (C#)
-│   │   └── Shared/       # code shared across scenes: cards, camera, animations, GameManager
+│   │   └── Shared/       # code shared across scenes: cards, card generator, GameManager
 │   │       ├── Deck/     # deck presets and deal of the table scenes (seeded)
+│   │       ├── Menu/     # scene loading: Menu and Back buttons
 │   │       ├── Stats/    # game log and autoplay simulation (CSV)
 │   │       └── Table/    # table of the deck variants (Panchina, Tribuna, Index40 scenes)
 │   ├── Scenes/           # scenes (.unity)

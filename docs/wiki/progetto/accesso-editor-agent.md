@@ -47,7 +47,7 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 
 - L'utente ha scelto l'MCP di Unity e ha detto esplicitamente che la decisione è presa (2026-10-15).
 - È il server ufficiale per Unity 6.4 e lavora sull'Editor aperto: Console, gerarchia, salvataggio, senza un clic dell'utente per ogni modifica.
-- Le modifiche fatte da Unity sono corrette per costruzione; lo YAML a mano funzionava solo per le modifiche più semplici (primo caso: `deckDatabase` assegnato in `ScenaIndex40` e `ScenaTribuna` in card-generator).
+- Le modifiche fatte da Unity sono corrette per costruzione; lo YAML a mano funzionava solo per le modifiche più semplici (primo caso: `deckDatabase` assegnato in `Index40` e `Tribuna` in card-generator).
 
 ## Alternative scartate
 
