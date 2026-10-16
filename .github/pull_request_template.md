@@ -18,6 +18,7 @@
 
 - [ ] Scripts formatted with CSharpier (`/close` runs `dotnet csharpier format Assets/Scripts`)
 - [ ] Unity: no compilation errors in the Console
+- [ ] Windows build (`Tools/Build Windows`): succeeded, no errors or warnings, size: <!-- MB -->, `git status` clean after it
 - [ ] Play mode: <!-- scene to open and what to do to see the change working -->
 
 ## Notes

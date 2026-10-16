@@ -86,6 +86,12 @@ None of these checks stops the close. From the repo root:
 2. **`.meta` files**: every added asset needs its `.meta` committed: `git diff --name-only --diff-filter=A origin/develop...HEAD -- Assets` should list, for every file or folder that is not a `.meta`, its `<path>.meta` too. If some are missing and exist on disk, commit them; if they don't exist, ask the user to open the project in Unity (which creates them) and list them in the PR *Notes* if they are still missing.
 3. **Code made by people**: read the scripts the feature changed (`git diff --name-only origin/develop...HEAD -- Assets/Scripts`) against the rules in `AGENTS.md`. Fix small things in a `refactor:` or `fix:` commit when the fix is safe and doesn't change behaviour; list the rest in the PR *Notes*. Never rename identifiers chosen by people, and never ask them to redo work.
 4. **Unity** (through `unity-mcp`, with the Editor open on the project): read the Console (`Unity_GetConsoleLogs`) after Unity has recompiled the merged code: **no compilation errors**, no new errors or warnings. If `unity-mcp` is not connected, ask the user to open the project and retry; if it is still unavailable, ask the user about the Console instead. Then ask the user whether the feature works in Play mode. Problems go in the PR *Notes* and the checklist stays unticked; the user decides whether to fix them now or after.
+5. **Build**: with the Editor open, run the menu item `Tools/Build Windows` through `unity-mcp` (`EditorApplication.ExecuteMenuItem("Tools/Build Windows")`, in a `Unity_RunCommand`; it builds the scenes enabled in the Build Settings into `Builds/Windows/`, git-ignored). The server may not respond for a few seconds after a recompile: retry. Then read the result with `BuildReport.GetLatestReport().summary` (result, `totalSize`, `totalErrors`, `totalWarnings`), or the `Windows build …` line in the Console. Check:
+   - result `Succeeded`, no errors and no warnings;
+   - size close to the last one in [scenes](../../../docs/wiki/tecnico/scenes.md#build): a jump of several MB is usually a texture imported uncompressed (sides not a multiple of 4);
+   - `git status --porcelain` unchanged by the build: a settings file rewritten by the build (URP asset, `ProjectSettings/*.asset`) is a new value Unity computes; look at the diff, and commit it in a `build:` commit if it only aligns Unity's own data, otherwise list it in the PR *Notes*.
+
+   If `unity-mcp` is unavailable, ask the user to run `Tools/Build Windows` and report the Console line. Problems go in the PR *Notes*; the build never stops the close.
 
 ## 6. Push
 
@@ -108,7 +114,7 @@ gh pr create --base develop --head feature/<name> --title "<title>" --body-file 
   - *Summary* from the goal note in `docs/raw/compiled/<name>/` and the commits;
   - *Changes*: one line per commit or group of commits (`git log --no-merges origin/develop..HEAD`);
   - *Wiki*: pages from the `/ingest` report and its conflicts, or "None";
-  - *How to verify*: tick the checks that passed (formatting, Unity Console confirmed by the user), describe the manual check in Play mode. For a `study-` feature without code, replace the checklist with "Study feature: documentation only, code checks skipped" and what to read to review it;
+  - *How to verify*: tick the checks that passed (formatting, Unity Console confirmed by the user, Windows build with its size), describe the manual check in Play mode. For a `study-` feature without code, replace the checklist with "Study feature: documentation only, code checks skipped" and what to read to review it;
   - *Notes*: everything steps 1, 4 and 5 left open (unfixed lint errors, missing `.meta`, Console errors, rule issues in the code);
   - end the body with the attribution line required by the session for pull requests.
 - Write the body to a temporary file in the scratchpad, not in the repo.
