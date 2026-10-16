@@ -15,6 +15,9 @@ public class GameLogView : MonoBehaviour
 
     readonly StringBuilder entries = new();
 
+    // Called by the Log button of the table scenes; entries keep being added while the panel is hidden.
+    public void ToggleVisible() => gameObject.SetActive(!gameObject.activeSelf);
+
     public void Clear()
     {
         entries.Clear();
