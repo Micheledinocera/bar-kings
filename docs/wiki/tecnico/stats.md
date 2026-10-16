@@ -3,6 +3,7 @@ tipo: info
 aggiornato: 2026-10-16
 verificato: 2026-10-16
 fonti:
+  - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-csv-fixes.md
   - raw/compiled/index40/2026-10-16-simulazione-tre-modi.md
   - raw/compiled/stats/2026-10-15-obiettivo.md
@@ -37,10 +38,10 @@ Scripts in `Assets/Scripts/Shared/Stats/`: the **game log** of the table scenes 
 
 ## GameLogView
 
-`Assets/Scripts/Shared/Stats/GameLogView.cs`. Scrollable on-screen log: `Append(entry)` adds at the bottom and scrolls to it, `Clear()`. Serialized: `text` (TMP), `scrollRect`.
+`Assets/Scripts/Shared/Stats/GameLogView.cs`. Scrollable on-screen log: `Append(entry)` adds at the bottom and scrolls to it, `Clear()`, `ToggleVisible()` (shows or hides the panel; entries keep coming while hidden). Serialized: `text` (TMP), `scrollRect`.
 
 - **Prefab**: `Assets/Prefab/GameLog.prefab` (panel on the left of the Canvas, see [scenes](./scenes.md#prefabs)).
-- **Used by**: [TableDeckManager](./table.md#tabledeckmanager) (`gameLog`, cleared at every setup), [TableSimulationRunner](#tablesimulationrunner) (`gameLog`).
+- **Used by**: [TableDeckManager](./table.md#tabledeckmanager) (`gameLog`, cleared at every setup), [TableSimulationRunner](#tablesimulationrunner) (`gameLog`), the `LogToggleButton` of the table scenes (`ToggleVisible`, persistent `OnClick`).
 
 ## GameSimulator
 
@@ -73,4 +74,4 @@ Scripts in `Assets/Scripts/Shared/Stats/`: the **game log** of the table scenes 
 - **Serialized fields**: `tableDeckManager`, `gameLog` (optional; scene overrides of the prefab instance), `button`, `presets`, `snapshotGames` (20), `games` (1000, snapshot games included), `seed` (0 = a new one at every run, written in the averages).
 - **Output**: `Simulations/` in the project root (git-ignored, `.gitignore`); `Application.persistentDataPath/Simulations` in a build.
 - Yields a frame every `GamesPerFrame` (50) games. With the Editor in the background the frames stop (`Application.runInBackground` off), and so does the simulation: run it with the Editor focused.
-- **Prefab**: `Assets/Prefab/SimulationButton.prefab`, in the three table scenes ([scenes](./scenes.md#panchina-scenatribuna-and-scenaindex40)).
+- **Prefab**: `Assets/Prefab/SimulationButton.prefab`, in the three table scenes ([scenes](./scenes.md#panchina-tribuna-and-index40)).

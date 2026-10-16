@@ -50,7 +50,7 @@ Scripts in `Assets/Scripts/Shared/Deck/` and the preset generator in `Assets/Scr
   | `Preset71.asset` (was `Preset80`, 49 duplicates) | 5 | 40 | 71 | 75 |
 
   At most 40 duplicates (`MaxExtraRows` rows of 10), so that index>40 can deal every preset.
-- **Used by**: [TableDeckManager](./table.md#tabledeckmanager) (`deckPreset`: `Preset32` in Panchina, `Preset71` in ScenaTribuna, `Preset45` in ScenaIndex40), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`presets`, all four in the `SimulationButton` prefab), [GameSimulator](./stats.md#gamesimulator).
+- **Used by**: [TableDeckManager](./table.md#tabledeckmanager) (`deckPreset`: `Preset32` in Panchina, `Preset71` in Tribuna, `Preset45` in Index40), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`presets`, all four in the `SimulationButton` prefab), [GameSimulator](./stats.md#gamesimulator).
 
 ## DeckBuilder
 

@@ -5,6 +5,8 @@ aggiornato: 2026-10-16
 verificato: 2026-10-07
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/demo-1/2026-10-16-opzioni.md
+  - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-simulazione-tre-modi.md
   - raw/compiled/index40/2026-10-16-regole.md
   - raw/compiled/index40/2026-10-16-obiettivo.md
@@ -33,7 +35,7 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 ## Cosa sappiamo
 
 - Tutte e tre le idee hanno una POC giocabile (2026-10-16), da mettere in visione per scegliere.
-- Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/ScenaTribuna.unity`, `Assets/Scenes/ScenaIndex40.unity`.
+- Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/Tribuna.unity`, `Assets/Scenes/Index40.unity`. Una mini demo le mette in visione: si parte dalla scena `Assets/Scenes/Menu.unity` con un bottone per ciascuna, e da ognuna si torna al Menu ([tecnico/scenes](../tecnico/scenes.md)). In ogni scena un pannello di opzioni sceglie il preset della prossima partita e la velocità delle animazioni (piano, normale, veloce).
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
 - Le scene gemelle sono **temporanee**: servono a provare un'idea senza rompere la precedente. Quando se ne sceglie una, le altre (e il codice che usano solo loro) si eliminano.
 - Stato del codice al 2026-10-16: le tre scene usano lo stesso codice ([tecnico/table](../tecnico/table.md)) e cambiano solo in cosa succede alle carte oltre le 40. Il mazzo si costruisce da un **preset** ([tecnico/deck](../tecnico/deck.md)): i 36 non-re con alcune carte tolte e alcuni doppioni aggiunti (mai re), più i 4 re sempre presenti; quali carte togliere e duplicare si estrae a ogni partita, con un seed che permette di rigiocarla. Preset in prova: 32, 45, 60 e 71 carte non-re (al massimo 40 doppioni; il 71 era un 80 con 49 doppioni, ridotto per stare negli 80 slot di index>40). Panchina parte da 32, tribuna da 71, index>40 da 45. In panchina e tribuna sul tavolo vanno 36 non-re e i 4 re (doppioni e carte mancanti sono casi di test voluti); sotto le 40 carte i buchi sono gli **ultimi** slot (lì non c'è una logica di indice della carta); le carte in eccesso formano il **mazzo panchina** o vengono buttate. Un pulsante Reset rifà la partita senza uscire dal Play.

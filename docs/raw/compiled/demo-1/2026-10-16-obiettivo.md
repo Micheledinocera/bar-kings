@@ -12,3 +12,10 @@ Facciamo un minidemo così cominciamo anche a vedere se ci sono problemi nelle b
 
 - Le tre scene sono le POC di [Modifica del mazzo](../../wiki/business/modifica-del-mazzo.md) (decisione `in analisi`): la demo le mette in visione, non sceglie l'idea.
 - Scene, Build Settings e prefab: [tecnico/scenes](../../wiki/tecnico/scenes.md). Prima POC usata solo da `SampleScene`: [tecnico/shared](../../wiki/tecnico/shared.md), [known-issues](../../wiki/tecnico/known-issues.md) blocco B.
+
+## Scelte (2026-10-16)
+
+- Scena di raccordo: **Menu** (`Assets/Scenes/Menu.unity`), prima nei Build Settings.
+- Scene rinominate: `ScenaTribuna` → `Tribuna`, `ScenaIndex40` → `Index40`.
+- Pulizia: via `SampleScene` e la prima POC che usava solo lei (`DeckManager3D`, `CardController`, `CardAnimations`, prefab `3DCard`), e anche il codice morto `CameraOrbit` e `ScriptProva`. Il `LightingData.asset` della cartella di SampleScene è usato da tutte le scene: si sposta, non si cancella.
+- Build di prova: Windows 64 bit.

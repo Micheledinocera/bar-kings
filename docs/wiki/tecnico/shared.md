@@ -4,6 +4,7 @@ aggiornato: 2026-10-16
 verificato: 2026-10-16
 consolidato: 2026-10-15
 fonti:
+  - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-regole.md
   - raw/compiled/stats/2026-10-16-sessione.md
   - raw/compiled/tribuna/2026-10-15-implementazione.md
@@ -17,7 +18,7 @@ fonti:
 
 # Shared scripts
 
-Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator (editor only), the 3D card, the first POC (plain 4-kings solitaire) and small helpers. Despite the folder name, `DeckManager3D`, `CardController` and `CardAnimations` are the **first POC**, used only by `SampleScene` (see [scenes](./scenes.md)); the Panchina, Tribuna and Index40 scenes use their copies in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
+Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card generator (editor only), the 3D card, the click flag and the scene loader of the Menu. The table scenes have their own scripts in `Assets/Scripts/Shared/Table/` ([table](./table.md)). The sub-folders `Deck/` and `Stats/` have their own pages: [deck](./deck.md), [stats](./stats.md). No namespace, no assembly definition: everything compiles into `Assembly-CSharp`. Issues: [known-issues](./known-issues.md).
 
 | Class | Path | Kind |
 |---|---|---|
@@ -26,13 +27,10 @@ Scripts in `Assets/Scripts/Shared/`: card data and the card database, the card g
 | [CardDatabase](#carddatabase) | `Assets/Scripts/Shared/Cards/CardDatabase.cs` | ScriptableObject |
 | [CardGenerator](#cardgenerator) | `Assets/Scripts/Shared/Editor/CardGenerator.cs` | static editor class (menu item) |
 | [CardDisplay3D](#carddisplay3d) | `Assets/Scripts/Shared/Cards3D/CardDisplay.cs` | MonoBehaviour |
-| [CardController](#cardcontroller) | `Assets/Scripts/Shared/Cards3D/CardController.cs` | MonoBehaviour |
-| [DeckManager3D](#deckmanager3d) | `Assets/Scripts/Shared/Cards3D/DeckManager.cs` | MonoBehaviour |
-| [CardAnimations](#cardanimations) | `Assets/Scripts/Shared/Animations/CardAnimations.cs` | static class (DOTween) |
 | [GameManager](#gamemanager) | `Assets/Scripts/Shared/GameManager.cs` | MonoBehaviour |
-| [CameraOrbit](#cameraorbit) | `Assets/Scripts/Shared/Camera/CameraOrbit.cs` | MonoBehaviour, unused |
+| [SceneLoader](#sceneloader) | `Assets/Scripts/Shared/Menu/SceneLoader.cs` | MonoBehaviour |
 
-File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`, `DeckManager.cs` → `DeckManager3D`): Unity shows no warning, search by class name.
+File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`): Unity shows no warning, search by class name.
 
 ## CardData
 
@@ -46,7 +44,7 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 
 `Assets/Scripts/Shared/Cards/CardDataInGame.cs`. A `CardData` plus `index`: the card's **place on the table** (0–39, row = suit, column = value − 1, from the order of the image files). The path moves a card to the slot of its `index`.
 
-- **Used by**: [CardDatabase](#carddatabase) (`CreateCardsInGame` creates them), [DeckManager3D](#deckmanager3d), [CardDisplay3D](#carddisplay3d), the [table](./table.md) copies, [DeckBuilder](./deck.md#deckbuilder) and the [stats](./stats.md) classes.
+- **Used by**: [CardDatabase](#carddatabase) (`CreateCardsInGame` creates them), [CardDisplay3D](#carddisplay3d), the [table](./table.md) classes, [DeckBuilder](./deck.md#deckbuilder) and the [stats](./stats.md) classes.
 
 ## CardDatabase
 
@@ -54,7 +52,7 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 
 - **Asset**: `Assets/Instances/CardDatabase.asset`, created and kept in sync by [CardGenerator](#cardgenerator); don't reorder it by hand, the order is the table layout.
 - `CreateCardsInGame()`: a new list of [CardDataInGame](#carddataingame) with `index` = position. `SetCards` exists only in the Editor (`#if UNITY_EDITOR`), for the generator.
-- **Used by**: [DeckManager3D](#deckmanager3d) and [TableDeckManager](./table.md#tabledeckmanager) through their serialized field `deckDatabase`, assigned in all four scenes ([scenes](./scenes.md)); [TableSimulationRunner](./stats.md#tablesimulationrunner) through `TableDeckManager.DeckDatabase`.
+- **Used by**: [TableDeckManager](./table.md#tabledeckmanager) through its serialized field `deckDatabase`, assigned in the three table scenes ([scenes](./scenes.md)); [TableSimulationRunner](./stats.md#tablesimulationrunner) through `TableDeckManager.DeckDatabase`.
 
 ## CardGenerator
 
@@ -69,41 +67,17 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`,
 `Assets/Scripts/Shared/Cards3D/CardDisplay.cs`. Root component of the 3D card. Fields: `cardData` ([CardDataInGame](#carddataingame), set by `Setup`), `fronte` / `retro` (child GameObjects), `isFlipped` (true once the card took part in a path).
 
 - `Setup(data)` sets the front texture (`_BaseMap`, URP Lit) on `fronte`'s renderer through a `MaterialPropertyBlock`: every card shares the material asset, no instance per card ([MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html)).
-- **Prefabs**: `Assets/Prefab/3DCard.prefab`, `Assets/Prefab/3DCardTable.prefab`.
-- **Used by**: [DeckManager3D](#deckmanager3d), [CardController](#cardcontroller), [CardAnimations](#cardanimations) and the [table](./table.md) copies.
-
-## CardController
-
-`Assets/Scripts/Shared/Cards3D/CardController.cs`. On `OnMouseDown` of a face-down card, when clicks are not blocked ([GameManager](#gamemanager)), blocks them, runs the path `CardAnimations.MoveCards(card, DeckManager3D.deckCards[card.index], destroyCancellationToken)` and unblocks them in a `finally`.
-
-- **Prefab**: `Assets/Prefab/3DCard.prefab`.
-- `OnMouseDown` works in practice (the POCs are played by clicking) although the project enables only the Input System package.
-- `OnMouseDown` calls an `async UniTaskVoid` method with `.Forget()`: a cancelled path is not logged as an error.
-
-## DeckManager3D
-
-`Assets/Scripts/Shared/Cards3D/DeckManager.cs`. First-POC game setup, in `Start`: blocks clicks, builds `cardDatabase` / `cardDatabaseInGame` from `deckDatabase` ([CardDatabase](#carddatabase)), shuffles the 40 cards, instantiates `cardPrefab` as a pile under `deckPosition`, animates each card to a 4×10 grid (`x = -5 + 1.2·(i % 10)`, `z = 4.5 - 1.5·(i / 10)`), unblocks clicks. `Start` runs this as an `async UniTaskVoid` with `.Forget()`, cancelled by `destroyCancellationToken` (`TweenCancelBehaviour.KillAndCancelAwait`: the await stops with the tween).
-
-- **Serialized fields**: `cardPrefab` (the `3DCard` prefab), `deckPosition` (Transform of the pile), `deckDatabase` ([CardDatabase](#carddatabase); if left empty, `Start` throws).
-- **Static state**: `cardDatabase`, `cardDatabaseInGame`, `shuffledCardDatabaseInGame` (the same list object as `cardDatabaseInGame`, shuffled in place), `deckCards` (instantiated cards, in grid order). The first two are rebuilt from `deckDatabase` at every `Start`; `deckCards` is never cleared: safe only because Play mode reloads the domain (see [scenes](./scenes.md#project-settings)).
-- **Scenes**: `Assets/Scenes/SampleScene.unity`.
-- **Used by**: [CardController](#cardcontroller) and [CardAnimations](#cardanimations) read `deckCards`.
-
-## CardAnimations
-
-`Assets/Scripts/Shared/Animations/CardAnimations.cs`. Static DOTween helpers ([DOTween docs](https://dotween.demigiant.com/documentation.php)):
-
-- `MoveAnimation(card, target, duration)`: lift and move, `SetLink(card)`. Used by [DeckManager3D](#deckmanager3d) to deal.
-- `MoveCards(start, end, cancellationToken, duration)` (`UniTask`): the **path**. Lifts the clicked card, then repeatedly moves the current card onto the position of the next one (`MoveCardsAtom`) and continues with the card found at `DeckManager3D.deckCards[index]`, until it gets back to the clicked card's index; the last card flips and goes to the starting position. Marks every card it touches `isFlipped`. Every tween is linked to its card; on cancellation it is killed and the await stops (`TweenCancelBehaviour.KillAndCancelAwait`), so nothing runs on destroyed cards.
-- `MoveCardsAtom`: one step of the path, `SetLink(startingCard)`.
-- **Used by**: [CardController](#cardcontroller), [DeckManager3D](#deckmanager3d). Copy: [TableCardAnimations](./table.md#tablecardanimations).
+- **Prefab**: `Assets/Prefab/3DCardTable.prefab`.
+- **Used by**: the [table](./table.md) classes ([TableDeckManager](./table.md#tabledeckmanager), [TableCardController](./table.md#tablecardcontroller), [TableCardAnimations](./table.md#tablecardanimations)).
 
 ## GameManager
 
-`Assets/Scripts/Shared/GameManager.cs`. Only `public static bool isClickBlocked`: true while dealing or while a path runs. A GameObject with this component is in all four scenes, but nothing reads the instance.
+`Assets/Scripts/Shared/GameManager.cs`. Only `public static bool isClickBlocked`: true while dealing or while a path runs. A GameObject with this component is in the three table scenes (not in Menu), but nothing reads the instance. Leaving a scene while cards are dealt leaves it true; the next table scene sets it again at setup.
 
-- **Used by**: [CardController](#cardcontroller), [DeckManager3D](#deckmanager3d), and the [table](./table.md) copies.
+- **Used by**: [TableDeckManager](./table.md#tabledeckmanager), [TableCardController](./table.md#tablecardcontroller).
 
-## CameraOrbit
+## SceneLoader
 
-`Assets/Scripts/Shared/Camera/CameraOrbit.cs`. Orbits the camera around `target` with the right mouse button. **Not in any scene**, and uses the legacy `UnityEngine.Input`, which throws with the Input System–only setting.
+`Assets/Scripts/Shared/Menu/SceneLoader.cs`. `Load()` loads the scene named `sceneName` (`SceneManager.LoadScene`; the scene must be in the Build Settings). On the root of `Assets/Prefab/SceneButton.prefab`, whose `OnClick` calls `Load` ([scenes](./scenes.md#prefabs)).
+
+- **Used by**: the three buttons of the Menu (`sceneName` `Panchina`, `Tribuna`, `Index40`) and the `BackButton` of the table scenes (`Menu`, the prefab default).
