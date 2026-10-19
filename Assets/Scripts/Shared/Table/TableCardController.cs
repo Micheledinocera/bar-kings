@@ -1,9 +1,18 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TableCardController : MonoBehaviour
 {
-    void OnMouseDown() => PlayPathAsync().Forget();
+    void OnMouseDown()
+    {
+        // OnMouseDown ignores the UI: a click on an overlay (options panel) must not play the card below it.
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        PlayPathAsync().Forget();
+    }
 
     async UniTaskVoid PlayPathAsync()
     {
