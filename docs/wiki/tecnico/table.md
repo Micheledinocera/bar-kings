@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-16
-verificato: 2026-10-16
-consolidato: 2026-10-15
+aggiornato: 2026-10-19
+verificato: 2026-10-19
+consolidato: 2026-10-19
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/demo-1/2026-10-16-opzioni.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-regole.md
@@ -84,17 +85,17 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 
 ## OptionsPanel
 
-`Assets/Scripts/Shared/Table/OptionsPanel.cs`. Options of the table scenes. On the root of `Assets/Prefab/Options.prefab`, which stays active; `Toggle()` (persistent `OnClick` of the prefab's `OptionsButton`) shows or hides its `panel`. The first time it opens it builds, from `optionButtonPrefab` (`Assets/Prefab/OptionButton.prefab`), a button per preset of `presets` (the four presets, label with the cards) and per [AnimationSpeed](#animationspeed-animationtiming) level:
+`Assets/Scripts/Shared/Table/OptionsPanel.cs`. Options of the table scenes. On the root of `Assets/Prefab/Options.prefab`, which stays active; `Toggle()` (persistent `OnClick` of the prefab's `OptionsButton`) shows or hides its `panel`. The first time it opens it builds, from `optionButtonPrefab` (`Assets/Prefab/OptionButton.prefab`), a button per preset of `presetLibrary` ([DeckPresetLibrary](./deck.md#deckpresetlibrary): the standard and custom presets, label with the cards; in a scrollable list) and per [AnimationSpeed](#animationspeed-animationtiming) level:
 
 - a preset sets the preset of the **next** game (`TableDeckManager.SetNextPreset`, used from the next Reset); the game in progress continues;
 - a speed level applies at once (`TableDeckManager.SetSpeed`);
 - the chosen options are shown as not interactable; `presetStatus` shows the preset in play and the next one.
-- **Serialized fields**: `tableDeckManager` (scene override), `panel`, `optionButtonPrefab`, `presetButtons`, `speedButtons`, `presetStatus`, `presets`.
+- **Serialized fields**: `tableDeckManager` (scene override), `panel`, `optionButtonPrefab`, `presetButtons` (the content of the preset `ScrollRect`, see [scenes](./scenes.md#prefabs)), `speedButtons`, `presetStatus`, `presetLibrary` (`Assets/Instances/DeckPresetLibrary.asset`).
 - The choice lasts while the scene is open: the next load of the scene starts from its own preset and speed.
 
 ## TableCardController
 
-`Assets/Scripts/Shared/Table/TableCardController.cs`. On `OnMouseDown`, when clicks are not blocked ([GameManager](./shared.md#gamemanager)), blocks them, runs `TableDeckManager.instance.PlayPath(card)` and unblocks them in a `finally`. `OnMouseDown` calls an `async UniTaskVoid` method with `.Forget()`.
+`Assets/Scripts/Shared/Table/TableCardController.cs`. On `OnMouseDown`, unless the pointer is over the UI (`EventSystem.IsPointerOverGameObject`: `OnMouseDown` ignores the UI, so without it a click on the options panel played the card below), and when clicks are not blocked ([GameManager](./shared.md#gamemanager)), blocks them, runs `TableDeckManager.instance.PlayPath(card)` and unblocks them in a `finally`. `OnMouseDown` calls an `async UniTaskVoid` method with `.Forget()`.
 
 - **Prefab**: `Assets/Prefab/3DCardTable.prefab` (with [CardDisplay3D](./shared.md#carddisplay3d)).
 
