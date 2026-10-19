@@ -31,7 +31,7 @@ public class OptionsPanel : MonoBehaviour
     private TMP_Text presetStatus;
 
     [SerializeField, Required]
-    private List<DeckPreset> presets = new();
+    private DeckPresetLibrary presetLibrary; // Assets/Instances/DeckPresetLibrary.asset
 
     readonly Dictionary<DeckPreset, Button> buttonsByPreset = new();
     readonly Dictionary<AnimationSpeed, Button> buttonsBySpeed = new();
@@ -48,7 +48,7 @@ public class OptionsPanel : MonoBehaviour
 
     void Build()
     {
-        foreach (DeckPreset preset in presets)
+        foreach (DeckPreset preset in presetLibrary.Presets)
         {
             buttonsByPreset[preset] = AddButton(
                 presetButtons,

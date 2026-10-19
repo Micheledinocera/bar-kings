@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fddfee5e9d05b048971ef306d480b94, type: 3}
+  m_Name: DeckPresetLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::DeckPresetLibrary
+  presets:
+  - {fileID: 11400000, guid: 2cde3c9324afed144a9cca201d3ef230, type: 2}
+  - {fileID: 11400000, guid: e6c03be4cff5b8048ac99d8997321080, type: 2}
+  - {fileID: 11400000, guid: b4849a849aacdb34aa70d2f42a18ec3f, type: 2}
+  - {fileID: 11400000, guid: 5507460b7c1d64b4aad72d1f889b7e75, type: 2}
+  - {fileID: 11400000, guid: 8d54d1192867eba47bef593365277852, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: ec7a71530ee79e3438d33ad738450dbe, type: 2}

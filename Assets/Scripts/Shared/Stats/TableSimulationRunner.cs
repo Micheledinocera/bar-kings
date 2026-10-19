@@ -6,9 +6,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Simulation button of the table scenes: plays many games of the selected presets with the rules of the open scene
-// (bench or discard, from TableDeckManager) and saves two CSV files: the paths of the first games, as a snapshot,
-// and the averages of every preset. The game on the table is not touched.
+// Simulation button of the table scenes: plays many games of every preset of the library with the rules of the open
+// scene (bench or discard, from TableDeckManager) and saves two CSV files: the paths of the first games, as a
+// snapshot, and the averages of every preset. The game on the table is not touched.
 public class TableSimulationRunner : MonoBehaviour
 {
     [SerializeField, Required]
@@ -22,7 +22,7 @@ public class TableSimulationRunner : MonoBehaviour
     private Button button;
 
     [SerializeField, Required]
-    private List<DeckPreset> presets = new();
+    private DeckPresetLibrary presetLibrary; // Assets/Instances/DeckPresetLibrary.asset
 
     // Games per preset written path by path in the runs file.
     [SerializeField, MinValue(0)]
@@ -53,6 +53,7 @@ public class TableSimulationRunner : MonoBehaviour
             System.Random random = new(simulationSeed);
             string mode = tableDeckManager.Excess.ToString();
             List<CardDataInGame> baseCards = tableDeckManager.DeckDatabase.CreateCardsInGame();
+            IReadOnlyList<DeckPreset> presets = presetLibrary.Presets;
             Log(
                 $"Simulation | {mode} | {presets.Count} presets x {games} games | seed {simulationSeed}"
             );

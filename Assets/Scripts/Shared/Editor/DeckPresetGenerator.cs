@@ -1,15 +1,18 @@
 using UnityEditor;
 using UnityEngine;
 
-// Creates the deck presets to try in Assets/Instances/DeckPresets. Presets that already exist are kept as they are.
+// Creates the deck presets to try in Assets/Instances/DeckPresets and the library that lists them. Presets that
+// already exist are kept as they are; the library keeps the presets it has (the custom ones of Tools/Preset Builder
+// included) and gets the missing ones.
 public static class DeckPresetGenerator
 {
     const string InstancesFolder = "Assets/Instances";
     const string PresetsFolderName = "DeckPresets";
-    const string PresetsFolder = InstancesFolder + "/" + PresetsFolderName;
+    public const string PresetsFolder = InstancesFolder + "/" + PresetsFolderName;
+    const string LibraryPath = InstancesFolder + "/DeckPresetLibrary.asset";
 
     // Name, non-king cards removed, duplicates added: 32, 45, 60 and 71 non-king cards, plus the 4 kings. At most
-    // DeckRules.MaxExtraRows rows of duplicates, so that index>40 can deal every preset.
+    // DeckRules.MaxDuplicates, so that index>40 can deal every preset.
     static readonly (string name, int removed, int duplicates)[] Presets =
     {
         ("Preset32", 9, 5),
@@ -21,26 +24,49 @@ public static class DeckPresetGenerator
     [MenuItem("Tools/Genera Preset Mazzo")]
     public static void GeneratePresets()
     {
-        if (!AssetDatabase.IsValidFolder(PresetsFolder))
-        {
-            AssetDatabase.CreateFolder(InstancesFolder, PresetsFolderName);
-        }
+        EnsurePresetsFolder();
+        DeckPresetLibrary library = LoadOrCreateLibrary();
 
         int created = 0;
         foreach ((string name, int removed, int duplicates) in Presets)
         {
             string assetPath = $"{PresetsFolder}/{name}.asset";
-            if (AssetDatabase.LoadAssetAtPath<DeckPreset>(assetPath) != null)
+            DeckPreset preset = AssetDatabase.LoadAssetAtPath<DeckPreset>(assetPath);
+            if (preset == null)
             {
-                continue;
+                preset = ScriptableObject.CreateInstance<DeckPreset>();
+                preset.Set(removed, duplicates);
+                AssetDatabase.CreateAsset(preset, assetPath);
+                created++;
             }
-            DeckPreset preset = ScriptableObject.CreateInstance<DeckPreset>();
-            preset.Set(removed, duplicates);
-            AssetDatabase.CreateAsset(preset, assetPath);
-            created++;
+            if (library.Add(preset))
+            {
+                EditorUtility.SetDirty(library);
+            }
         }
 
         AssetDatabase.SaveAssets();
-        Debug.Log($"{Presets.Length} deck presets in {PresetsFolder}, {created} new.");
+        Debug.Log(
+            $"{Presets.Length} deck presets in {PresetsFolder}, {created} new; {library.Presets.Count} in {LibraryPath}."
+        );
+    }
+
+    public static void EnsurePresetsFolder()
+    {
+        if (!AssetDatabase.IsValidFolder(PresetsFolder))
+        {
+            AssetDatabase.CreateFolder(InstancesFolder, PresetsFolderName);
+        }
+    }
+
+    public static DeckPresetLibrary LoadOrCreateLibrary()
+    {
+        DeckPresetLibrary library = AssetDatabase.LoadAssetAtPath<DeckPresetLibrary>(LibraryPath);
+        if (library == null)
+        {
+            library = ScriptableObject.CreateInstance<DeckPresetLibrary>();
+            AssetDatabase.CreateAsset(library, LibraryPath);
+        }
+        return library;
     }
 }
