@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// Builds the deck of one game from the base cards: removes and duplicates non-king cards at random, then deals the
-// table. Plain C#: the same seed gives the same deal, so a game can be replayed and an autoplay can run it.
+// Builds the deck of one game from the base cards: removes and duplicates non-king cards, at random or the first
+// ones in table order (CardPick), then deals the table. Plain C#: the same seed gives the same deal, so a game can be
+// replayed and an autoplay can run it.
 // - removedCount distinct non-king cards are taken out;
 // - duplicateCount copies of the remaining non-king cards are added, spread out: every card gets a copy before
 //   any gets a second one.
@@ -22,10 +23,11 @@ public static class DeckBuilder
                 baseCards,
                 preset.RemovedCards,
                 preset.Duplicates,
+                preset.Pick,
                 new NextFreeIndexRule(),
                 random
             )
-            : Build(baseCards, preset.RemovedCards, preset.Duplicates, random);
+            : Build(baseCards, preset.RemovedCards, preset.Duplicates, preset.Pick, random);
 
     // Panchina and tribuna: the 40 slots get the 4 kings and up to 36 non-king cards, shuffled on the first slots;
     // with fewer cards the last slots are holes. The non-king cards beyond the table are the excess.
@@ -33,11 +35,12 @@ public static class DeckBuilder
         IReadOnlyList<CardDataInGame> baseCards,
         int removedCount,
         int duplicateCount,
+        CardPick pick,
         Random random
     )
     {
         (List<CardDataInGame> kings, List<CardDataInGame> removed, List<CardDataInGame> kept) =
-            SplitBaseCards(baseCards, removedCount, random);
+            SplitBaseCards(baseCards, removedCount, pick, random);
         List<CardDataInGame> duplicates = Duplicate(
             kept,
             duplicateCount,
@@ -66,12 +69,13 @@ public static class DeckBuilder
         IReadOnlyList<CardDataInGame> baseCards,
         int removedCount,
         int duplicateCount,
+        CardPick pick,
         IDuplicateIndexRule indexRule,
         Random random
     )
     {
         (List<CardDataInGame> kings, List<CardDataInGame> removed, List<CardDataInGame> kept) =
-            SplitBaseCards(baseCards, removedCount, random);
+            SplitBaseCards(baseCards, removedCount, pick, random);
         List<CardDataInGame> duplicates = Duplicate(kept, duplicateCount, indexRule.IndexOf);
 
         int slotCount = DeckRules.TableSlots;
@@ -114,12 +118,18 @@ public static class DeckBuilder
         return new DeckDeal(tableSlots, Array.Empty<CardDataInGame>(), removed, duplicates);
     }
 
-    // The 4 kings, the removed non-king cards and the kept ones, after a shuffle.
+    // The 4 kings, the removed non-king cards and the kept ones: after a shuffle, or in table order with
+    // CardPick.First, so the first cards are removed and the first kept ones are duplicated.
     static (
         List<CardDataInGame> kings,
         List<CardDataInGame> removed,
         List<CardDataInGame> kept
-    ) SplitBaseCards(IReadOnlyList<CardDataInGame> baseCards, int removedCount, Random random)
+    ) SplitBaseCards(
+        IReadOnlyList<CardDataInGame> baseCards,
+        int removedCount,
+        CardPick pick,
+        Random random
+    )
     {
         List<CardDataInGame> kings = baseCards
             .Where(card => card.cardData.valore == DeckRules.KingValue)
@@ -133,6 +143,7 @@ public static class DeckBuilder
 
         List<CardDataInGame> others = baseCards
             .Where(card => card.cardData.valore != DeckRules.KingValue)
+            .OrderBy(card => card.index)
             .ToList();
         if (removedCount < 0 || removedCount > others.Count)
         {
@@ -141,7 +152,10 @@ public static class DeckBuilder
                 $"{removedCount} cards to remove out of {others.Count}"
             );
         }
-        Shuffle(others, random);
+        if (pick == CardPick.Random)
+        {
+            Shuffle(others, random);
+        }
         return (kings, others.Take(removedCount).ToList(), others.Skip(removedCount).ToList());
     }
 
