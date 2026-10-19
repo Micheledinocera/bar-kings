@@ -1,8 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-16
-verificato: 2026-10-16
+aggiornato: 2026-10-19
+verificato: 2026-10-19
+consolidato: 2026-10-19
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-csv-fixes.md
   - raw/compiled/index40/2026-10-16-simulazione-tre-modi.md
@@ -69,9 +71,9 @@ Scripts in `Assets/Scripts/Shared/Stats/`: the **game log** of the table scenes 
 
 ## TableSimulationRunner
 
-`Assets/Scripts/Shared/Stats/TableSimulationRunner.cs`. The **Simula** button of the table scenes. `Run()` (persistent `OnClick` of its own `Button`) starts an `async UniTaskVoid`: for each preset of `presets`, `games` games with [GameSimulator](#gamesimulator), the rules of the open scene (`TableDeckManager.Excess`: panchina, tribuna or index>40) and its `DeckDatabase`; then writes `<yyyyMMdd-HHmmss>-<scene>-runs.csv` and `-averages.csv` with [SimulationCsv](#simulationcsv) and logs where. The button is not interactable while it runs; the table being played is not touched.
+`Assets/Scripts/Shared/Stats/TableSimulationRunner.cs`. The **Simula** button of the table scenes. `Run()` (persistent `OnClick` of its own `Button`) starts an `async UniTaskVoid`: for each preset of `presetLibrary` ([DeckPresetLibrary](./deck.md#deckpresetlibrary): the standard and custom presets), `games` games with [GameSimulator](#gamesimulator), the rules of the open scene (`TableDeckManager.Excess`: panchina, tribuna or index>40) and its `DeckDatabase`; then writes `<yyyyMMdd-HHmmss>-<scene>-runs.csv` and `-averages.csv` with [SimulationCsv](#simulationcsv) and logs where. The button is not interactable while it runs; the table being played is not touched.
 
-- **Serialized fields**: `tableDeckManager`, `gameLog` (optional; scene overrides of the prefab instance), `button`, `presets`, `snapshotGames` (20), `games` (1000, snapshot games included), `seed` (0 = a new one at every run, written in the averages).
+- **Serialized fields**: `tableDeckManager`, `gameLog` (optional; scene overrides of the prefab instance), `button`, `presetLibrary` (`Assets/Instances/DeckPresetLibrary.asset`, set on the prefab), `snapshotGames` (20), `games` (1000, snapshot games included), `seed` (0 = a new one at every run, written in the averages).
 - **Output**: `Simulations/` in the project root (git-ignored, `.gitignore`); `Application.persistentDataPath/Simulations` in a build.
 - Yields a frame every `GamesPerFrame` (50) games. With the Editor in the background the frames stop (`Application.runInBackground` off), and so does the simulation: run it with the Editor focused.
 - **Prefab**: `Assets/Prefab/SimulationButton.prefab`, in the three table scenes ([scenes](./scenes.md#panchina-tribuna-and-index40)).

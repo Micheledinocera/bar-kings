@@ -1,10 +1,11 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-16
+aggiornato: 2026-10-19
 verificato: 2026-10-07
-consolidato: 2026-10-15
+consolidato: 2026-10-19
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/demo-1/2026-10-16-opzioni.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/index40/2026-10-16-simulazione-tre-modi.md
@@ -38,7 +39,9 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 - Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/Tribuna.unity`, `Assets/Scenes/Index40.unity`. Una mini demo le mette in visione: si parte dalla scena `Assets/Scenes/Menu.unity` con un bottone per ciascuna, e da ognuna si torna al Menu ([tecnico/scenes](../tecnico/scenes.md)). In ogni scena un pannello di opzioni sceglie il preset della prossima partita e la velocità delle animazioni (piano, normale, veloce).
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
 - Le scene gemelle sono **temporanee**: servono a provare un'idea senza rompere la precedente. Quando se ne sceglie una, le altre (e il codice che usano solo loro) si eliminano.
-- Stato del codice al 2026-10-16: le tre scene usano lo stesso codice ([tecnico/table](../tecnico/table.md)) e cambiano solo in cosa succede alle carte oltre le 40. Il mazzo si costruisce da un **preset** ([tecnico/deck](../tecnico/deck.md)): i 36 non-re con alcune carte tolte e alcuni doppioni aggiunti (mai re), più i 4 re sempre presenti; quali carte togliere e duplicare si estrae a ogni partita, con un seed che permette di rigiocarla. Preset in prova: 32, 45, 60 e 71 carte non-re (al massimo 40 doppioni; il 71 era un 80 con 49 doppioni, ridotto per stare negli 80 slot di index>40). Panchina parte da 32, tribuna da 71, index>40 da 45. In panchina e tribuna sul tavolo vanno 36 non-re e i 4 re (doppioni e carte mancanti sono casi di test voluti); sotto le 40 carte i buchi sono gli **ultimi** slot (lì non c'è una logica di indice della carta); le carte in eccesso formano il **mazzo panchina** o vengono buttate. Un pulsante Reset rifà la partita senza uscire dal Play.
+- Stato del codice al 2026-10-16: le tre scene usano lo stesso codice ([tecnico/table](../tecnico/table.md)) e cambiano solo in cosa succede alle carte oltre le 40. Il mazzo si costruisce da un **preset** ([tecnico/deck](../tecnico/deck.md)): i 36 non-re con alcune carte tolte e alcuni doppioni aggiunti (mai re), più i 4 re sempre presenti; quali carte togliere e duplicare si estrae a ogni partita (o sono le prime N, vedi sotto), con un seed che permette di rigiocarla. Preset in prova: 32, 45, 60 e 71 carte non-re (al massimo 40 doppioni; il 71 era un 80 con 49 doppioni, ridotto per stare negli 80 slot di index>40). Panchina parte da 32, tribuna da 71, index>40 da 45. In panchina e tribuna sul tavolo vanno 36 non-re e i 4 re (doppioni e carte mancanti sono casi di test voluti); sotto le 40 carte i buchi sono gli **ultimi** slot (lì non c'è una logica di indice della carta); le carte in eccesso formano il **mazzo panchina** o vengono buttate. Un pulsante Reset rifà la partita senza uscire dal Play.
+- **Preset personalizzati** (2026-10-19): oltre ai 4 preset di prova se ne creano altri dall'Editor (`Tools/Preset Builder`, [tecnico/deck](../tecnico/deck.md#deckpresetbuilderwindow)) scegliendo carte tolte, doppioni e come sceglierle; si aggiungono ai preset del pannello opzioni e della simulazione. Primo preset personalizzato: `Prime18` (18 tolte, 18 doppioni, le "prime": 40 carte).
+- **Scelta delle carte in prova** (2026-10-19, non decisa; codice: [CardPick](../tecnico/deck.md#cardpick)): ogni preset dice se le carte da togliere e da duplicare sono **casuali** (estratte a ogni partita, come nei 4 preset di prova) o le **prime N** in ordine di tavolo (indice della carta: denari dall'asso in poi, poi coppe, spade, bastoni), quindi sempre le stesse; il tavolo si mescola comunque.
 - **Regole in prova nella POC di index>40** (2026-10-16, non decise; fonte: raw/compiled/index40/2026-10-16-regole.md):
   - il tavolo cresce di righe da 10, **al massimo 4** in più (80 slot): ogni carta aggiunta va all'**indice successivo disponibile** (dopo i 40 di base), per ora fisso; il codice prevede già regole di "modifica di indice" in fase di creazione del mazzo;
   - una carta aggiunta va solo al suo slot, mai sull'originale: i doppioni non si sovrappongono;
@@ -73,6 +76,6 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 - Panchina: la regola in prova per la carta che arriva su un buco (lo riempie scoperta, il path si ferma) è quella definitiva?
 - Panchina: le carte che riempiono i buchi entrano coperte o scoperte? In prova: coperte. Cosa succede oltre un tot di carte in panchina?
 - Panchina: quando finisce la partita (es. panchina vuota e nessuna carta coperta)?
-- Tribuna: con le regole in prova la dimensione del mazzo oltre le 40 carte pesa poco (le carte in più si buttano). Serve un'altra regola perché pesi, per esempio mettere apposta i doppioni sul tavolo invece di pescarli a caso?
+- Tribuna: con le regole in prova la dimensione del mazzo oltre le 40 carte pesa poco (le carte in più si buttano). Serve un'altra regola perché pesi, per esempio mettere apposta i doppioni sul tavolo invece di pescarli a caso? (La scelta delle prime N carte, in prova, fissa quali carte si duplicano, non dove finiscono.)
 - Index>40: con l'indice successivo disponibile ogni path si chiude e la partita sono 4–5 cicli lunghi. Quali regole di "modifica di indice" provare per avere configurazioni diverse?
 - Quale idea si tiene, o se si combinano: dipende dalle prove nelle tre scene.

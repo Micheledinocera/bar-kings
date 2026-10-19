@@ -1,10 +1,11 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-16
+aggiornato: 2026-10-19
 verificato: 2026-10-15
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-strumenti.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/panchina-continue/2026-10-15-implementazione.md
@@ -63,3 +64,4 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 ## Domande aperte
 
 - Il pacchetto è una pre-release (`2.20.0-pre.2`): passare alla versione stabile quando esce.
+- **Unity CLI** (`unity`, pacchetto npm `@unity/cli`, in beta: 1.0.0-beta.13 del 2026-10-07, [release notes](https://docs.unity.com/en-us/unity-cli/release-notes)): potrebbe servire per `unity recompile` (controllo di compilazione da terminale), `unity test`, `unity build` nel check di `/close`, `unity logs`, e ha un suo server MCP (`unity mcp`, `unity setup claude`) che si sovrappone a `unity-mcp`. Per parlare con l'Editor aperto serve il pacchetto `com.unity.pipeline` (pacchetto nuovo: da decidere). Per ora non si adotta: se ne riparla quando diventa stabile, in una feature apposta (es. `study-unity-cli`) (utente, 2026-10-19).

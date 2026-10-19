@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-16
-verificato: 2026-10-16
+aggiornato: 2026-10-19
+verificato: 2026-10-19
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/demo-1/2026-10-16-build.md
@@ -43,7 +44,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 
 ## Block D — Input
 
-- `debt` — Clicks go through `OnMouseDown`; `Assets/InputSystem_Actions.inputactions` is unused. Works today; to move to the Input System when the card view is rewritten. `Assets/Scripts/Shared/Table/TableCardController.cs` — [TableCardController](./table.md#tablecardcontroller)
+- `debt` — Clicks go through `OnMouseDown`, which ignores the UI (a check of `EventSystem.IsPointerOverGameObject` stops clicks over the panels); `Assets/InputSystem_Actions.inputactions` is unused. Works today; to move to the Input System when the card view is rewritten. `Assets/Scripts/Shared/Table/TableCardController.cs` — [TableCardController](./table.md#tablecardcontroller)
 
 ## Block F — Cleanup and conventions
 

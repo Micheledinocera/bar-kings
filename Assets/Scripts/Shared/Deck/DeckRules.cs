@@ -11,4 +11,7 @@ public static class DeckRules
     // Index>40: rows added after the base table, one slot per added card.
     public const int MaxExtraRows = 4;
     public const int MaxTableSlots = TableSlots + MaxExtraRows * SlotsPerRow;
+
+    // Duplicates of a deck preset: at most one per extra slot, so that index>40 can deal every preset.
+    public const int MaxDuplicates = MaxTableSlots - TableSlots;
 }

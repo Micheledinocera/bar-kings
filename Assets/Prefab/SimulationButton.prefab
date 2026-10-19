@@ -286,11 +286,7 @@ MonoBehaviour:
   tableDeckManager: {fileID: 0}
   gameLog: {fileID: 0}
   button: {fileID: 3295800186114038175}
-  presets:
-  - {fileID: 11400000, guid: 2cde3c9324afed144a9cca201d3ef230, type: 2}
-  - {fileID: 11400000, guid: e6c03be4cff5b8048ac99d8997321080, type: 2}
-  - {fileID: 11400000, guid: b4849a849aacdb34aa70d2f42a18ec3f, type: 2}
-  - {fileID: 11400000, guid: 5507460b7c1d64b4aad72d1f889b7e75, type: 2}
+  presetLibrary: {fileID: 11400000, guid: 65716d78043453f47a6f0b5f387e884f, type: 2}
   snapshotGames: 20
   games: 1000
   seed: 0

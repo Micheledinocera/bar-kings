@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-16
-verificato: 2026-10-16
+aggiornato: 2026-10-19
+verificato: 2026-10-19
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/build/2026-10-16-comando-build.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
@@ -28,7 +29,7 @@ fonti:
 
 # Scenes, prefabs and data assets
 
-Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/`, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md).
+Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/` and their library, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md).
 
 The three scenes of the [deck modification ideas](../business/modifica-del-mazzo.md) (`Panchina`, `Tribuna`, `Index40`) are **temporary**: they let each idea be explored without breaking the previous version. When one idea is chosen, the other scenes and the code only they use are deleted.
 
@@ -66,10 +67,10 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - `Assets/Prefab/3DCardTable.prefab`: the card, root with [CardDisplay3D](./shared.md#carddisplay3d) and [TableCardController](./table.md#tablecardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`); used by the three table scenes.
 - `Assets/Prefab/CardSlot.prefab`: `CardSlot` root with a `Cube` child (`Mat_Card_Slot`).
 - `Assets/Prefab/GameLog.prefab`: scrollable panel (`ScrollRect`, `Viewport` with `RectMask2D`, `Content` with a TMP `Text`, vertical `Scrollbar`) anchored to the left of the Canvas, 520 px wide, with [GameLogView](./stats.md#gamelogview).
-- `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the four presets; `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
+- `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the preset library (`Assets/Instances/DeckPresetLibrary.asset`); `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
 - `Assets/Prefab/SceneButton.prefab`: the `ResetButton` look with [SceneLoader](./shared.md#sceneloader) (`sceneName` `Menu`, text "Back"); `OnClick` calls `Load`. Used for Back and, with overrides, for the Menu buttons.
 - `Assets/Prefab/LogToggleButton.prefab`: the `ResetButton` look, text "Log", empty `OnClick` (set on the scene instances).
-- `Assets/Prefab/Options.prefab`: full-canvas root (no graphic) with [OptionsPanel](./table.md#optionspanel), the `OptionsButton` (text "Opzioni") and a hidden `Panel` (dark, 400 px wide, at the left of the button column): status text, "Preset (dal prossimo Reset)" with `PresetButtons`, "Velocità animazioni" with `SpeedButtons`.
+- `Assets/Prefab/Options.prefab`: full-canvas root (no graphic) with [OptionsPanel](./table.md#optionspanel), the `OptionsButton` (text "Opzioni") and a hidden `Panel` (dark, 400 px wide, at the left of the button column): status text, "Preset (dal prossimo Reset)" with `PresetScroll`, "Velocità animazioni" with `SpeedButtons`. `Panel` has a raycast-target `Image`, so UI clicks stop on it (cards ignore clicks over the UI, [TableCardController](./table.md#tablecardcontroller)). `PresetScroll`: vertical-only `ScrollRect` 400 px high (about 6 presets, mouse wheel and drag), `Viewport` (`RectMask2D`, transparent `Image` for the wheel) with `PresetButtons` as content (top-anchored, `ContentSizeFitter` on the height), and a vertical `Scrollbar` shown only when the presets do not fit (`AutoHideAndExpandViewport`); with few presets the area stays 400 px high. The preset library is set on the prefab (`presetLibrary`).
 - `Assets/Prefab/OptionButton.prefab`: smaller button (360×60) for the entries of the options panel, instantiated by [OptionsPanel](./table.md#optionspanel).
 
 ## Card assets
@@ -78,7 +79,9 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 
 `Assets/Instances/CardDatabase.asset`: the [CardDatabase](./shared.md#carddatabase) with the 40 cards in table order. Assigned to the `deckDatabase` field of the deck manager in the **three table scenes**; a new table scene needs it too.
 
-`Assets/Instances/DeckPresets/Preset32.asset`, `Preset45.asset`, `Preset60.asset`, `Preset71.asset` (was `Preset80`, same GUID): the [DeckPreset](./deck.md#deckpreset) assets, created only by the menu `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)).
+`Assets/Instances/DeckPresets/Preset32.asset`, `Preset45.asset`, `Preset60.asset`, `Preset71.asset` (was `Preset80`, same GUID): the standard [DeckPreset](./deck.md#deckpreset) assets, created only by the menu `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)). Custom presets in the same folder (`Prime18.asset`), created by `Tools/Preset Builder` ([DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow)).
+
+`Assets/Instances/DeckPresetLibrary.asset`: the [DeckPresetLibrary](./deck.md#deckpresetlibrary), the presets shown by the options panel and run by the simulation (the four standard ones and `Prime18`); set in `Assets/Prefab/Options.prefab` and `Assets/Prefab/SimulationButton.prefab`.
 
 ## Project settings
 
