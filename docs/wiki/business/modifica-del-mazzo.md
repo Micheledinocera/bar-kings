@@ -1,10 +1,12 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-19
+aggiornato: 2026-10-20
 verificato: 2026-10-07
 consolidato: 2026-10-19
 fonti:
+  - raw/compiled/study-meccaniche/2026-10-20-tribuna-forme.md
+  - raw/compiled/study-meccaniche/2026-10-20-obiettivo.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/demo-1/2026-10-16-opzioni.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
@@ -35,6 +37,12 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 
 ## Cosa sappiamo
 
+- **Direzione dello studio del 2026-10-20** (study-meccaniche, non decisa): l'utente si concentra sulla **tribuna**, perché è l'idea in cui la lunghezza dei path non "decade velocemente" all'aumentare delle carte (resta quasi costante, vedi i dati sotto). Le altre due scene restano in prova.
+- **Bonus sulle forme dei buchi in tribuna** (2026-10-20, idea dell'utente, non decisa; fonte: raw/compiled/study-meccaniche/2026-10-20-tribuna-forme.md):
+  - i bonus vanno alle **forme dei buchi** (non alle carte scoperte attorno); si contano a **fine partita**, sul tavolo finale. Come implementarli si decide dopo, quando ci saranno vere meccaniche di gameplay;
+  - a fine partita ogni carta scoperta è nel **suo** slot (path chiuso, carta su un buco o sopra il suo doppione) e non restano carte coperte: i buchi finali sono **esattamente gli slot delle carte che mancano dal tavolo** (carte tolte dal preset e originali rimasti fuori perché è uscito un loro doppione). I buchi "in fondo" sotto le 40 carte esistono solo all'inizio, quindi con il conteggio a fine partita le forme funzionano anche con meno di 40 carte;
+  - di conseguenza la forma finale **non dipende da come si giocano i path**, ma da quali carte sono sul tavolo (preset e distribuzione): è una leva di **costruzione del mazzo** (quali carte togliere o duplicare; più doppioni = più buchi ma path più corti). Durante la partita la cambia solo un'azione che cambia l'indice di una carta (es. modificarne valore o seme) o una meccanica futura;
+  - il tavolo è una griglia 4×10 per indice (riga = seme, colonna = valore), quindi le forme hanno un senso da gioco di carte: riga continua = scala dello stesso seme, colonna = stesso valore in tutti i semi, blocchi, diagonali. Proposta dell'agent per il tema bar: contare i buchi in riga come alla tombola (ambo, terno, quaterna, cinquina, tombola).
 - Tutte e tre le idee hanno una POC giocabile (2026-10-16), da mettere in visione per scegliere.
 - Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/Tribuna.unity`, `Assets/Scenes/Index40.unity`. Una mini demo le mette in visione: si parte dalla scena `Assets/Scenes/Menu.unity` con un bottone per ciascuna, e da ognuna si torna al Menu ([tecnico/scenes](../tecnico/scenes.md)). In ogni scena un pannello di opzioni sceglie il preset della prossima partita e la velocità delle animazioni (piano, normale, veloce).
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
@@ -62,7 +70,7 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 | Idea | Carte oltre le 40 | Doppioni | Fine | Effetto sui path |
 |---|---|---|---|---|
 | **Panchina** | Restano disponibili: ogni volta che si crea un "buco" (un doppione) una carta della panchina lo riempie, coperta (o scoperta?) | Finiscono uno sull'altro | Si gioca finché ci sono buchi da riempire | Li accorcia |
-| **Tribuna** | Non disponibili: i buchi non si riempiono. Si abbozzano "forme" fatte dai buchi (l'unica idea compatibile con meno di 40 carte) | Finiscono uno sull'altro | Si gioca fino a 40 carte | Li accorcia |
+| **Tribuna** | Non disponibili: i buchi non si riempiono. Bonus sulle "forme" dei buchi a fine partita (in studio; l'unica idea compatibile con meno di 40 carte) | Finiscono uno sull'altro | Si gioca fino a 40 carte | Li accorcia |
 | **Index>40** | Hanno un indice incrementale (es. un 2 di bastoni aggiunto ha indice 41); si possono creare configurazioni con indici diversi | Non si sovrappongono: hanno indici diversi | In prova: finché restano carte coperte | Li allunga (in prova: ogni path si chiude) |
 
 Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panchina non si usa (o si inventa altro). Oltre un certo numero di carte in panchina, un'ipotesi è combinare panchina e tribuna.
@@ -76,6 +84,8 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 - Panchina: la regola in prova per la carta che arriva su un buco (lo riempie scoperta, il path si ferma) è quella definitiva?
 - Panchina: le carte che riempiono i buchi entrano coperte o scoperte? In prova: coperte. Cosa succede oltre un tot di carte in panchina?
 - Panchina: quando finisce la partita (es. panchina vuota e nessuna carta coperta)?
-- Tribuna: con le regole in prova la dimensione del mazzo oltre le 40 carte pesa poco (le carte in più si buttano). Serve un'altra regola perché pesi, per esempio mettere apposta i doppioni sul tavolo invece di pescarli a caso? (La scelta delle prime N carte, in prova, fissa quali carte si duplicano, non dove finiscono.)
+- Tribuna: con le regole in prova la dimensione del mazzo oltre le 40 carte pesa poco sui path (le carte in più si buttano). Il bonus sulle forme dei buchi può farla pesare (quali carte mancano decide la forma finale): basta, o serve anche mettere apposta i doppioni sul tavolo invece di pescarli a caso? (La scelta delle prime N carte, in prova, fissa quali carte si duplicano, non dove finiscono.)
+- Tribuna: va bene che la forma finale dei buchi dipenda solo dal mazzo, o serve una scelta del giocatore durante la partita che la cambi?
+- Tribuna: quali forme danno bonus e quanto; servono i dati della simulazione (quanti buchi a fine partita, quanto spesso escono forme per caso), da misurare in una feature di codice.
 - Index>40: con l'indice successivo disponibile ogni path si chiude e la partita sono 4–5 cicli lunghi. Quali regole di "modifica di indice" provare per avere configurazioni diverse?
 - Quale idea si tiene, o se si combinano: dipende dalle prove nelle tre scene.
