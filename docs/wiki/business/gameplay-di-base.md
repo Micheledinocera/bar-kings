@@ -1,7 +1,7 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-16
+aggiornato: 2026-10-20
 verificato: 2026-10-07
 fonti:
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
@@ -40,5 +40,5 @@ Le altre due idee non piacevano e non portavano da nessuna parte.
 
 - Regole esatte del tavolo: come si assegna il posto di una carta (fila = seme, colonna = valore?).
 - Quando si ferma un path: tornando alla carta iniziale (chiarimenti del 2026-10-07), trovando un re o girando una carta già al suo posto (idea 3)? Che ruolo ha il re nel ciclo?
-- Quando si vince e quando si perde un incontro; contro cosa si gioca (punteggio, HP, un altro mazzo).
+- Quando si vince e quando si perde un incontro; contro cosa si gioca (punteggio, HP, un altro mazzo). Prime idee (re = combattimento, scagnozzi e capobar) in [Parte RPG](./parte-rpg.md).
 - Quali eventi genera ogni carta nella risoluzione (es. effetti per seme: denari → soldi, coppe → cure, bastoni → armatura, spade → danno, tra le idee embrionali).

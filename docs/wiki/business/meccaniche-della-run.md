@@ -1,7 +1,7 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-07
+aggiornato: 2026-10-20
 verificato: 2026-10-07
 fonti:
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
@@ -44,6 +44,6 @@ Nessuna alternativa scartata finora.
 
 ## Domande aperte
 
-- Struttura della run: incontri, shop, punti fissi in cui cambiare lo starter o trovare santini.
+- Struttura della run: incontri, shop, punti fissi in cui cambiare lo starter o trovare santini. Prima proposta (3 bar, scagnozzi e capobar) in [Parte RPG](./parte-rpg.md).
 - Numero di slot per santini e amari.
 - Esempi concreti di imbrogli.

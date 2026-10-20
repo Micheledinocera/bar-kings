@@ -1,8 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-07
+aggiornato: 2026-10-20
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/study-rpg/2026-10-20-idee.md
+  - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-concept.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
@@ -20,6 +22,7 @@ Cos'è il gioco, in breve. Le scelte di gameplay sono nelle decisioni linkate qu
 | Gameplay di base | [Cicli sul solitario dei 4 re](./gameplay-di-base.md) · presa |
 | Meccaniche della run | [Starter, santini, amari, imbrogli, azioni](./meccaniche-della-run.md) · in analisi |
 | Modifica del mazzo | [Panchina, tribuna, index>40](./modifica-del-mazzo.md) · in analisi |
+| Parte RPG | [Eventi, combattimento, bar e incontri](./parte-rpg.md) · in analisi |
 
 ## Il ciclo in una frase
 
@@ -29,6 +32,10 @@ Si sceglie una carta e si girano carte fino a tornare a quella iniziale: il cicl
 
 | Termine | Significato |
 |---|---|
+| Run | L'intera partita alla Balatro: i bar uno dopo l'altro (in studio: 3, vedi [Parte RPG](./parte-rpg.md)) |
+| Bar | Livello della run; in studio: 2 scagnozzi e un capobar, con i suoi malus |
+| Incontro | Una partita sul tavolo (contro uno scagnozzo o il capobar), finita quando tutte le carte sono girate |
+| Scagnozzo, capobar | Miniboss e boss di un bar (in studio) |
 | Path / ciclo | La sequenza di carte girate a partire da quella scelta, fino a tornare a quella iniziale |
 | Risoluzione | Il momento in cui ogni carta del path chiuso genera un evento (parte RPG) |
 | Starter | "Filosofia" della run, una sola alla volta, cambiabile in punti fissi |
