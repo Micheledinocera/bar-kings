@@ -72,7 +72,7 @@ Then run the `/lint-wiki` skill and follow it (it commits its own fixes, if any)
 
 ## 5. Repo checks — fix, then report
 
-**Skip this step for a `study-` feature** whose check 4 found no code.
+**Skip this step for a `study-` feature** whose check 4 found no code: no formatting, no Unity checks and **no build**.
 
 None of these checks stops the close. From the repo root:
 
