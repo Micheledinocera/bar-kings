@@ -1,10 +1,13 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-20
+aggiornato: 2026-10-22
 verificato: 2026-10-07
 consolidato: 2026-10-19
 fonti:
+  - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
+  - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
+  - raw/compiled/study-tribuna/2026-10-22-obiettivo.md
   - raw/compiled/study-meccaniche/2026-10-20-tribuna-forme.md
   - raw/compiled/study-meccaniche/2026-10-20-obiettivo.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
@@ -37,12 +40,21 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 
 ## Cosa sappiamo
 
-- **Direzione dello studio del 2026-10-20** (study-meccaniche, non decisa): l'utente si concentra sulla **tribuna**, perché è l'idea in cui la lunghezza dei path non "decade velocemente" all'aumentare delle carte (resta quasi costante, vedi i dati sotto). Le altre due scene restano in prova.
+- **Direzione dello studio del 2026-10-20** (study-meccaniche, non decisa; confermata dalla call del 2026-10-22, vedi sotto): l'utente si concentra sulla **tribuna**, perché è l'idea in cui la lunghezza dei path non "decade velocemente" all'aumentare delle carte (resta quasi costante, vedi i dati sotto). Le altre due scene restano in prova.
 - **Bonus sulle forme dei buchi in tribuna** (2026-10-20, idea dell'utente, non decisa; fonte: raw/compiled/study-meccaniche/2026-10-20-tribuna-forme.md):
   - i bonus vanno alle **forme dei buchi** (non alle carte scoperte attorno); si contano a **fine partita**, sul tavolo finale. Come implementarli si decide dopo, quando ci saranno vere meccaniche di gameplay;
   - a fine partita ogni carta scoperta è nel **suo** slot (path chiuso, carta su un buco o sopra il suo doppione) e non restano carte coperte: i buchi finali sono **esattamente gli slot delle carte che mancano dal tavolo** (carte tolte dal preset e originali rimasti fuori perché è uscito un loro doppione). I buchi "in fondo" sotto le 40 carte esistono solo all'inizio, quindi con il conteggio a fine partita le forme funzionano anche con meno di 40 carte;
   - di conseguenza la forma finale **non dipende da come si giocano i path**, ma da quali carte sono sul tavolo (preset e distribuzione): è una leva di **costruzione del mazzo** (quali carte togliere o duplicare; più doppioni = più buchi ma path più corti). Durante la partita la cambia solo un'azione che cambia l'indice di una carta (es. modificarne valore o seme) o una meccanica futura;
   - il tavolo è una griglia 4×10 per indice (riga = seme, colonna = valore), quindi le forme hanno un senso da gioco di carte: riga continua = scala dello stesso seme, colonna = stesso valore in tutti i semi, blocchi, diagonali. Proposta dell'agent per il tema bar: contare i buchi in riga come alla tombola (ambo, terno, quaterna, cinquina, tombola).
+- **Call del 2026-10-22** (study-tribuna, non decisa; fonti: raw/compiled/study-tribuna/2026-10-22-riassunto-call.md, raw/compiled/study-tribuna/2026-10-22-discussione-call.md): si è **orientati verso la tribuna**, perché non cambia troppo i numeri e ci si incastrano altre meccaniche; panchina e index>40 non si scartano.
+  - **Forme proposte**: **colonna** (tolte tutte le carte di un valore; quella dei re non si può fare), **diagonale** (4 valori consecutivi di semi diversi), **quadrato** 2×2 / 3×3 / 4×4 (doppia coppia, 3 tris, 4 poker con gli stessi semi; il 4×4 sono 16 dei 36 non-re). Le forme grandi servono anche a bilanciare.
+  - **Le forme sono troppo facili, non rare**: lo slot di una carta tolta dal mazzo diventa per forza un buco se un path parte da lì (la sua carta non c'è, il path non si chiude). Esempio: tolti i 4 assi, 4 path che partono dai loro slot fanno sempre la colonna.
+  - **Fine dell'incontro al 4° re** (in prova per tribuna + forme): l'incontro finisce appena sono scoperti tutti e 4 i re, non quando sono girate tutte le carte. Così preparare il mazzo non garantisce la forma, e la forma finale dipende anche da quali path si aprono e in che ordine. Con questa regola restano carte coperte, quindi non vale più "buchi finali = slot delle carte che mancano" (vale con la fine attuale). È la perplessità principale: forse il 4° re non frena abbastanza le forme piccole.
+  - **Bonus**: a **fine incontro**, validi **per tutta la run**. Siccome i buchi diventano centrali, deve succedere **spesso** di poter togliere o trasformare carte del mazzo.
+  - **Malus di scagnozzi e capobar** ([Parte RPG](./parte-rpg.md)) su gruppi di carte, es. tutte le carte di un seme o i valori pari/dispari. Nota dell'agent: sono anch'essi insiemi di slot (un seme = una riga, pari/dispari = colonne alterne), quindi bonus e malus parlano la stessa lingua; per pianificare il mazzo vanno annunciati prima dell'incontro.
+  - **Nome**: "forme dei buchi" è un nome provvisorio e fuorviante. Orientamento verso il lessico della tombola: proposta **vincita** (altre: cartella, smorfia); da evitare "figura" (nelle carte italiane sono fante, cavallo e re). Nomi possibili delle singole forme: fila, ola, settore, o ambo/terno/quaterna/cinquina/tombola.
+  - **Modifiche del mazzo durante l'incontro** (es. una "bomba" che distrugge una carta sul tavolo): proposta dell'agent, separare **tavolo** (stato dell'incontro: la bomba fa un buco subito, che conta per le forme) e **mazzo** (stato della run: se la carta esce anche dal mazzo si decide a parte, a fine incontro o con effetti rari "permanenti").
+  - **Prossima feature di codice** (proposta, solo scena Tribuna): preset con **lista esplicita** di carte tolte e duplicate (anche n copie della stessa carta; oggi si sceglie solo quante, vedi [CardPick](../tecnico/deck.md#cardpick)), preset per ogni forma e per i malus, mazzi da 40 carte o meno; nella simulazione la fine al 4° re e un autoplay **mirato** (parte dagli slot delle carte tolte); misure: path al 4° re, buchi a fine incontro, frequenza delle forme, quante volte escono i 4 re entro k path. Elenco dei preset e delle misure: `docs/raw/compiled/study-tribuna/2026-10-22-discussione-call.md`.
 - Tutte e tre le idee hanno una POC giocabile (2026-10-16), da mettere in visione per scegliere.
 - Ognuna ha la sua scena di prova: `Assets/Scenes/Panchina.unity`, `Assets/Scenes/Tribuna.unity`, `Assets/Scenes/Index40.unity`. Una mini demo le mette in visione: si parte dalla scena `Assets/Scenes/Menu.unity` con un bottone per ciascuna, e da ognuna si torna al Menu ([tecnico/scenes](../tecnico/scenes.md)). In ogni scena un pannello di opzioni sceglie il preset della prossima partita e la velocità delle animazioni (piano, normale, veloce).
 - In tutte e tre si può modificare una carta cambiandone il valore o il seme.
@@ -70,7 +82,7 @@ Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltr
 | Idea | Carte oltre le 40 | Doppioni | Fine | Effetto sui path |
 |---|---|---|---|---|
 | **Panchina** | Restano disponibili: ogni volta che si crea un "buco" (un doppione) una carta della panchina lo riempie, coperta (o scoperta?) | Finiscono uno sull'altro | Si gioca finché ci sono buchi da riempire | Li accorcia |
-| **Tribuna** | Non disponibili: i buchi non si riempiono. Bonus sulle "forme" dei buchi a fine partita (in studio; l'unica idea compatibile con meno di 40 carte) | Finiscono uno sull'altro | Si gioca fino a 40 carte | Li accorcia |
+| **Tribuna** | Non disponibili: i buchi non si riempiono. Bonus sulle "forme" dei buchi a fine incontro, validi per la run (in studio; l'unica idea compatibile con meno di 40 carte) | Finiscono uno sull'altro | In prova: finché restano carte coperte; proposta: al 4° re scoperto | Li accorcia |
 | **Index>40** | Hanno un indice incrementale (es. un 2 di bastoni aggiunto ha indice 41); si possono creare configurazioni con indici diversi | Non si sovrappongono: hanno indici diversi | In prova: finché restano carte coperte | Li allunga (in prova: ogni path si chiude) |
 
 Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panchina non si usa (o si inventa altro). Oltre un certo numero di carte in panchina, un'ipotesi è combinare panchina e tribuna.
@@ -85,7 +97,14 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 - Panchina: le carte che riempiono i buchi entrano coperte o scoperte? In prova: coperte. Cosa succede oltre un tot di carte in panchina?
 - Panchina: quando finisce la partita (es. panchina vuota e nessuna carta coperta)?
 - Tribuna: con le regole in prova la dimensione del mazzo oltre le 40 carte pesa poco sui path (le carte in più si buttano). Il bonus sulle forme dei buchi può farla pesare (quali carte mancano decide la forma finale): basta, o serve anche mettere apposta i doppioni sul tavolo invece di pescarli a caso? (La scelta delle prime N carte, in prova, fissa quali carte si duplicano, non dove finiscono.)
-- Tribuna: va bene che la forma finale dei buchi dipenda solo dal mazzo, o serve una scelta del giocatore durante la partita che la cambi?
-- Tribuna: quali forme danno bonus e quanto; servono i dati della simulazione (quanti buchi a fine partita, quanto spesso escono forme per caso), da misurare in una feature di codice.
+- Tribuna: quali forme danno bonus e quanto; servono i dati della simulazione (quanti buchi a fine incontro, quanto spesso escono forme per caso o volute), da misurare in una feature di codice.
+- Tribuna: la fine al 4° re basta a togliere la certezza delle forme piccole? Se no: forme più grandi, malus, altro?
+- Tribuna: con la fine al 4° re, cosa conta come buco a fine incontro: solo gli slot vuoti visibili, o anche uno slot coperto la cui carta si sa che manca?
+- Tribuna: le forme si definiscono come **combinazioni di carte** (valori e semi, in qualsiasi ordine dei semi; proposta dell'agent) o come **disegni sulla griglia** (dipendono dall'ordine delle righe)? Diagonale con qualsiasi ordine dei semi o solo quello delle righe; quadrato con due semi qualsiasi o solo righe vicine?
+- Tribuna: le forme si sommano (il 4×4 contiene 4 colonne e quadrati più piccoli) o vale solo la più grande? La stessa forma presa in più incontri somma il bonus? C'è un limite?
+- Tribuna: nome del concetto (vincita o altro) e delle singole forme.
+- Malus dei boss su gruppi di carte: si applicano a fine incontro o durante? Colpiscono i buchi su quelle carte o le carte scoperte? Quali valori contano come pari (fante 8, cavallo 9)?
+- Un effetto che cambia il mazzo durante l'incontro (la bomba): vale subito sul tavolo, a fine incontro sul mazzo, o tutte e due? Su una carta coperta, il buco è nello slot fisico o in quello del suo indice?
+- Togliere o trasformare carte "spesso": quando (dopo ogni incontro, nello shop, come evento) e quanto?
 - Index>40: con l'indice successivo disponibile ogni path si chiude e la partita sono 4–5 cicli lunghi. Quali regole di "modifica di indice" provare per avere configurazioni diverse?
 - Quale idea si tiene, o se si combinano: dipende dalle prove nelle tre scene.

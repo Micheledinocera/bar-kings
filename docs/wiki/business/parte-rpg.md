@@ -1,9 +1,11 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-20
+aggiornato: 2026-10-22
 verificato: 2026-10-20
 fonti:
+  - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
+  - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
   - raw/compiled/study-rpg/2026-10-20-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
   - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
@@ -15,7 +17,7 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
 
 ## Cosa sappiamo
 
-- **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso); **path** = un ciclo.
+- **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso; per la tribuna si propone la fine al 4° re scoperto, vedi [Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)); **path** = un ciclo.
 - **Perché pathbuilder**: alla fine di un ciclo le carte girate formano un path, che triggera **un evento per ogni carta, in sequenza**. Modificare il mazzo orienta la lunghezza dei cicli e quali eventi appaiono.
 - **Pathbuilder ↔ RPG**:
   - la costruzione è **tra un incontro e l'altro** (si modifica il mazzo, parte pathbuilder); **durante l'incontro** se ne vedono gli effetti in combattimento (parte RPG);
@@ -42,7 +44,8 @@ Idee da valutare, nessuna scelta:
 | **Il re interrompe la risoluzione** | Quando un re compare nel path il nemico agisce subito: gli eventi prima del re si applicano, quelli dopo arrivano tardi. Probabilmente vale anche per gli altri eventi speciali | Sì, come direzione |
 | **Intento del nemico visibile** | Lo scagnozzo mostra cosa farà al prossimo re (es. "colpisce per 12"), alla Slay the Spire | Dà un motivo per scegliere la carta di partenza |
 | **Fiches × moltiplicatore** | Le carte parametriche sommano una base; la lunghezza del path (o i semi consecutivi) moltiplica | Ha senso soprattutto in index>40, dove i cicli si allungano; nelle altre varianti si accorciano |
-| **Forme dei buchi come bonus** | Le forme dei buchi della tribuna ([Modifica del mazzo](./modifica-del-mazzo.md)) danno un bonus | Plausibile; probabilmente bonus per quell'incontro, non economia tra incontri |
+| **Forme dei buchi come bonus** | Le forme dei buchi della tribuna ([Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)) danno un bonus | Dalla call del 2026-10-22: bonus a fine incontro, validi per tutta la run (prima l'ipotesi era un bonus solo per quell'incontro) |
+| **Malus su gruppi di carte** | Scagnozzi e capobar puniscono gruppi di carte: tutte le carte di un seme, i valori pari o dispari | Esempio di malus sulla parte pathbuilder (call del 2026-10-22); con le forme della tribuna rende rischioso togliere quelle carte. Da annunciare prima dell'incontro |
 | **Briscola del bar** | Ogni bar ha un seme di riferimento che ne potenzia le carte e fa da base ai malus | 3 bar e 4 semi: forse un **superboss finale con tutti i semi**, da verificare |
 | **Nemici legati ai semi** | Debolezze e resistenze per seme, mostrate in anticipo, così il mazzo si costruisce per il prossimo avversario | Da valutare |
 
