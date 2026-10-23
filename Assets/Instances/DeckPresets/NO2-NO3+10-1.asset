@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1b2e3d80001e184fa22ae5afb6af046, type: 3}
+  m_Name: NO2-NO3+10-1
+  m_EditorClassIdentifier: Assembly-CSharp::DeckPreset
+  removedCards: 0
+  duplicates: 0
+  pick: 0
+  chosenRemoved:
+  - {fileID: 11400000, guid: 7129bcb69b4f5fb418be89f50f77d04b, type: 2}
+  - {fileID: 11400000, guid: d4841749c2fe2944b8de821a3814e06c, type: 2}
+  - {fileID: 11400000, guid: 0199edc61df23fa42b1f818598f9f112, type: 2}
+  - {fileID: 11400000, guid: a324679c2af21a7419c902f34dee4567, type: 2}
+  - {fileID: 11400000, guid: 5ef067f55215657499a43e8bb2604840, type: 2}
+  - {fileID: 11400000, guid: 265dc960619ff814b9d1f84db54f0885, type: 2}
+  - {fileID: 11400000, guid: 4da2835eedb832f4dab6be2a826e8325, type: 2}
+  - {fileID: 11400000, guid: cbb20f15b62f50340a910413a62b7b03, type: 2}
+  chosenDuplicates:
+  - card: {fileID: 11400000, guid: 12a18b4d257c63644a669d68f91ea9dd, type: 2}
+    extraCopies: 10

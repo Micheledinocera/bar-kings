@@ -288,5 +288,6 @@ MonoBehaviour:
   button: {fileID: 3295800186114038175}
   presetLibrary: {fileID: 11400000, guid: 65716d78043453f47a6f0b5f387e884f, type: 2}
   snapshotGames: 20
-  games: 1000
+  games: 300
   seed: 0
+  strategies: 0000000001000000

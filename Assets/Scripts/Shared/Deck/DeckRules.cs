@@ -7,6 +7,7 @@ public static class DeckRules
     public const int BaseNonKingCards = TableSlots - KingCount;
 
     public const int SlotsPerRow = 10;
+    public const int BaseRows = TableSlots / SlotsPerRow; // one row per suit (Seme order), one column per value
 
     // Index>40: rows added after the base table, one slot per added card.
     public const int MaxExtraRows = 4;

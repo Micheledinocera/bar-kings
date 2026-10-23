@@ -88,8 +88,8 @@ public class OptionsPanel : MonoBehaviour
         }
         DeckPreset current = tableDeckManager.CurrentPreset;
         presetStatus.text =
-            $"In gioco: {(current != null ? current.name : "-")} | prossima partita (Reset): "
-            + tableDeckManager.NextPreset.name;
+            $"In gioco: {DeckPreset.NameOf(current)} | prossima partita (Reset): "
+            + DeckPreset.NameOf(tableDeckManager.NextPreset);
     }
 
     static string SpeedLabel(AnimationSpeed speed) =>

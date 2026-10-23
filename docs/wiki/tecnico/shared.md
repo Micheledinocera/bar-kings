@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-16
-verificato: 2026-10-16
+aggiornato: 2026-10-23
+verificato: 2026-10-23
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/build/2026-10-16-comando-build.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
@@ -40,7 +41,7 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`)
 `Assets/Scripts/Shared/Cards/CardData.cs`. ScriptableObject of one Neapolitan card: `nome` (string), `valore` (1–10, 10 = king), `seme` (enum `Seme { Denari, Coppe, Spade, Bastoni }`), `immagineFronte` (Sprite). Create menu: `Carte/Carta Napoletana`.
 
 - **Assets**: 40 instances in `Assets/Instances/Cards/` (`<valore>_<Seme>.asset`), created by [CardGenerator](#cardgenerator) from `Assets/Images/Cards/Fronte/*.jpg`, listed in [CardDatabase](#carddatabase).
-- **Used by**: [CardDatabase](#carddatabase), and every class of this page and of [table](./table.md) through [CardDataInGame](#carddataingame).
+- **Used by**: [CardDatabase](#carddatabase), [DeckPreset](./deck.md#deckpreset) and [ChosenCopies](./deck.md#chosencopies) (the chosen cards of a preset, by asset reference), and every class of this page and of [table](./table.md) through [CardDataInGame](#carddataingame).
 - Field names are Italian by choice and stay so (`AGENTS.md`).
 
 ## CardDataInGame
@@ -64,6 +65,7 @@ File names don't always match class names (`CardDisplay.cs` → `CardDisplay3D`)
 - sorts the `.jpg` files of `Assets/Images/Cards/Fronte` by name and derives suit and value from the position (`01_`…`40_`: 10 cards per suit in `Seme` order, ace to king);
 - creates the [CardData](#carddata) assets that **don't exist yet** in `Assets/Instances/Cards/`; existing ones are kept as they are (no overwrite, GUIDs unchanged);
 - creates or updates [CardDatabase](#carddatabase) (`Assets/Instances/CardDatabase.asset`) with the 40 cards in order, and logs how many cards were new.
+- `DatabasePath` (public constant): the path of the database, also read by [DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow) and [ShapePresetGenerator](./deck.md#shapepresetgenerator) to find the card assets of the grid.
 
 ## WindowsBuilder
 

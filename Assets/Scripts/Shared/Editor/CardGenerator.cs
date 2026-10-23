@@ -11,7 +11,7 @@ public static class CardGenerator
 {
     const string ImagesFolder = "Assets/Images/Cards/Fronte";
     const string CardsFolder = "Assets/Instances/Cards";
-    const string DatabasePath = "Assets/Instances/CardDatabase.asset";
+    public const string DatabasePath = "Assets/Instances/CardDatabase.asset";
     const int CardsPerSuit = 10;
 
     [MenuItem("Tools/Genera Carte Napoletane")]
