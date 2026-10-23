@@ -15,12 +15,16 @@ public class SimulatedPath
     // Kings face up on the table after the path.
     public int FaceUpKings { get; }
 
+    // Holes on the table after the path.
+    public int Holes { get; }
+
     public SimulatedPath(
         int number,
         IReadOnlyList<CardDataInGame> cards,
         PathEnd end,
         bool filledFromBench,
-        int faceUpKings
+        int faceUpKings,
+        int holes
     )
     {
         Number = number;
@@ -28,6 +32,7 @@ public class SimulatedPath
         End = end;
         FilledFromBench = filledFromBench;
         FaceUpKings = faceUpKings;
+        Holes = holes;
     }
 
     public int Length => Cards.Count;
