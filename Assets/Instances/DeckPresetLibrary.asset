@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: DeckPresetLibrary
   m_EditorClassIdentifier: Assembly-CSharp::DeckPresetLibrary
   presets:
-  - {fileID: 11400000, guid: 2cde3c9324afed144a9cca201d3ef230, type: 2}
-  - {fileID: 11400000, guid: e6c03be4cff5b8048ac99d8997321080, type: 2}
-  - {fileID: 11400000, guid: b4849a849aacdb34aa70d2f42a18ec3f, type: 2}
-  - {fileID: 11400000, guid: 5507460b7c1d64b4aad72d1f889b7e75, type: 2}
-  - {fileID: 11400000, guid: ec7a71530ee79e3438d33ad738450dbe, type: 2}
+  - {fileID: 11400000, guid: a4e3c87f4da746b45bc1a1f4cc63af75, type: 2}
+  - {fileID: 11400000, guid: 2444a606bd2cf2046886c9a324d7ffc6, type: 2}
+  - {fileID: 11400000, guid: 7695bd582ab7cca4ebbf40fb39596207, type: 2}
+  - {fileID: 11400000, guid: c57a02df901d1664fbe8e566ad56c4f6, type: 2}
