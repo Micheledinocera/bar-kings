@@ -16,9 +16,13 @@ public class TableDeckManager : MonoBehaviour
     [SerializeField]
     private CardDatabase deckDatabase; // Assets/Instances/CardDatabase.asset
 
-    // Preset of the next game: the options panel changes it, the game in progress keeps its own until Reset.
-    [SerializeField, Required]
+    // Preset of the next game: the options panel changes it, the game in progress keeps its own until Reset. Empty:
+    // the first preset of the library, or the normal deck when the library is empty.
+    [SerializeField]
     private DeckPreset deckPreset; // Assets/Instances/DeckPresets
+
+    [SerializeField, Required]
+    private DeckPresetLibrary presetLibrary; // Assets/Instances/DeckPresetLibrary.asset
 
     // Seed of the deck: 0 draws a new one at every game. The seed is logged, so a game can be replayed.
     [SerializeField]
@@ -52,7 +56,7 @@ public class TableDeckManager : MonoBehaviour
     // Logical table state, built after dealing; cards on screen mirror it.
     TableState table;
     readonly Dictionary<CardDataInGame, CardDisplay3D> cardViews = new();
-    DeckPreset currentPreset; // preset of the game in progress
+    DeckPreset currentPreset; // preset of the game in progress; null for the normal deck
     int pathCount;
     bool allKingsLogged;
 
@@ -90,6 +94,10 @@ public class TableDeckManager : MonoBehaviour
 
         GameManager.isClickBlocked = true;
         int gameSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
+        if (deckPreset == null)
+        {
+            deckPreset = presetLibrary.Presets.FirstOrDefault();
+        }
         currentPreset = deckPreset;
         DeckDeal deal = DeckBuilder.Build(
             excessCards,
@@ -105,7 +113,14 @@ public class TableDeckManager : MonoBehaviour
         {
             gameLog.Clear();
         }
-        Log(GameLogFormatter.FormatDeal(currentPreset.name, gameSeed, deal, excessCards));
+        Log(
+            GameLogFormatter.FormatDeal(
+                DeckPreset.NameOf(currentPreset),
+                gameSeed,
+                deal,
+                excessCards
+            )
+        );
 
         ShowSlots(deal.TableSlots.Count);
         RenderDeck(deal.TableSlots, benchCards);
