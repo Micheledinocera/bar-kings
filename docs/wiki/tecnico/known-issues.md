@@ -1,7 +1,7 @@
 ---
 tipo: info
-aggiornato: 2026-10-19
-verificato: 2026-10-19
+aggiornato: 2026-10-23
+verificato: 2026-10-23
 consolidato: 2026-10-16
 fonti:
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md

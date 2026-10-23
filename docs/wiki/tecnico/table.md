@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-19
-verificato: 2026-10-19
+aggiornato: 2026-10-23
+verificato: 2026-10-23
 consolidato: 2026-10-19
 fonti:
+  - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/demo-1/2026-10-16-opzioni.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
@@ -59,7 +60,7 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 `Assets/Scripts/Shared/Table/TableDeckManager.cs`. Game setup and view of the Panchina and Tribuna scenes. In `Start`:
 
 1. sets the singleton `instance`, blocks clicks, draws the game seed (`seed`, or a random one when 0);
-2. builds the deck with `DeckBuilder.Build(excessCards, …)` ([DeckBuilder](./deck.md#deckbuilder)) from `deckDatabase` ([CardDatabase](./shared.md#carddatabase)) and `deckPreset` ([DeckPreset](./deck.md#deckpreset)). `Bench` and `Discard`: 40 table slots with the 4 kings, holes in the last slots when the deck is under 40 cards; the excess goes to the **bench** (`Bench`) or is thrown away, never instantiated (`Discard`). `Index`: one slot per card index (40 + duplicates), holes at the indices of the removed cards, no excess. Duplicates and missing cards on the table are **intended test cases**;
+2. builds the deck with `DeckBuilder.Build(excessCards, …)` ([DeckBuilder](./deck.md#deckbuilder)) from `deckDatabase` ([CardDatabase](./shared.md#carddatabase)) and `deckPreset` ([DeckPreset](./deck.md#deckpreset)); when `deckPreset` is empty (or its asset was deleted) it becomes the first preset of `presetLibrary`, and with an empty library the game uses the **normal deck** (40 cards, nothing removed or added; "Normale" in the log and the options). `Bench` and `Discard`: 40 table slots with the 4 kings, holes in the last slots when the deck is under 40 cards; the excess goes to the **bench** (`Bench`) or is thrown away, never instantiated (`Discard`). `Index`: one slot per card index (40 + duplicates), holes at the indices of the removed cards, no excess. Duplicates and missing cards on the table are **intended test cases**;
 3. clears the [game log](./stats.md#gamelogview) and logs the deal ([GameLogFormatter](./stats.md#gamelogformatter): preset, seed, removed cards, duplicates) in the Console and on screen;
 4. shows the slots of the deal and hides the others (`ShowSlots`: Index40 has 80, a smaller deck uses fewer); instantiates `cardPrefab` as one pile at `deckPosition`, table cards on top and bench below, with a map card → `CardDisplay3D`; deals every table card to `SlotPosition(slot)`, each a child of its slot (holes get none); the bench cards stay face down in the pile;
 5. builds the [TableState](#tablestate) from the table slots and bench cards, unblocks clicks.
@@ -70,7 +71,7 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 - `PlayPath(clickedCard)` (`UniTask`): ignores face-up cards and the bench pile; asks the table for the moves, logs the path (length, cards, kings face up; once all 4 kings are face up, a line with the path number), then animates the moves one by one with [TableCardAnimations](#tablecardanimations) (`PathMoveAnimation`; a card on a duplicate is raised by `StackOffset` per card below it; a bench card uses `MoveAnimation`, face down, from the pile to the hole) and re-parents each moved card to its slot, so the hierarchy follows the table. Cancelled by the manager's `destroyCancellationToken`.
 - `ResetTable()`: called by the `ResetButton` of each scene ([scenes](./scenes.md#panchina-tribuna-and-index40)); destroys every card and runs the setup again (new seed when `seed` is 0), without leaving Play mode. Ignored while clicks are blocked (dealing or a path running), so no card is destroyed mid-animation.
 - `SlotPosition(slot)` (static): grid position of a slot, rows of `DeckRules.SlotsPerRow` (10): 4 rows, up to 8 in index>40.
-- **Serialized fields**: `cardPrefab` (`Assets/Prefab/3DCardTable.prefab`), `deckPosition` (its child 0 must be the slot container, see [scenes](./scenes.md#panchina-tribuna-and-index40)), `deckDatabase` (`Assets/Instances/CardDatabase.asset`), `deckPreset` (preset of the **next** game: `Preset32` in Panchina, `Preset71` in Tribuna, `Preset45` in Index40; the game in progress keeps its own, `CurrentPreset`, until Reset), `seed` (0 = random; set it to the seed of a log or CSV row to replay that deal), `excessCards` (`Bench` in Panchina, `Discard` in Tribuna, `Index` in Index40), `gameLog` (optional, the `GameLog` panel), `animationSpeed` ([AnimationSpeed](#animationspeed-animationtiming), `Fast` in the three scenes) and `slowTiming` / `normalTiming` / `fastTiming` (durations of each level; defaults 0.2/0.5, 0.1/0.2, 0.03/0.05 seconds per dealt card / path move; the next animation uses the current level). In the Panchina scene YAML the component still has the old class identifier `DeckManager3DTest`.
+- **Serialized fields**: `cardPrefab` (`Assets/Prefab/3DCardTable.prefab`), `deckPosition` (its child 0 must be the slot container, see [scenes](./scenes.md#panchina-tribuna-and-index40)), `deckDatabase` (`Assets/Instances/CardDatabase.asset`), `deckPreset` (preset of the **next** game, empty in the three scenes: the first preset of the library; the game in progress keeps its own, `CurrentPreset`, until Reset; `null` for the normal deck), `presetLibrary` ([DeckPresetLibrary](./deck.md#deckpresetlibrary), `Assets/Instances/DeckPresetLibrary.asset`, set in the three scenes), `seed` (0 = random; set it to the seed of a log or CSV row to replay that deal), `excessCards` (`Bench` in Panchina, `Discard` in Tribuna, `Index` in Index40), `gameLog` (optional, the `GameLog` panel), `animationSpeed` ([AnimationSpeed](#animationspeed-animationtiming), `Fast` in the three scenes) and `slowTiming` / `normalTiming` / `fastTiming` (durations of each level; defaults 0.2/0.5, 0.1/0.2, 0.03/0.05 seconds per dealt card / path move; the next animation uses the current level). In the Panchina scene YAML the component still has the old class identifier `DeckManager3DTest`.
 - `GetSlotByIndex(index)`: `deckPosition.GetChild(0).GetChild(index)`, the slot Transform by child order; used only to parent cards, not to read the state.
 - **Static state**: only `instance`; the card lists are instance fields. A script recompile during Play nulls `instance`: clicks then throw until Play is restarted.
 - **Constants**: deck and table numbers in [DeckRules](./deck.md#deckrules), `StackOffset`; the grid layout in `SlotPosition` is still literal numbers.
@@ -89,7 +90,7 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 
 - a preset sets the preset of the **next** game (`TableDeckManager.SetNextPreset`, used from the next Reset); the game in progress continues;
 - a speed level applies at once (`TableDeckManager.SetSpeed`);
-- the chosen options are shown as not interactable; `presetStatus` shows the preset in play and the next one.
+- the chosen options are shown as not interactable; `presetStatus` shows the preset in play and the next one (`DeckPreset.NameOf`: "Normale" for the normal deck).
 - **Serialized fields**: `tableDeckManager` (scene override), `panel`, `optionButtonPrefab`, `presetButtons` (the content of the preset `ScrollRect`, see [scenes](./scenes.md#prefabs)), `speedButtons`, `presetStatus`, `presetLibrary` (`Assets/Instances/DeckPresetLibrary.asset`).
 - The choice lasts while the scene is open: the next load of the scene starts from its own preset and speed.
 

@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-19
-verificato: 2026-10-19
+aggiornato: 2026-10-23
+verificato: 2026-10-23
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/build/2026-10-16-comando-build.md
@@ -38,9 +39,9 @@ The **Menu** opens first and leads to the three table scenes: a mini demo to sho
 | Scene | Path | Deck manager | Card prefab |
 |---|---|---|---|
 | [Menu](#menu) | `Assets/Scenes/Menu.unity` | — | — |
-| [Panchina](#panchina-tribuna-and-index40) | `Assets/Scenes/Panchina.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Bench`, `Preset32`) | `3DCardTable` |
-| [Tribuna](#panchina-tribuna-and-index40) | `Assets/Scenes/Tribuna.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`, `Preset71`) | `3DCardTable` |
-| [Index40](#panchina-tribuna-and-index40) | `Assets/Scenes/Index40.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Index`, `Preset45`) | `3DCardTable` |
+| [Panchina](#panchina-tribuna-and-index40) | `Assets/Scenes/Panchina.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Bench`) | `3DCardTable` |
+| [Tribuna](#panchina-tribuna-and-index40) | `Assets/Scenes/Tribuna.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`) | `3DCardTable` |
+| [Index40](#panchina-tribuna-and-index40) | `Assets/Scenes/Index40.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Index`) | `3DCardTable` |
 
 All four scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`.
 
@@ -50,7 +51,7 @@ Scene to choose a table scene: `Main Camera` (solid green background), `Directio
 
 ## Panchina, Tribuna and Index40
 
-Same structure, same [table scripts](./table.md); they differ in `TableDeckManager.excessCards` (`Bench`, `Discard`, `Index`) and `deckPreset` (see the table above, [DeckPreset](./deck.md#deckpreset)); all deal with a random seed and start with the `Fast` animation speed. Tribuna's slots, UI and EventSystem were copied from Panchina; Index40's UI and EventSystem too. Each has its own lighting data (`Assets/Scenes/<scene>/LightingData.asset`, Generate Lighting). Main GameObjects:
+Same structure, same [table scripts](./table.md); they differ in `TableDeckManager.excessCards` (`Bench`, `Discard`, `Index`). In all three `deckPreset` is empty, so the first game uses the first preset of the library (`presetLibrary`, `Assets/Instances/DeckPresetLibrary.asset`, set on each scene's `TableDeckManager`; [DeckPreset](./deck.md#deckpreset)); all deal with a random seed and start with the `Fast` animation speed. Tribuna's slots, UI and EventSystem were copied from Panchina; Index40's UI and EventSystem too. Each has its own lighting data (`Assets/Scenes/<scene>/LightingData.asset`, Generate Lighting). Main GameObjects:
 
 - `Tavolo`: the table;
 - `SlotContainer`: 40 instances of `Assets/Prefab/CardSlot.prefab` in Panchina and Tribuna (with [CardSlotContainer](./table.md#cardslotcontainer) and [CardSlot](./table.md#cardslot)), **80** in Index40 (`Slot0`…`Slot79`, 8 rows, no `CardSlot` components; the slots beyond the deal are hidden at Play); must be child 0 of the deck manager's `deckPosition` (`CardsContainer`), with the slots in grid order, because [TableDeckManager](./table.md#tabledeckmanager) finds the slot Transforms by child index to parent the cards (the table state itself is in [TableState](./table.md#tablestate));
@@ -67,7 +68,7 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - `Assets/Prefab/3DCardTable.prefab`: the card, root with [CardDisplay3D](./shared.md#carddisplay3d) and [TableCardController](./table.md#tablecardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`); used by the three table scenes.
 - `Assets/Prefab/CardSlot.prefab`: `CardSlot` root with a `Cube` child (`Mat_Card_Slot`).
 - `Assets/Prefab/GameLog.prefab`: scrollable panel (`ScrollRect`, `Viewport` with `RectMask2D`, `Content` with a TMP `Text`, vertical `Scrollbar`) anchored to the left of the Canvas, 520 px wide, with [GameLogView](./stats.md#gamelogview).
-- `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the preset library (`Assets/Instances/DeckPresetLibrary.asset`); `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
+- `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the preset library (`Assets/Instances/DeckPresetLibrary.asset`), `games = 300`, both autoplay strategies; `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
 - `Assets/Prefab/SceneButton.prefab`: the `ResetButton` look with [SceneLoader](./shared.md#sceneloader) (`sceneName` `Menu`, text "Back"); `OnClick` calls `Load`. Used for Back and, with overrides, for the Menu buttons.
 - `Assets/Prefab/LogToggleButton.prefab`: the `ResetButton` look, text "Log", empty `OnClick` (set on the scene instances).
 - `Assets/Prefab/Options.prefab`: full-canvas root (no graphic) with [OptionsPanel](./table.md#optionspanel), the `OptionsButton` (text "Opzioni") and a hidden `Panel` (dark, 400 px wide, at the left of the button column): status text, "Preset (dal prossimo Reset)" with `PresetScroll`, "Velocità animazioni" with `SpeedButtons`. `Panel` has a raycast-target `Image`, so UI clicks stop on it (cards ignore clicks over the UI, [TableCardController](./table.md#tablecardcontroller)). `PresetScroll`: vertical-only `ScrollRect` 400 px high (about 6 presets, mouse wheel and drag), `Viewport` (`RectMask2D`, transparent `Image` for the wheel) with `PresetButtons` as content (top-anchored, `ContentSizeFitter` on the height), and a vertical `Scrollbar` shown only when the presets do not fit (`AutoHideAndExpandViewport`); with few presets the area stays 400 px high. The preset library is set on the prefab (`presetLibrary`).
@@ -79,9 +80,9 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 
 `Assets/Instances/CardDatabase.asset`: the [CardDatabase](./shared.md#carddatabase) with the 40 cards in table order. Assigned to the `deckDatabase` field of the deck manager in the **three table scenes**; a new table scene needs it too.
 
-`Assets/Instances/DeckPresets/Preset32.asset`, `Preset45.asset`, `Preset60.asset`, `Preset71.asset` (was `Preset80`, same GUID): the standard [DeckPreset](./deck.md#deckpreset) assets, created only by the menu `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)). Custom presets in the same folder (`Prime18.asset`), created by `Tools/Preset Builder` ([DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow)).
+`Assets/Instances/DeckPresets/`: the [DeckPreset](./deck.md#deckpreset) assets. Today four custom presets made with `Tools/Preset Builder` ([DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow)), each with 8 chosen removed cards and one card with 5, 10 or 20 extra copies: `NO2-NO3+5-1`, `NO2-NO3+10-1`, `NO2-NO3+20-1`, `Xshape+10-1`. The standard presets (32, 45, 60, 71 non-king cards) and the shape presets were removed on 2026-10-23; `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)) and `Tools/Genera Preset Forme` ([ShapePresetGenerator](./deck.md#shapepresetgenerator)) create them again.
 
-`Assets/Instances/DeckPresetLibrary.asset`: the [DeckPresetLibrary](./deck.md#deckpresetlibrary), the presets shown by the options panel and run by the simulation (the four standard ones and `Prime18`); set in `Assets/Prefab/Options.prefab` and `Assets/Prefab/SimulationButton.prefab`.
+`Assets/Instances/DeckPresetLibrary.asset`: the [DeckPresetLibrary](./deck.md#deckpresetlibrary), the presets shown by the options panel and run by the simulation (today the four custom presets); set in `Assets/Prefab/Options.prefab`, `Assets/Prefab/SimulationButton.prefab` and on the `TableDeckManager` of the three table scenes.
 
 ## Project settings
 
