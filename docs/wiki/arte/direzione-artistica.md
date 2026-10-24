@@ -5,6 +5,7 @@ aggiornato: 2026-10-24
 verificato: 2026-10-24
 fonti:
   - raw/compiled/study-direzione-artistica/2026-10-24-obiettivo.md
+  - raw/compiled/study-direzione-artistica/2026-10-24-task.md
   - raw/compiled/study-direzione-artistica/2026-10-24-ispirazioni-giochi.html
   - raw/compiled/study-direzione-artistica/2026-10-24-direzione-artistica-jacovitti/Jacovitti 375ae1bb2a0b80c29408de6dedace07d.html
   - raw/compiled/study-direzione-artistica/2026-10-24-direzione-artistica-felix-colgrave/Felix Colgrave 375ae1bb2a0b80b79765ff67889d2f73.html
@@ -20,8 +21,10 @@ Lo stile grafico del gioco: ambientazione, carte, riferimenti. Prime indicazioni
 
 - **Stile generale**: il **bar di provincia anni '70** (indicazione dell'utente). Si lega al lessico del gioco: bar, scagnozzi e capobar ([Parte RPG](../business/parte-rpg.md)), santini e amari ([Meccaniche della run](../business/meccaniche-della-run.md)), tombola per le forme dei buchi ([Modifica del mazzo](../business/modifica-del-mazzo.md)).
 - **Carte**: "una cosa sui generis", come il **Mercante in fiera di Jacovitti** o i **video di Felix Colgrave** (indicazione dell'utente). Sono riferimenti di stile: le carte vanno disegnate originali, non copiate.
+- **Tono di voce**: **demenziale e satirico**; si gioca sulla nostalgia ma si vuole mostrare anche il lato **grottesco** dell'Italia "squisitamente berlusconiana", fatta soprattutto di ex poveri (indicazione dell'utente).
+- **Design system** (cosa deve contenere, indicazione dell'utente): soprattutto qualche **alternativa di colori** e le **note sull'animazione**, dove si guarda a giochi esistenti e "soddisfacenti" (vedi *Giochi di ispirazione* sotto).
 - **Oggi** le scene usano le carte napoletane classiche (`Assets/Images/Cards/Fronte/`, vedi [tecnico/scenes](../tecnico/scenes.md)): sono segnaposto della POC.
-- **Prossimo passo** (obiettivo dello studio): un minimo di design grafico su Claude Design, come prototipo per farsi un'idea: un design per la parte **pathbuilder** (il tavolo), uno per la parte **RPG** (combattimento, bar) ed eventualmente uno **mixed**.
+- **Prossimo passo** (obiettivo dello studio): un minimo di design grafico su Claude Design, come prototipo per capire dove si può andare: un design per la parte **pathbuilder** (il tavolo, con eventualmente qualche idea su come rappresentare i path), uno per la parte **RPG** ed eventualmente uno **mixed**.
 
 ### Riferimenti
 
@@ -55,6 +58,13 @@ Due direzioni che i riferimenti tengono insieme e che i design prototipo possono
 
 Una combinazione possibile: ambiente scuro alla Pilgrims, carte chiare alla Jacovitti che spiccano sul panno.
 
+**Come mostrare la parte RPG** (idee dell'utente, nessuna scelta):
+
+| Idea | Cosa fa |
+|---|---|
+| **Solo barre** | Vita e parametri come barre, con la stessa visualizzazione della parte pathbuilder |
+| **Scena divisa in due** | Sopra il tavolo, sotto la parte RPG: per esempio un omino che cammina mentre gli eventi del path si susseguono |
+
 ## Alternative scartate
 
 - **Direzione artistica di Balatro, Broom e Tic Card Toe** — scartata il 2026-10-24: dei tre giochi piacciono gameplay e animazioni, non l'aspetto (fonte: raw/compiled/study-direzione-artistica/2026-10-24-ispirazioni-giochi.html)
@@ -66,5 +76,6 @@ Una combinazione possibile: ambiente scuro alla Pilgrims, carte chiare alla Jaco
 - Leggibilità: quanto dettaglio regge una carta sul tavolo 4×10 (dimensione a schermo, piattaforma non decisa)?
 - Tavolo, buchi e forme: come si disegnano (panno verde, cartella della tombola, altro)?
 - Animazione: cosa prendere esattamente dalle animazioni di Balatro, Broom e Tic Card Toe; tecnica (frame by frame alla Colgrave o tween, già con DOTween nel progetto)?
+- Quale idea per mostrare la parte RPG (solo barre o scena divisa)?
 - Palette, font e lettering (a mano come Jacovitti e Pilgrims?), UI e audio: non ancora discussi.
 - Chi produce gli asset definitivi.
