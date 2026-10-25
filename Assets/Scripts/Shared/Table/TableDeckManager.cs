@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -31,6 +32,12 @@ public class TableDeckManager : MonoBehaviour
     [SerializeField]
     private ExcessCards excessCards = ExcessCards.Bench;
 
+    // The encounter ends when the 4th king is face up: no path can be played until Reset. Rule being tried for the
+    // tribuna (wiki business/modifica-del-mazzo.md, decision in analysis); off: the game goes on while face-down
+    // cards are left.
+    [SerializeField]
+    private bool endAtFourthKing;
+
     // On-screen log; optional, the Console always gets the log.
     [SerializeField]
     private GameLogView gameLog;
@@ -59,6 +66,7 @@ public class TableDeckManager : MonoBehaviour
     DeckPreset currentPreset; // preset of the game in progress; null for the normal deck
     int pathCount;
     bool allKingsLogged;
+    bool encounterOver; // endAtFourthKing and the 4th king is face up
 
     public CardDatabase DeckDatabase => deckDatabase;
 
@@ -69,6 +77,24 @@ public class TableDeckManager : MonoBehaviour
     public DeckPreset NextPreset => deckPreset;
 
     public AnimationSpeed Speed => animationSpeed;
+
+    // Table of the game in progress; null while the first deal runs. Read by the HUD, never changed from outside.
+    public TableState Table => table;
+
+    // Raised when a deal is over and Table is the new game's (first game and every Reset).
+    public event Action GameStarted;
+
+    // Raised when a path starts, before its animation: the path number in the game and all its moves, in order.
+    public event Action<int, IReadOnlyList<PathMove>> PathStarted;
+
+    // Raised when the animation of one move of the path is over: its position in the moves and the move.
+    public event Action<int, PathMove> MovePlayed;
+
+    // Raised when the animation of a path is over: the path number in the game and its moves, in order.
+    public event Action<int, IReadOnlyList<PathMove>> PathPlayed;
+
+    // Raised after PathPlayed when the path turned the 4th king and endAtFourthKing is on: the paths played.
+    public event Action<int> EncounterEnded;
 
     // The preset of the next game, from the next Reset.
     public void SetNextPreset(DeckPreset preset) => deckPreset = preset;
@@ -93,7 +119,7 @@ public class TableDeckManager : MonoBehaviour
         }
 
         GameManager.isClickBlocked = true;
-        int gameSeed = seed != 0 ? seed : Random.Range(1, int.MaxValue);
+        int gameSeed = seed != 0 ? seed : UnityEngine.Random.Range(1, int.MaxValue);
         if (deckPreset == null)
         {
             deckPreset = presetLibrary.Presets.FirstOrDefault();
@@ -109,6 +135,7 @@ public class TableDeckManager : MonoBehaviour
 
         pathCount = 0;
         allKingsLogged = false;
+        encounterOver = false;
         if (gameLog != null)
         {
             gameLog.Clear();
@@ -127,6 +154,7 @@ public class TableDeckManager : MonoBehaviour
         await MoveCards(deal.TableSlots, cancellationToken);
         table = new TableState(deal.TableSlots, benchCards);
         GameManager.isClickBlocked = false;
+        GameStarted?.Invoke();
     }
 
     // Starts a new game: removes every card and deals again. Called by the Reset button; ignored while cards
@@ -156,7 +184,7 @@ public class TableDeckManager : MonoBehaviour
     public async UniTask PlayPath(CardDisplay3D clickedCard)
     {
         int startSlot = table.SlotOf(clickedCard.cardData);
-        if (startSlot < 0 || table.IsFaceUp(startSlot))
+        if (encounterOver || startSlot < 0 || table.IsFaceUp(startSlot))
         {
             return;
         }
@@ -168,9 +196,11 @@ public class TableDeckManager : MonoBehaviour
         if (!allKingsLogged && faceUpKings == DeckRules.KingCount)
         {
             allKingsLogged = true;
+            encounterOver = endAtFourthKing;
             Log(GameLogFormatter.FormatAllKings(pathCount));
         }
 
+        PathStarted?.Invoke(pathCount, moves);
         CancellationToken cancellationToken = destroyCancellationToken;
         for (int i = 0; i < moves.Count; i++)
         {
@@ -195,6 +225,12 @@ public class TableDeckManager : MonoBehaviour
                     .ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken);
             }
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
+            MovePlayed?.Invoke(i, moves[i]);
+        }
+        PathPlayed?.Invoke(pathCount, moves);
+        if (encounterOver)
+        {
+            EncounterEnded?.Invoke(pathCount);
         }
     }
 

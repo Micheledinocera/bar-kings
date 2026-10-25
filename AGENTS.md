@@ -9,6 +9,7 @@
 │   ├── Scripts/          # project code (C#)
 │   │   └── Shared/       # code shared across scenes: cards, card generator, GameManager
 │   │       ├── Deck/     # deck presets and deal of the table scenes (seeded)
+│   │       ├── Hud/      # HUD of the Bar scene: receipt, kings, tombola card, road, end panel
 │   │       ├── Menu/     # scene loading: Menu and Back buttons
 │   │       ├── Stats/    # game log and autoplay simulation (CSV)
 │   │       └── Table/    # table of the deck variants (Panchina, Tribuna, Index40 scenes)

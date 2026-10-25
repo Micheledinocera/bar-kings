@@ -1,6 +1,6 @@
 ---
 tipo: info
-aggiornato: 2026-10-23
+aggiornato: 2026-10-25
 verificato: 2026-10-23
 consolidato: 2026-10-19
 fonti:
@@ -79,7 +79,7 @@ Shapes of holes on the base table grid, measured for the tribuna bonus being stu
 - `Assets/Scripts/Shared/Stats/ShapeKind.cs`: `Column` (the 4 suits of one value), `Diagonal` (one cell per row on consecutive values, going down or up), `Square2`, `Square3`, `Square4`.
 - `Assets/Scripts/Shared/Stats/TableShape.cs`: one shape at one place: `Kind`, `Name` (e.g. `column 3`, `diagonal 1 down`, `square2 Coppe 4`, the top-left cell), `Slots`.
 - `Assets/Scripts/Shared/Stats/TableShapes.cs`: `All`, every shape on the 4×10 grid, built once (74: 10 columns, 14 diagonals, 27 squares 2×2, 16 3×3, 7 4×4; every instance counts, a 3×3 also contains four 2×2); `Slot(row, column)`, `ValueOf(slot)` (1 = ace … 10 = king); `Complete(holeSince)`: the shapes whose slots are all holes, each with the highest `holeSince` of its slots.
-- **Used by**: [SimulatedGame](#simulatedgame-simulatedpath), [SimulationCsv](#simulationcsv), [ShapePresetGenerator](./deck.md#shapepresetgenerator) (`Slot`, `ValueOf`).
+- **Used by**: [SimulatedGame](#simulatedgame-simulatedpath), [SimulationCsv](#simulationcsv), [ShapePresetGenerator](./deck.md#shapepresetgenerator) (`Slot`, `ValueOf`), [TombolaCard](./hud.md#tombolacard) (the tombola card of the Bar scene: `Complete`, `Kind`).
 
 ## SimulationResult
 
