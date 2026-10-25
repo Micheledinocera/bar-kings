@@ -1,8 +1,9 @@
 ---
 tipo: info
-aggiornato: 2026-10-20
+aggiornato: 2026-10-24
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/study-direzione-artistica/2026-10-24-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
   - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-concept.md
@@ -23,6 +24,7 @@ Cos'è il gioco, in breve. Le scelte di gameplay sono nelle decisioni linkate qu
 | Meccaniche della run | [Starter, santini, amari, imbrogli, azioni](./meccaniche-della-run.md) · in analisi |
 | Modifica del mazzo | [Panchina, tribuna, index>40](./modifica-del-mazzo.md) · in analisi |
 | Parte RPG | [Eventi, combattimento, bar e incontri](./parte-rpg.md) · in analisi |
+| Direzione artistica | [Bar di provincia anni '70, carte alla Jacovitti o alla Felix Colgrave](../arte/direzione-artistica.md) · in analisi |
 
 ## Il ciclo in una frase
 

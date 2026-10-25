@@ -6,6 +6,7 @@ Punto di partenza del wiki: le aree, ciascuna con il suo indice, e il radar dell
 
 - [Business](./business/index.md): il gioco come prodotto: concept, regole del gioco, pubblico, mercato e concorrenti, monetizzazione, glossario
 - [Progetto](./progetto/index.md): come si costruisce e si porta avanti il progetto: repo, versione di Unity, pacchetti, git-flow, wiki, studi
+- [Arte](./arte/index.md): direzione artistica, UI e audio: stile, carte, riferimenti
 - [Tecnico](./tecnico/index.md): codice e contenuti del progetto (in inglese): script, scene, prefab, asset di dati
 
 ## Radar delle decisioni
@@ -14,6 +15,7 @@ Le decisioni ancora `aperta` o `in analisi`. Quelle prese sono negli indici dell
 
 | Decisione | Area | Stato |
 |---|---|---|
+| [Direzione artistica](./arte/direzione-artistica.md) | Arte | in analisi |
 | [Meccaniche della run](./business/meccaniche-della-run.md) | Business | in analisi |
 | [Modifica del mazzo: panchina, tribuna, index>40](./business/modifica-del-mazzo.md) | Business | in analisi |
 | [Parte RPG e collegamento con il pathbuilder](./business/parte-rpg.md) | Business | in analisi |
