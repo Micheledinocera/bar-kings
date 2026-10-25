@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="366" viewBox="0 0 1440 366">
+<rect x="0" y="0" width="1440" height="250" fill="#33251A"/>
+<g stroke="#2A1D14" stroke-width="16"><line x1="40" y1="0" x2="40" y2="190"/><line x1="140" y1="0" x2="140" y2="190"/><line x1="240" y1="0" x2="240" y2="190"/><line x1="340" y1="0" x2="340" y2="190"/><line x1="440" y1="0" x2="440" y2="190"/><line x1="540" y1="0" x2="540" y2="190"/><line x1="640" y1="0" x2="640" y2="190"/><line x1="740" y1="0" x2="740" y2="190"/><line x1="840" y1="0" x2="840" y2="190"/><line x1="940" y1="0" x2="940" y2="190"/><line x1="1040" y1="0" x2="1040" y2="190"/><line x1="1140" y1="0" x2="1140" y2="190"/><line x1="1240" y1="0" x2="1240" y2="190"/><line x1="1340" y1="0" x2="1340" y2="190"/></g>
+<ellipse cx="300" cy="60" rx="90" ry="50" fill="#1E140D" fill-opacity="0.45"/>
+<rect x="0" y="190" width="1440" height="60" fill="#4A2F1C" stroke="#0B0705" stroke-width="3"/>
+<rect x="0" y="250" width="1440" height="116" fill="#241810"/>
+<g stroke="#1A120C" stroke-width="3"><line x1="0" y1="290" x2="1440" y2="290"/><line x1="0" y1="330" x2="1440" y2="330"/><line x1="100" y1="250" x2="60" y2="366"/><line x1="300" y1="250" x2="270" y2="366"/><line x1="500" y1="250" x2="480" y2="366"/><line x1="700" y1="250" x2="690" y2="366"/><line x1="900" y1="250" x2="900" y2="366"/><line x1="1100" y1="250" x2="1110" y2="366"/><line x1="1300" y1="250" x2="1320" y2="366"/></g>
+<line x1="40" y1="276" x2="1400" y2="276" stroke="#C9A227" stroke-width="4" stroke-dasharray="10 10" stroke-opacity="0.6"/>
+</svg>

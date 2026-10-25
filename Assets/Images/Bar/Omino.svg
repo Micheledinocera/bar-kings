@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="160" viewBox="-36 98 96 160">
+<path d="M -14 250 L -4 214 M 18 250 L 6 214" stroke="#2A2A30" stroke-width="12" stroke-linecap="round" fill="none"/>
+<path d="M -22 250 L -4 250 M 12 250 L 30 250" stroke="#0B0705" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M -22 214 Q -30 172 2 156 Q 34 168 30 214 Z" fill="#E6DBBF" stroke="#0B0705" stroke-width="3.5"/>
+<path d="M -18 200 Q 6 214 28 198" fill="none" stroke="#C9A88A" stroke-width="3"/>
+<path d="M 24 176 L 44 188" stroke="#C9A88A" stroke-width="9" stroke-linecap="round" fill="none"/>
+<rect x="40" y="172" width="12" height="22" rx="2" fill="#3D4A2A" stroke="#0B0705" stroke-width="2.5"/>
+<ellipse cx="4" cy="134" rx="20" ry="24" fill="#C9A88A" stroke="#0B0705" stroke-width="3.5"/>
+<path d="M 18 130 Q 44 140 30 152 Q 20 152 18 144 Z" fill="#B8806A" stroke="#0B0705" stroke-width="3"/>
+<circle cx="12" cy="126" r="5" fill="#E8DDB0" stroke="#0B0705" stroke-width="2"/>
+<circle cx="14" cy="127" r="2" fill="#0B0705"/>
+<path d="M -14 120 Q 4 104 22 116" fill="none" stroke="#2A1C12" stroke-width="3"/>
+<path d="M -16 140 q -5 8 0 11 q 5 -3 0 -11 Z" fill="#CFE0E0" stroke="#0B0705" stroke-width="1.5"/>
+</svg>
