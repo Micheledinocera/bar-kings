@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-23
-verificato: 2026-10-23
+aggiornato: 2026-10-25
+verificato: 2026-10-25
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
@@ -34,6 +35,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 | [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 3 | debt | — |
 | [H — Stats and simulation](#block-h--stats-and-simulation) | 2 | ux, duplicate | — |
 | [I — Build](#block-i--build) | 1 | debt | — |
+| [J — Bar scene HUD](#block-j--bar-scene-hud) | 3 | ux, debt | [Direzione artistica](../arte/direzione-artistica.md) |
 
 ## Block C — Game state in hierarchy and statics
 
@@ -60,3 +62,11 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 ## Block I — Build
 
 - `debt` — Company in the Player Settings is `DefaultCompany`, which also names the folder of the build's logs and CSV; kept for now (user, 2026-10-16). `ProjectSettings/ProjectSettings.asset` — [scenes](./scenes.md#build)
+
+## Block J — Bar scene HUD
+
+Only if the Bar style is kept ([Direzione artistica](../arte/direzione-artistica.md), decision in analysis).
+
+- `ux` — "Re scoperti" and the tombola card are refreshed at the end of a path, while the receipt and the road follow the cards one by one. `Assets/Scripts/Shared/Hud/KingCounterView.cs`, `Assets/Scripts/Shared/Hud/TombolaCardView.cs` — [KingCounterView](./hud.md#kingcounterview)
+- `ux` — The grid lines of the tombola card (2 px gaps) look uneven when the Canvas is scaled down. `Assets/Prefab/TombolaCell.prefab` — [TombolaCardView](./hud.md#tombolacardview-tombolacellview)
+- `debt` — The Tribuna buttons, the options panel and the game log are restyled with overrides on the scene instances, not with Prefab Variants. `Assets/Scenes/Bar.unity` — [scenes](./scenes.md#bar)

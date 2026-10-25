@@ -1,9 +1,12 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-24
+aggiornato: 2026-10-25
 verificato: 2026-10-24
 fonti:
+  - raw/compiled/art-style/2026-10-25-obiettivo.md
+  - raw/compiled/art-style/2026-10-25-scelte-design.md
+  - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/study-direzione-artistica/2026-10-24-obiettivo.md
   - raw/compiled/study-direzione-artistica/2026-10-24-task.md
   - raw/compiled/study-direzione-artistica/2026-10-24-ispirazioni-giochi.html
@@ -15,7 +18,7 @@ fonti:
 
 # Direzione artistica
 
-Lo stile grafico del gioco: ambientazione, carte, riferimenti. Prime indicazioni dello study-direzione-artistica (2026-10-24): niente è deciso, servono come base per i primi design prototipo.
+Lo stile grafico del gioco: ambientazione, carte, riferimenti. Prime indicazioni dello study-direzione-artistica (2026-10-24) e una prima prova in Unity, la scena Bar (feature art-style, 2026-10-25): niente è deciso.
 
 ## Cosa sappiamo
 
@@ -24,7 +27,23 @@ Lo stile grafico del gioco: ambientazione, carte, riferimenti. Prime indicazioni
 - **Tono di voce**: **demenziale e satirico**; si gioca sulla nostalgia ma si vuole mostrare anche il lato **grottesco** dell'Italia "squisitamente berlusconiana", fatta soprattutto di ex poveri (indicazione dell'utente).
 - **Design system** (cosa deve contenere, indicazione dell'utente): soprattutto qualche **alternativa di colori** e le **note sull'animazione**, dove si guarda a giochi esistenti e "soddisfacenti" (vedi *Giochi di ispirazione* sotto).
 - **Oggi** le scene usano le carte napoletane classiche (`Assets/Images/Cards/Fronte/`, vedi [tecnico/scenes](../tecnico/scenes.md)): sono segnaposto della POC.
-- **Prossimo passo** (obiettivo dello studio): un minimo di design grafico su Claude Design, come prototipo per capire dove si può andare: un design per la parte **pathbuilder** (il tavolo, con eventualmente qualche idea su come rappresentare i path), uno per la parte **RPG** ed eventualmente uno **mixed**.
+- **Design prototipo su Claude Design** (fatto): [King Bar — Prototipo grafico](https://claude.ai/artifact/5BrbVvSx78nCQRwABub9Uy), due prove. La **prima** ("bar di provincia anni '70, cartoon"): tavolo, combattimento RPG, mixed, le carte. La **seconda** ("grottesco, carte segnaposto"): tavola 1 pathbuilder (il tavolo con avventori, scontrino, cartella della tombola, santini e amari), tavola 2 combattimento RPG, tavola 3 mixed (tavolo sopra, omino che cammina sulla strada del path sotto), tre palette (Nicotina, Tinello anni '70, Varietà del sabato sera), carta segnaposto. All'utente la seconda prova sembra **più a fuoco**.
+
+### Prima prova in Unity: la scena Bar
+
+Feature art-style (2026-10-25), **in prova**: scelte dell'utente, non decisioni. Scena `Assets/Scenes/Bar.unity`, copia di Tribuna, dal Menu con "Bar (stile)"; codice e asset in [tecnico/scenes](../tecnico/scenes.md#bar) e [tecnico/hud](../tecnico/hud.md).
+
+| Scelta | In prova |
+|---|---|
+| Palette | **Nicotina**: Buio `#120D09`, Legno `#3A2618`, Panno `#3D4A2A`, Scontrino `#E6DBBF`, Nicotina `#C9A227`, Fegato `#8E2F22`, Abbronzatura `#C27A48`, Bile `#8A9A3B`. Mood: fumo stagnante, panno lurido, toni marci e caldi sotto una sola lampada |
+| Font | Caveat Brush (titoli, a mano) e Special Elite (testo, macchina da scrivere), come nel design |
+| Composizione | Mix delle tavole **1 e 3** della seconda prova: tavolo al centro con gli avventori dietro, a destra **scontrino** (le carte del path, scritte una per volta mentre si girano), re scoperti e **cartella della tombola** (i buchi e le forme fatte), sotto la **strada del path** con l'omino che cammina sulle carte girate |
+| Tecnica | **Reskin del 3D** (tavolo e carte 3D, camera quasi dall'alto, una lampada, vignettatura e grana), non un rifacimento 2D; risoluzione di riferimento 16:9 |
+| Carte | Le **napoletane** di oggi, non le carte segnaposto del design |
+| Buchi | **Sagoma tratteggiata della carta**: i buchi non sono veri buchi (scartata la bruciatura di sigaretta del design) |
+| Parte RPG | Idea **scena divisa in due** (omino che cammina sotto il tavolo), ma solo con le carte: nessun evento. Segnaposto per avventori, malus del capobar, santini e amari, soldi, vita e armatura, eventi e nemici |
+
+Note dell'utente dopo la prova: la strada dell'omino più bassa, per dare spazio al resto; la scena **piace molto**.
 
 ### Riferimenti
 
@@ -56,26 +75,27 @@ Due direzioni che i riferimenti tengono insieme e che i design prototipo possono
 | **Bar scuro e caldo** | Pilgrims, Sol Cesto | Ambiente in penombra, luce sul tavolo; si sposa col bar anni '70. Rischio: carte poco leggibili sul tavolo 4×10 |
 | **Carte chiare e affollate** | Jacovitti, Colgrave | Colori piatti o pastello, contorno spesso, molti dettagli; ogni carta un personaggio. Rischio: troppo dettaglio a dimensione di carta sul tavolo |
 
-Una combinazione possibile: ambiente scuro alla Pilgrims, carte chiare alla Jacovitti che spiccano sul panno.
+Una combinazione possibile: ambiente scuro alla Pilgrims, carte chiare alla Jacovitti che spiccano sul panno. **In prova** nella scena Bar: ambiente scuro con una lampada sul panno (vedi sopra).
 
 **Come mostrare la parte RPG** (idee dell'utente, nessuna scelta):
 
 | Idea | Cosa fa |
 |---|---|
 | **Solo barre** | Vita e parametri come barre, con la stessa visualizzazione della parte pathbuilder |
-| **Scena divisa in due** | Sopra il tavolo, sotto la parte RPG: per esempio un omino che cammina mentre gli eventi del path si susseguono |
+| **Scena divisa in due** | Sopra il tavolo, sotto la parte RPG: per esempio un omino che cammina mentre gli eventi del path si susseguono. **In prova** nella scena Bar, per ora solo con le carte |
 
 ## Alternative scartate
 
 - **Direzione artistica di Balatro, Broom e Tic Card Toe** — scartata il 2026-10-24: dei tre giochi piacciono gameplay e animazioni, non l'aspetto (fonte: raw/compiled/study-direzione-artistica/2026-10-24-ispirazioni-giochi.html)
+- **Buchi come bruciature di sigaretta sul panno** (seconda prova del design) — scartata il 2026-10-25: i buchi non sono veri buchi; per ora la sagoma tratteggiata della carta (fonte: raw/compiled/art-style/2026-10-25-implementazione.md)
 
 ## Domande aperte
 
 - Le carte restano riconoscibili come mazzo italiano (semi e valori leggibili a colpo d'occhio) o diventano personaggi a sé, con seme e valore come indicazione secondaria?
 - Ogni carta ha un disegno suo (40, più eventuali carte speciali) o il disegno dipende da seme e valore (es. figure disegnate, numeriche più semplici)?
 - Leggibilità: quanto dettaglio regge una carta sul tavolo 4×10 (dimensione a schermo, piattaforma non decisa)?
-- Tavolo, buchi e forme: come si disegnano (panno verde, cartella della tombola, altro)?
+- Tavolo, buchi e forme: in prova panno verde, sagoma della carta nei buchi e cartella della tombola a lato (scena Bar). Si tengono?
 - Animazione: cosa prendere esattamente dalle animazioni di Balatro, Broom e Tic Card Toe; tecnica (frame by frame alla Colgrave o tween, già con DOTween nel progetto)?
-- Quale idea per mostrare la parte RPG (solo barre o scena divisa)?
-- Palette, font e lettering (a mano come Jacovitti e Pilgrims?), UI e audio: non ancora discussi.
+- Quale idea per mostrare la parte RPG (solo barre o scena divisa)? In prova la scena divisa, senza eventi.
+- Palette e font: in prova Nicotina, Caveat Brush e Special Elite; UI definitiva e audio non ancora discussi.
 - Chi produce gli asset definitivi.

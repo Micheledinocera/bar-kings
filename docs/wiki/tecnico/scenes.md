@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-23
-verificato: 2026-10-23
+aggiornato: 2026-10-25
+verificato: 2026-10-25
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
@@ -34,7 +35,7 @@ Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/
 
 The three scenes of the [deck modification ideas](../business/modifica-del-mazzo.md) (`Panchina`, `Tribuna`, `Index40`) are **temporary**: they let each idea be explored without breaking the previous version. When one idea is chosen, the other scenes and the code only they use are deleted.
 
-The **Menu** opens first and leads to the three table scenes: a mini demo to show the three ideas and to try the builds.
+The **Menu** opens first and leads to the three table scenes and to **Bar**, a copy of Tribuna with the first art style being tried ([Direzione artistica](../arte/direzione-artistica.md)): a mini demo to show the ideas and to try the builds. If the style is kept, the work goes on in Bar only.
 
 | Scene | Path | Deck manager | Card prefab |
 |---|---|---|---|
@@ -42,12 +43,13 @@ The **Menu** opens first and leads to the three table scenes: a mini demo to sho
 | [Panchina](#panchina-tribuna-and-index40) | `Assets/Scenes/Panchina.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Bench`) | `3DCardTable` |
 | [Tribuna](#panchina-tribuna-and-index40) | `Assets/Scenes/Tribuna.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`) | `3DCardTable` |
 | [Index40](#panchina-tribuna-and-index40) | `Assets/Scenes/Index40.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Index`) | `3DCardTable` |
+| [Bar](#bar) | `Assets/Scenes/Bar.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`, `endAtFourthKing`) | `3DCardTable` |
 
-All four scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`.
+All five scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`, `Bar`.
 
 ## Menu
 
-Scene to choose a table scene: `Main Camera` (solid green background), `Directional Light`, `UI` (Canvas, Screen Space Overlay, scaled with screen size) with the title "King Bar - demo" and three instances of `Assets/Prefab/SceneButton.prefab` (`PanchinaButton`, `TribunaButton`, `Index40Button`, [SceneLoader](./shared.md#sceneloader) `sceneName` `Panchina`, `Tribuna`, `Index40`), `EventSystem` with `InputSystemUIInputModule`. No lighting data, no `GameManager`.
+Scene to choose a table scene: `Main Camera` (solid green background), `Directional Light`, `UI` (Canvas, Screen Space Overlay, scaled with screen size) with the title "King Bar - demo" and four instances of `Assets/Prefab/SceneButton.prefab` (`PanchinaButton`, `TribunaButton`, `Index40Button`, `BarButton` with the text "Bar (stile)"; [SceneLoader](./shared.md#sceneloader) `sceneName` `Panchina`, `Tribuna`, `Index40`, `Bar`), `EventSystem` with `InputSystemUIInputModule`. No lighting data, no `GameManager`.
 
 ## Panchina, Tribuna and Index40
 
@@ -63,10 +65,28 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
   - `Options` (instance of `Assets/Prefab/Options.prefab`, last child so it is drawn on top), with the scene's `TableDeckManager` as override of its [OptionsPanel](./table.md#optionspanel);
 - `EventSystem` with `InputSystemUIInputModule` (the Input System UI module, the only input handler enabled).
 
+## Bar
+
+`Assets/Scenes/Bar.unity`: a copy of Tribuna (same deal, same rules) with the first art style being tried: palette Nicotina and the tables 1 and 3 of the second test on Claude Design ([Direzione artistica](../arte/direzione-artistica.md), decision in analysis). Differences from Tribuna:
+
+- **Table**: `Tavolo` scaled to the grid with `Assets/Materials/Mat_Panno.mat` (green felt, normal map `Assets/Images/fabric.jpg`), a `Bordo` cube below it (`Assets/Materials/Mat_Legno.mat`); the 40 slots are instances of `Assets/Prefab/CardSlot Bar.prefab` (a hole shows the dashed outline of a card); cards are the same `3DCardTable` (Neapolitan cards).
+- **Camera and light**: camera at 75° almost from above, solid background `#120D09`, post-processing on; `Directional Light` dim, `Lampada` (warm spot light over the table), flat dark ambient, no lighting data; `Global Volume` with `Assets/Settings/BarVolumeProfile.asset` (vignette, film grain, colour adjustments).
+- **`TableDeckManager`**: `endAtFourthKing` on (the encounter ends at the 4th king, [TableDeckManager](./table.md#tabledeckmanager)).
+- **UI**: the Canvas scales with the **height** (`matchWidthOrHeight = 1`), reference 1920×1080, laid out for 16:9. `BarHud` (first child, drawn below the buttons) holds:
+  - `Header` (top bar, "King Bar" in Caveat Brush) with `StatistichePlaceholder` (money, life, armour of the RPG part);
+  - `AvventoriPlaceholder` (patrons behind the table), `ColonnaSinistra` (placeholders: `CapobarPlaceholder` post-it, santini and amari slots);
+  - `ColonnaDestra`: `Scontrino` ([ReceiptView](./hud.md#receiptview)), `ReScoperti` ([KingCounterView](./hud.md#kingcounterview)), `Cartella` ([TombolaCardView](./hud.md#tombolacardview-tombolacellview), 40 `TombolaCell` instances in `Griglia`);
+  - `Strada` ([PathRoadView](./hud.md#pathroadview-roadstopview), with `Omino`) and `FineIncontro` ([EncounterEndView](./hud.md#encounterendview)).
+- The buttons of Tribuna (Reset, Simula, Log, Opzioni, Back) are moved into the top bar and recoloured with overrides on the scene instances; the options `Panel` opens below the bar; `GameLog` starts **inactive** (the Log button shows it) and sits at the left above the road.
+- Fonts: `Assets/Fonts/CaveatBrush-Regular SDF.asset` (titles) and `Assets/Fonts/SpecialElite-Regular SDF.asset` (text), TextMeshPro font assets made **static** (ASCII and Italian accented letters), so they do not change at every Play; the TTF files and their licences (OFL, Apache 2.0) are next to them. Drawings from the design as SVG sprites in `Assets/Images/Bar/` (`Omino`, `Corona`, `Strada`, `Sagoma`, `Avventori`), imported by Unity's vector graphics module as textured sprites.
+
 ## Prefabs
 
 - `Assets/Prefab/3DCardTable.prefab`: the card, root with [CardDisplay3D](./shared.md#carddisplay3d) and [TableCardController](./table.md#tablecardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`); used by the three table scenes.
 - `Assets/Prefab/CardSlot.prefab`: `CardSlot` root with a `Cube` child (`Mat_Card_Slot`).
+- `Assets/Prefab/CardSlot Bar.prefab`: Prefab Variant of `CardSlot` for the Bar scene: the `Cube` uses `Assets/Materials/Mat_Sagoma.mat` (URP Unlit, transparent, the dashed card outline of `Assets/Images/Bar/Sagoma.svg`).
+- `Assets/Prefab/TombolaCell.prefab`: a cell of the tombola card (light background, `Ring` and `Dot` with the built-in `Knob` sprite), with [TombolaCellView](./hud.md#tombolacardview-tombolacellview).
+- `Assets/Prefab/RoadStop.prefab`: a stop of the road (`Carta` image, `Etichetta` text, `CanvasGroup`), with [RoadStopView](./hud.md#pathroadview-roadstopview); instantiated by [PathRoadView](./hud.md#pathroadview-roadstopview).
 - `Assets/Prefab/GameLog.prefab`: scrollable panel (`ScrollRect`, `Viewport` with `RectMask2D`, `Content` with a TMP `Text`, vertical `Scrollbar`) anchored to the left of the Canvas, 520 px wide, with [GameLogView](./stats.md#gamelogview).
 - `Assets/Prefab/SimulationButton.prefab`: a copy of the `ResetButton` look (text "Simula") with [TableSimulationRunner](./stats.md#tablesimulationrunner) on the root, its own `Button` and the preset library (`Assets/Instances/DeckPresetLibrary.asset`), `games = 300`, both autoplay strategies; `OnClick` calls `Run`. `tableDeckManager` and `gameLog` are set on the scene instances.
 - `Assets/Prefab/SceneButton.prefab`: the `ResetButton` look with [SceneLoader](./shared.md#sceneloader) (`sceneName` `Menu`, text "Back"); `OnClick` calls `Load`. Used for Back and, with overrides, for the Menu buttons.
