@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-22
+aggiornato: 2026-10-28
 verificato: 2026-10-20
 fonti:
+  - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
   - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
   - raw/compiled/study-rpg/2026-10-20-obiettivo.md
@@ -17,6 +18,7 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
 
 ## Cosa sappiamo
 
+- **Codice in corso** (call del 2026-10-28): luigi-ds ha cominciato a implementare la parte RPG sul branch `feat/rpg_implementation`, fuori da git-flow e senza note raw né wiki: il codice non è ancora su `develop` e non è documentato qui. Il prossimo passo è una feature di sviluppo che fa il merge di quel branch su `develop` senza rompere il resto; l'ingest di quella feature porterà nel wiki cosa implementa, come opzione in prova (niente qui diventa una decisione presa).
 - **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso; per la tribuna si propone la fine al 4° re scoperto, vedi [Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)); **path** = un ciclo.
 - **Perché pathbuilder**: alla fine di un ciclo le carte girate formano un path, che triggera **un evento per ogni carta, in sequenza**. Modificare il mazzo orienta la lunghezza dei cicli e quali eventi appaiono.
 - **Pathbuilder ↔ RPG**:

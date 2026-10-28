@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-20
+aggiornato: 2026-10-28
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idea-balatro-like.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
@@ -37,6 +38,8 @@ Cosa succede tra un incontro e l'altro di una run, in stile Balatro. Sono idee e
 - In un autobattler, una via di mezzo tra i joker di Balatro e i gambit di Final Fantasy XII: l'autobattler si "programma".
 - I potenziamenti sono i numeri della smorfia.
 - Le carte hanno una posizione: se ne può cambiare il valore, ma restano nello stesso slot.
+- **Modifiche del mazzo tra un incontro e l'altro** (call del 2026-10-28): oltre a togliere e aggiungere carte, azioni che **modificano l'indice** delle carte (scambiare due semi, due valori o due carte), per rendere le forme dei buchi meno dipendenti dall'ordine dei semi ([Modifica del mazzo](./modifica-del-mazzo.md#forme-dei-buchi-tribuna)).
+- **Shop legato alle forme** (call del 2026-10-28): le forme fatte in un incontro migliorano il pool di un eventuale shop; il 4×4, quasi impossibile, garantisce un santino leggendario.
 
 ## Alternative scartate
 
