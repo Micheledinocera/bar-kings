@@ -1,10 +1,12 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-25
+aggiornato: 2026-10-28
 verificato: 2026-10-25
 consolidato: 2026-10-25
 fonti:
+  - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
+  - raw/compiled/study-call-28-10-2026/2026-10-28-obiettivo.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-buchi/2026-10-23-risultati.md
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
@@ -41,7 +43,7 @@ fonti:
 
 # Modifica del mazzo: panchina, tribuna, index>40
 
-Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltre le 40 (36 di base più i 4 re). Nato dopo la prima POC del solitario dei 4 re (2026-07-01). Tre idee, tutte in prova (vedi *Opzioni*); dal 2026-10-20 l'orientamento è verso la **tribuna** con un bonus sulle **forme dei buchi**. Niente è deciso.
+Come aumentare o modificare il mazzo di base, cioè cosa succede alle carte oltre le 40 (36 di base più i 4 re). Nato dopo la prima POC del solitario dei 4 re (2026-07-01). Tre idee, tutte in prova (vedi *Opzioni*); dal 2026-10-20 l'orientamento è verso la **tribuna** con un bonus sulle **forme dei buchi**, e dalla call del 2026-10-28 il lavoro si concentra lì. Niente è deciso.
 
 ## Cosa sappiamo
 
@@ -66,12 +68,14 @@ Tutte non decise.
 ### Orientamento verso la tribuna
 
 - **Studio del 2026-10-20** (study-meccaniche) e **call del 2026-10-22** (study-tribuna; fonti: raw/compiled/study-tribuna/2026-10-22-riassunto-call.md, raw/compiled/study-tribuna/2026-10-22-discussione-call.md): si è **orientati verso la tribuna**, perché è l'idea in cui la lunghezza dei path non "decade velocemente" all'aumentare delle carte (resta quasi costante, vedi i dati sotto), non cambia troppo i numeri e ci si incastrano altre meccaniche. Panchina e index>40 non si scartano e restano in prova.
+- **Call del 2026-10-28** (fonte: raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md): il team si **concentra sulla tribuna**, perché è l'idea che funziona di più ed è oggi l'unico vero gameplay costruito, almeno in parte. Non è una decisione presa: panchina e index>40 restano in prova.
 
 ### Forme dei buchi (tribuna)
 
 Idea dell'utente del 2026-10-20 (fonte: raw/compiled/study-meccaniche/2026-10-20-tribuna-forme.md), precisata nella call del 2026-10-22 e nella feature preset-buchi (2026-10-23; fonti: raw/compiled/preset-buchi/2026-10-23-risposte.md, raw/compiled/preset-buchi/2026-10-23-risultati.md). Non decisa.
 
-- **Il bonus va alle forme dei buchi** (non alle carte scoperte attorno), contate a **fine incontro** sul tavolo finale; i bonus valgono **per tutta la run**. Come implementarli si decide quando ci saranno vere meccaniche di gameplay. Contano solo i buchi effettivi a fine incontro (slot vuoti): uno slot coperto la cui carta manca non è un buco.
+- **Il bonus va alle forme dei buchi** (non alle carte scoperte attorno), contate a **fine incontro** sul tavolo finale; i bonus valgono **per tutta la run**. Come implementarli si decide quando ci saranno vere meccaniche di gameplay.
+- **Bonus fra un incontro e l'altro** (call del 2026-10-28): siccome le forme si risolvono a fine incontro, il bonus agisce sugli incontri successivi. Esempio: migliora il pool di un eventuale shop, e una forma quasi impossibile come il 4×4 garantisce un santino leggendario nel mercato ([Meccaniche della run](./meccaniche-della-run.md)). Contano solo i buchi effettivi a fine incontro (slot vuoti): uno slot coperto la cui carta manca non è un buco.
 - **Le forme sono disegni sulla griglia** 4×10 per indice (riga = seme, nell'ordine denari, coppe, spade, bastoni; colonna = valore), non combinazioni di carte:
   - **colonna**: i 4 semi di un valore (tolte tutte le carte di quel valore; quella dei re non si può fare);
   - **diagonale**: 4 celle, una per riga, su valori consecutivi, in giù o in su;
@@ -81,6 +85,7 @@ Idea dell'utente del 2026-10-20 (fonte: raw/compiled/study-meccaniche/2026-10-20
   - **ogni path crea al massimo un buco** (nota dell'utente): lo slot di partenza, quando il path si ferma su un doppione o su un buco; se si ferma su un buco lo riempie, quindi il numero di buchi non cambia. Una forma di k slot richiede almeno k path (il 4×4 almeno 16);
   - nei mazzi sotto le 40 carte, senza doppioni, i buchi sono sempre tanti quante le carte mancanti (nessuna carta lascia il tavolo, i buchi si spostano soltanto): conta solo dove finiscono. I buchi "in fondo" esistono solo all'inizio, quindi le forme funzionano anche con meno di 40 carte;
   - **con la fine a carte tutte girate** ogni carta scoperta è nel **suo** slot e i buchi finali sono **esattamente gli slot delle carte che mancano dal tavolo** (tolte dal preset, o originali rimasti fuori perché è uscito un loro doppione): la forma **non dipende da come si giocano i path** ma da quali carte sono sul tavolo, una leva di **costruzione del mazzo** (quali carte togliere o duplicare; più doppioni = più buchi ma path più corti). Durante la partita la cambierebbe solo un'azione che cambia l'indice di una carta (es. valore o seme) o una meccanica futura;
+  - **le forme che dipendono dall'ordine dei semi** (diagonale, quadrati 2×2 e 3×3) dipendono troppo da come sono disposte le righe (call del 2026-10-28). Idea: tra un incontro e l'altro, oltre a togliere e aggiungere carte, si fanno **azioni che modificano l'indice** di alcune carte del mazzo: invertire due semi (es. denari e coppe: si scambiano due righe della cartella), invertire due valori (es. i 3 e i 2: si scambiano due colonne), o invertire due carte qualsiasi. Nota dell'agent: è una "modifica di indice" diversa da quella di index>40 (che riguarda gli indici delle carte aggiunte), e somiglia agli amari "scambia due carte" e "cambia il seme di una carta" ([Meccaniche della run](./meccaniche-della-run.md#cosa-sappiamo)), che però agiscono durante l'incontro;
   - per questo **le forme sono troppo facili, non rare** (call del 2026-10-22): lo slot di una carta tolta diventa per forza un buco se un path parte da lì (la sua carta non c'è, il path non si chiude). Tolti i 4 assi, 4 path che partono dai loro slot fanno sempre la colonna;
   - **con la fine al 4° re** restano carte coperte, quindi la regola precedente non vale più: preparare il mazzo non garantisce la forma, che dipende anche da quali path si aprono e in che ordine. È la perplessità principale: forse il 4° re non frena abbastanza le forme piccole (vedi i dati).
 - **Pari e dispari**: fante = 8 (pari), cavallo = 9 (dispari).
@@ -124,6 +129,8 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 - Tribuna: con la fine al 4° re le forme piccole restano quasi certe per chi gioca mirato (73–79% con le 4 carte tolte). Basta, o servono forme più grandi, malus, altro?
 - Tribuna: le forme si sommano (il 4×4 contiene 4 colonne e quadrati più piccoli) o vale solo la più grande? La stessa forma presa in più incontri somma il bonus? C'è un limite?
 - Tribuna: nome del concetto (vincita o altro) e delle singole forme.
+- Tribuna: le azioni che modificano l'indice tra un incontro e l'altro (scambio di due semi, di due valori, di due carte) come si ottengono (shop, santini, amari, a ogni incontro), quante se ne fanno e valgono per tutta la run? Lo scambio di semi o valori tocca anche i malus dei boss su un seme o sui pari/dispari?
+- Tribuna: quali bonus dà ogni forma fra un incontro e l'altro (pool dello shop, santini garantiti, altro) e come si collegano a quanto è difficile farla?
 - Malus dei boss su gruppi di carte: si applicano a fine incontro o durante? Colpiscono i buchi su quelle carte o le carte scoperte? (In prova: fante 8 pari, cavallo 9 dispari.)
 - Un effetto che cambia il mazzo durante l'incontro (la bomba): vale subito sul tavolo, a fine incontro sul mazzo, o tutte e due? Su una carta coperta, il buco è nello slot fisico o in quello del suo indice?
 - Togliere o trasformare carte "spesso": quando (dopo ogni incontro, nello shop, come evento) e quanto?
