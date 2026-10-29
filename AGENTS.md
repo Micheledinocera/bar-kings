@@ -11,8 +11,9 @@
 │   │       ├── Deck/     # deck presets and deal of the table scenes (seeded)
 │   │       ├── Hud/      # HUD of the Bar scene: receipt, kings, tombola card, road, end panel
 │   │       ├── Menu/     # scene loading: Menu and Back buttons
+│   │       ├── Rpg/      # RPG part being tried (TribunaRpg scene): card effects, fights with the kings
 │   │       ├── Stats/    # game log and autoplay simulation (CSV)
-│   │       └── Table/    # table of the deck variants (Panchina, Tribuna, Index40 scenes)
+│   │       └── Table/    # table of the deck variants (Panchina, Tribuna, Index40, Bar, TribunaRpg scenes)
 │   ├── Scenes/           # scenes (.unity)
 │   ├── Prefab/           # prefabs
 │   ├── Instances/        # asset instances (e.g. card ScriptableObjects in Instances/Cards)

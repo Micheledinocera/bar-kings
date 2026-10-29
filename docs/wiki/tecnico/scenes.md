@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-25
-verificato: 2026-10-25
-consolidato: 2026-10-16
+aggiornato: 2026-10-29
+verificato: 2026-10-29
+consolidato: 2026-10-29
 fonti:
+  - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
@@ -31,11 +32,11 @@ fonti:
 
 # Scenes, prefabs and data assets
 
-Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/` and their library, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md).
+Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/` and their library, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md).
 
 The three scenes of the [deck modification ideas](../business/modifica-del-mazzo.md) (`Panchina`, `Tribuna`, `Index40`) are **temporary**: they let each idea be explored without breaking the previous version. When one idea is chosen, the other scenes and the code only they use are deleted.
 
-The **Menu** opens first and leads to the three table scenes and to **Bar**, a copy of Tribuna with the first art style being tried ([Direzione artistica](../arte/direzione-artistica.md)): a mini demo to show the ideas and to try the builds. If the style is kept, the work goes on in Bar only.
+The **Menu** opens first and leads to the three table scenes and to **Bar**, a copy of Tribuna with the first art style being tried ([Direzione artistica](../arte/direzione-artistica.md)): a mini demo to show the ideas and to try the builds. If the style is kept, the work goes on in Bar only. **TribunaRpg** is another copy of Tribuna, with the first [RPG part](./rpg.md) being tried ([Parte RPG](../business/parte-rpg.md), decision in analysis).
 
 | Scene | Path | Deck manager | Card prefab |
 |---|---|---|---|
@@ -44,12 +45,13 @@ The **Menu** opens first and leads to the three table scenes and to **Bar**, a c
 | [Tribuna](#panchina-tribuna-and-index40) | `Assets/Scenes/Tribuna.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`) | `3DCardTable` |
 | [Index40](#panchina-tribuna-and-index40) | `Assets/Scenes/Index40.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Index`) | `3DCardTable` |
 | [Bar](#bar) | `Assets/Scenes/Bar.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`, `endAtFourthKing`) | `3DCardTable` |
+| [TribunaRpg](#tribunarpg) | `Assets/Scenes/TribunaRpg.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`) | `3DCardTable` |
 
-All five scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`, `Bar`.
+All six scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`, `Bar`, `TribunaRpg`.
 
 ## Menu
 
-Scene to choose a table scene: `Main Camera` (solid green background), `Directional Light`, `UI` (Canvas, Screen Space Overlay, scaled with screen size) with the title "King Bar - demo" and four instances of `Assets/Prefab/SceneButton.prefab` (`PanchinaButton`, `TribunaButton`, `Index40Button`, `BarButton` with the text "Bar (stile)"; [SceneLoader](./shared.md#sceneloader) `sceneName` `Panchina`, `Tribuna`, `Index40`, `Bar`), `EventSystem` with `InputSystemUIInputModule`. No lighting data, no `GameManager`.
+Scene to choose a table scene: `Main Camera` (solid green background), `Directional Light`, `UI` (Canvas, Screen Space Overlay, scaled with screen size) with the title "King Bar - demo" and five instances of `Assets/Prefab/SceneButton.prefab`, from the top: `PanchinaButton`, `TribunaButton`, `TribunaRpgButton` (text "Tribuna RPG"), `Index40Button`, `BarButton` (text "Bar (stile)"); [SceneLoader](./shared.md#sceneloader) `sceneName` `Panchina`, `Tribuna`, `TribunaRpg`, `Index40`, `Bar`, `EventSystem` with `InputSystemUIInputModule`. No lighting data, no `GameManager`.
 
 ## Panchina, Tribuna and Index40
 
@@ -80,6 +82,13 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - The buttons of Tribuna (Reset, Simula, Log, Opzioni, Back) are moved into the top bar and recoloured with overrides on the scene instances; the options `Panel` opens below the bar; `GameLog` starts **inactive** (the Log button shows it) and sits at the left above the road.
 - Fonts: `Assets/Fonts/CaveatBrush-Regular SDF.asset` (titles) and `Assets/Fonts/SpecialElite-Regular SDF.asset` (text), TextMeshPro font assets made **static** (ASCII and Italian accented letters), so they do not change at every Play; the TTF files and their licences (OFL, Apache 2.0) are next to them. Drawings from the design as SVG sprites in `Assets/Images/Bar/` (`Omino`, `Corona`, `Strada`, `Sagoma`, `Avventori`), imported by Unity's vector graphics module as textured sprites.
 
+## TribunaRpg
+
+`Assets/Scenes/TribunaRpg.unity`: a copy of [Tribuna](#panchina-tribuna-and-index40) (same deal, rules, buttons and lighting data `Assets/Scenes/Tribuna/LightingData.asset`; `endAtFourthKing` off) with the first [RPG part](./rpg.md). Tribuna itself is unchanged. Added under `UI`:
+
+- `RpgStats` (bottom right, 440×300) with [RpgStatsView](./rpg.md#rpgstatsview) and the texts `Statistiche` and `Eventi`; its `player` and `king` fields hold the starting stats of the player and of the kings;
+- `FightPopup` (last child, full screen, inactive at start) with [FightPopup](./rpg.md#fightpopup): a background that blocks raycasts, `Riquadro` (700×450) with `Titolo`, `Riepilogo` and `Continua` (instance of `Assets/Prefab/OptionButton.prefab`).
+
 ## Prefabs
 
 - `Assets/Prefab/3DCardTable.prefab`: the card, root with [CardDisplay3D](./shared.md#carddisplay3d) and [TableCardController](./table.md#tablecardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`); used by the three table scenes.
@@ -92,7 +101,7 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - `Assets/Prefab/SceneButton.prefab`: the `ResetButton` look with [SceneLoader](./shared.md#sceneloader) (`sceneName` `Menu`, text "Back"); `OnClick` calls `Load`. Used for Back and, with overrides, for the Menu buttons.
 - `Assets/Prefab/LogToggleButton.prefab`: the `ResetButton` look, text "Log", empty `OnClick` (set on the scene instances).
 - `Assets/Prefab/Options.prefab`: full-canvas root (no graphic) with [OptionsPanel](./table.md#optionspanel), the `OptionsButton` (text "Opzioni") and a hidden `Panel` (dark, 400 px wide, at the left of the button column): status text, "Preset (dal prossimo Reset)" with `PresetScroll`, "Velocità animazioni" with `SpeedButtons`. `Panel` has a raycast-target `Image`, so UI clicks stop on it (cards ignore clicks over the UI, [TableCardController](./table.md#tablecardcontroller)). `PresetScroll`: vertical-only `ScrollRect` 400 px high (about 6 presets, mouse wheel and drag), `Viewport` (`RectMask2D`, transparent `Image` for the wheel) with `PresetButtons` as content (top-anchored, `ContentSizeFitter` on the height), and a vertical `Scrollbar` shown only when the presets do not fit (`AutoHideAndExpandViewport`); with few presets the area stays 400 px high. The preset library is set on the prefab (`presetLibrary`).
-- `Assets/Prefab/OptionButton.prefab`: smaller button (360×60) for the entries of the options panel, instantiated by [OptionsPanel](./table.md#optionspanel).
+- `Assets/Prefab/OptionButton.prefab`: smaller button (360×60) for the entries of the options panel, instantiated by [OptionsPanel](./table.md#optionspanel); also the `Continua` button of the [TribunaRpg](#tribunarpg) fight popup.
 
 ## Card assets
 
@@ -100,9 +109,9 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 
 `Assets/Instances/CardDatabase.asset`: the [CardDatabase](./shared.md#carddatabase) with the 40 cards in table order. Assigned to the `deckDatabase` field of the deck manager in the **three table scenes**; a new table scene needs it too.
 
-`Assets/Instances/DeckPresets/`: the [DeckPreset](./deck.md#deckpreset) assets. Today four custom presets made with `Tools/Preset Builder` ([DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow)), each with 8 chosen removed cards and one card with 5, 10 or 20 extra copies: `NO2-NO3+5-1`, `NO2-NO3+10-1`, `NO2-NO3+20-1`, `Xshape+10-1`. The standard presets (32, 45, 60, 71 non-king cards) and the shape presets were removed on 2026-10-23; `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)) and `Tools/Genera Preset Forme` ([ShapePresetGenerator](./deck.md#shapepresetgenerator)) create them again.
+`Assets/Instances/DeckPresets/`: the [DeckPreset](./deck.md#deckpreset) assets. `Standard`: nothing removed or added, the 40 cards of the normal deck as a preset. Four custom presets made with `Tools/Preset Builder` ([DeckPresetBuilderWindow](./deck.md#deckpresetbuilderwindow)), each with 8 chosen removed cards and one card with 5, 10 or 20 extra copies: `NO2-NO3+5-1`, `NO2-NO3+10-1`, `NO2-NO3+20-1`, `Xshape+10-1`. The standard presets (32, 45, 60, 71 non-king cards) and the shape presets were removed on 2026-10-23; `Tools/Genera Preset Mazzo` ([DeckPresetGenerator](./deck.md#deckpresetgenerator)) and `Tools/Genera Preset Forme` ([ShapePresetGenerator](./deck.md#shapepresetgenerator)) create them again.
 
-`Assets/Instances/DeckPresetLibrary.asset`: the [DeckPresetLibrary](./deck.md#deckpresetlibrary), the presets shown by the options panel and run by the simulation (today the four custom presets); set in `Assets/Prefab/Options.prefab`, `Assets/Prefab/SimulationButton.prefab` and on the `TableDeckManager` of the three table scenes.
+`Assets/Instances/DeckPresetLibrary.asset`: the [DeckPresetLibrary](./deck.md#deckpresetlibrary), the presets shown by the options panel and run by the simulation: `Standard` **first**, so every table scene with an empty `deckPreset` starts with the normal deck, then the four custom presets; set in `Assets/Prefab/Options.prefab`, `Assets/Prefab/SimulationButton.prefab` and on the `TableDeckManager` of the three table scenes.
 
 ## Project settings
 

@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-28
+aggiornato: 2026-10-29
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/merge-rpg/2026-10-29-obiettivo.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/llm-wiki/2026-10-07-obiettivo.md
   - raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md
@@ -59,6 +60,6 @@ Fonti grezze che non si modificano (`docs/raw/`), pagine scritte e aggiornate da
 
 ## Domande aperte
 
-- Se e quando altre persone che lavorano sul repo useranno skill e workflow, e chi rivedrà le loro PR. Stato al 2026-10-28 (call): luigi-ds ha iniziato la parte RPG sul branch `feat/rpg_implementation` senza git-flow né wiki (vedi [Parte RPG](../business/parte-rpg.md#cosa-sappiamo)); un'altra persona che vuole entrare nel progetto usa Gemini Pro invece di Claude Code.
+- Se e quando altre persone che lavorano sul repo useranno skill e workflow, e chi rivedrà le loro PR. Stato al 2026-10-28 (call): luigi-ds ha iniziato la parte RPG sul branch `feat/rpg_implementation`, fuori da git-flow, con note raw ma senza ingest; il 2026-10-29 è stato portato dentro con la feature `merge-rpg`, che ha spostato le note e rimesso a posto il wiki (vedi [Parte RPG](../business/parte-rpg.md#cosa-sappiamo)); un'altra persona che vuole entrare nel progetto usa Gemini Pro invece di Claude Code.
 - Il wiki e il workflow funzionano con agenti diversi da Claude Code (es. Gemini)? L'idea è dire esplicitamente all'agent di leggere i `CLAUDE.md`; la preoccupazione maggiore sono le skill. Nota dell'agent: le regole stanno già in `AGENTS.md` (`CLAUDE.md` lo importa soltanto) e in `docs/CLAUDE.md`, file di testo leggibili da qualunque agent; le skill in `.claude/skills/` sono invece un formato di Claude Code, quindi per un altro agent andrebbero lette come istruzioni a mano o adattate. Da verificare con l'agent che userà.
 - Il codice esistente (`Assets/Scripts/`) non è ancora documentato in `tecnico/`: serve una feature dedicata per il primo ingest del codice e per `known-issues.md`.

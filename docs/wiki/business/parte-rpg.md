@@ -1,9 +1,15 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-28
+aggiornato: 2026-10-29
 verificato: 2026-10-20
+consolidato: 2026-10-29
 fonti:
+  - raw/compiled/merge-rpg/2026-10-28-obiettivo-rpg.md
+  - raw/compiled/merge-rpg/2026-10-28-fight.md
+  - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
+  - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
+  - raw/compiled/merge-rpg/2026-10-29-obiettivo.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
   - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
@@ -18,7 +24,13 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
 
 ## Cosa sappiamo
 
-- **Codice in corso** (call del 2026-10-28): luigi-ds ha cominciato a implementare la parte RPG sul branch `feat/rpg_implementation`, fuori da git-flow e senza note raw né wiki: il codice non è ancora su `develop` e non è documentato qui. Il prossimo passo è una feature di sviluppo che fa il merge di quel branch su `develop` senza rompere il resto; l'ingest di quella feature porterà nel wiki cosa implementa, come opzione in prova (niente qui diventa una decisione presa).
+- **Prima implementazione in prova** (2026-10-28, scena `TribunaRpg`, copia di Tribuna; codice in [RPG scripts](../tecnico/rpg.md)). Niente di questo è deciso: sono le regole che si stanno provando.
+  - **Statistiche del giocatore**: danno, vita (con un massimo), armatura, denari (Lire). Partenza: vita 100 su 100, danno 1, armatura 1, modificabili dall'Inspector.
+  - **Effetti delle carte 1–9** (n = valore), alla fine di ogni path, nell'ordine del path: Spade +n danno, Denari +n×1000 Lire, Coppe +n vita (oltre il massimo non ha effetto), Bastoni +n armatura. La carta che arriva dalla panchina non conta.
+  - **Re = combattimento**: tutti i re uguali (vita 10, armatura 0, danno 1), nuovi a ogni combattimento. Turni scanditi da un clock non a tempo, uno a testa per giro, prima il giocatore. Colpo = danno − armatura del bersaglio (minimo 0); l'armatura non si consuma.
+  - **Momento**: il combattimento parte quando il re si incontra nel path (vedi l'opzione *Il re interrompe la risoluzione*): le carte prima si applicano, quelle dopo solo se il re è battuto.
+  - **Sconfitta** (vita a 0): l'incontro finisce, le carte dopo il re non si applicano. **Pareggio**: se nessuno dei due passa l'armatura dell'altro, il combattimento finisce subito e si va avanti (proposta dell'agent, accettata dall'utente il 2026-10-29).
+  - Un popup riassume ogni combattimento e va chiuso per continuare.
 - **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso; per la tribuna si propone la fine al 4° re scoperto, vedi [Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)); **path** = un ciclo.
 - **Perché pathbuilder**: alla fine di un ciclo le carte girate formano un path, che triggera **un evento per ogni carta, in sequenza**. Modificare il mazzo orienta la lunghezza dei cicli e quali eventi appaiono.
 - **Pathbuilder ↔ RPG**:
@@ -43,7 +55,7 @@ Idee da valutare, nessuna scelta:
 | **Buchi che valgono a fine path** | I buchi contano alla fine del path, così conviene partire dagli slot delle carte tolte dal mazzo | Dà più scelta durante l'incontro (pensata per la panchina) |
 | **Condizioni sul path** | Effetti speciali per coppie, tris, scale, ecc. nel path, e i **punteggi della scopa** (settebello, primiera, denari come maggioranza di un seme nei path, scopa come path chiuso in modo pulito), anche come bonus a fine incontro | Rende importante la composizione del path |
 | **Ordine degli eventi speciali** | L'ordine nel path conta: uno shop preso dopo dei soldi è diverso dal contrario | Giustifica il "pathbuilder" |
-| **Il re interrompe la risoluzione** | Quando un re compare nel path il nemico agisce subito: gli eventi prima del re si applicano, quelli dopo arrivano tardi. Probabilmente vale anche per gli altri eventi speciali | Sì, come direzione |
+| **Il re interrompe la risoluzione** | Quando un re compare nel path il nemico agisce subito: gli eventi prima del re si applicano, quelli dopo arrivano tardi. Probabilmente vale anche per gli altri eventi speciali | Sì, come direzione; **in prova** nella scena `TribunaRpg` |
 | **Intento del nemico visibile** | Lo scagnozzo mostra cosa farà al prossimo re (es. "colpisce per 12"), alla Slay the Spire | Dà un motivo per scegliere la carta di partenza |
 | **Fiches × moltiplicatore** | Le carte parametriche sommano una base; la lunghezza del path (o i semi consecutivi) moltiplica | Ha senso soprattutto in index>40, dove i cicli si allungano; nelle altre varianti si accorciano |
 | **Forme dei buchi come bonus** | Le forme dei buchi della tribuna ([Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)) danno un bonus | Dalla call del 2026-10-22: bonus a fine incontro, validi per tutta la run (prima l'ipotesi era un bonus solo per quell'incontro) |
@@ -61,4 +73,6 @@ Nessuna alternativa scartata finora.
 - **Scelta durante l'incontro**: si sceglie solo la carta di partenza, coperta, e in tribuna i path sono in media di circa 2,5 carte: il rischio è guardare il path più che costruirlo. Da tenere a mente (vedi *Buchi che valgono a fine path*).
 - **Bilanciamento**: la lunghezza media dei path va da ~2,3 carte (tribuna) a 8–15 (index>40), quindi gli effetti dipendono dalla variante del mazzo, ancora in analisi. Da tenere a mente (proposta: effetti relativi, non numeri fissi, finché la variante non è scelta).
 - Da rivedere più avanti: gli HP persistono tra gli incontri o si azzerano? Perdere contro uno scagnozzo chiude la run? Bastano 9 incontri per run (8 momenti di modifica del mazzo)?
-- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento.
+- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento. In prova: effetti per seme e combattimento al re (vedi *Cosa sappiamo*).
+- **Momento del combattimento nel path**: quando il re si incontra nella risoluzione (in prova) o a fine path, dopo tutte le carte? Punto aperto (utente, 2026-10-28).
+- **Velocità**: una statistica che dà più turni prima di quello del re. Idea per dopo, non implementata.

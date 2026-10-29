@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-23
-verificato: 2026-10-23
+aggiornato: 2026-10-29
+verificato: 2026-10-29
 consolidato: 2026-10-23
 fonti:
+  - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
   - raw/compiled/preset-buchi/2026-10-23-obiettivo.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
@@ -67,8 +68,8 @@ Scripts in `Assets/Scripts/Shared/Deck/` and the preset editor menus in `Assets/
 
 `NonKingCards` (read-only in the inspector) = 36 − removed − chosen removed + duplicates + chosen copies. `NameOf(preset)` (static): the preset name, `"Normale"` for no preset (the normal deck, see [DeckBuilder](#deckbuilder)), used by the log and the options. Create menu `Carte/Deck Preset`: the asset is not added to the [library](#deckpresetlibrary), use the [Preset Builder](#deckpresetbuilderwindow) instead. `Set(removed, duplicates, pick = Random)` and `SetChosen(removed, duplicated)` exist only in the Editor, for the menus.
 
-- **Assets** in `Assets/Instances/DeckPresets/`: today the custom presets of the [Preset Builder](#deckpresetbuilderwindow) (see [scenes](./scenes.md#card-assets)). The standard presets of [DeckPresetGenerator](#deckpresetgenerator) (`Preset32`, `Preset45`, `Preset60`, `Preset71`: 9/5/5/5 removed, 5/14/29/40 duplicates, `Random`) and the shape presets of [ShapePresetGenerator](#shapepresetgenerator) were removed on 2026-10-23; their menus create them again.
-- **Used by**: [DeckPresetLibrary](#deckpresetlibrary), [TableDeckManager](./table.md#tabledeckmanager) (`deckPreset`, empty in the three scenes: first preset of the library), [OptionsPanel](./table.md#optionspanel) and [TableSimulationRunner](./stats.md#tablesimulationrunner) (through the library), [DeckBuilder](#deckbuilder), [GameSimulator](./stats.md#gamesimulator), [SimulationResult](./stats.md#simulationresult).
+- **Assets** in `Assets/Instances/DeckPresets/`: today `Standard` (nothing removed or added, first in the library) and the custom presets of the [Preset Builder](#deckpresetbuilderwindow) (see [scenes](./scenes.md#card-assets)). The standard presets of [DeckPresetGenerator](#deckpresetgenerator) (`Preset32`, `Preset45`, `Preset60`, `Preset71`: 9/5/5/5 removed, 5/14/29/40 duplicates, `Random`) and the shape presets of [ShapePresetGenerator](#shapepresetgenerator) were removed on 2026-10-23; their menus create them again.
+- **Used by**: [DeckPresetLibrary](#deckpresetlibrary), [TableDeckManager](./table.md#tabledeckmanager) (`deckPreset`, empty in the table scenes: first preset of the library, `Standard`), [OptionsPanel](./table.md#optionspanel) and [TableSimulationRunner](./stats.md#tablesimulationrunner) (through the library), [DeckBuilder](#deckbuilder), [GameSimulator](./stats.md#gamesimulator), [SimulationResult](./stats.md#simulationresult).
 
 ## DeckPresetLibrary
 
@@ -77,7 +78,7 @@ Scripts in `Assets/Scripts/Shared/Deck/` and the preset editor menus in `Assets/
 - `Presets` skips the entries of presets deleted from the project: they stay in the list as empty references, and one made [OptionsPanel](./table.md#optionspanel) throw on the first press of the options button.
 - `Add(preset)` (Editor only) adds a preset once and drops the empty entries.
 - **Created and filled by**: [DeckPresetGenerator](#deckpresetgenerator), [ShapePresetGenerator](#shapepresetgenerator), [DeckPresetBuilderWindow](#deckpresetbuilderwindow).
-- **Used by**: [OptionsPanel](./table.md#optionspanel) and [TableSimulationRunner](./stats.md#tablesimulationrunner) (`presetLibrary`, set in `Assets/Prefab/Options.prefab` and `Assets/Prefab/SimulationButton.prefab`), [TableDeckManager](./table.md#tabledeckmanager) (`presetLibrary`, set in the three table scenes).
+- **Used by**: [OptionsPanel](./table.md#optionspanel) and [TableSimulationRunner](./stats.md#tablesimulationrunner) (`presetLibrary`, set in `Assets/Prefab/Options.prefab` and `Assets/Prefab/SimulationButton.prefab`), [TableDeckManager](./table.md#tabledeckmanager) (`presetLibrary`, set in the table scenes).
 
 ## DeckBuilder
 

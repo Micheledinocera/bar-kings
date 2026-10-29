@@ -66,7 +66,7 @@ public class TableDeckManager : MonoBehaviour
     DeckPreset currentPreset; // preset of the game in progress; null for the normal deck
     int pathCount;
     bool allKingsLogged;
-    bool encounterOver; // endAtFourthKing and the 4th king is face up
+    bool encounterOver; // endAtFourthKing and the 4th king is face up, or ended by EndEncounter
 
     public CardDatabase DeckDatabase => deckDatabase;
 
@@ -93,8 +93,17 @@ public class TableDeckManager : MonoBehaviour
     // Raised when the animation of a path is over: the path number in the game and its moves, in order.
     public event Action<int, IReadOnlyList<PathMove>> PathPlayed;
 
-    // Raised after PathPlayed when the path turned the 4th king and endAtFourthKing is on: the paths played.
+    // Raised after PathPlayed when the path turned the 4th king and endAtFourthKing is on, or when a subscriber of
+    // PathPlayed called EndEncounter: the paths played.
     public event Action<int> EncounterEnded;
+
+    // Ends the encounter from outside (the RPG part, when the player is defeated): every click is ignored until
+    // ResetTable. Called from a PathPlayed subscriber, it also raises EncounterEnded for that path.
+    public void EndEncounter() => encounterOver = true;
+
+    // Set from outside while the table must wait (the RPG part, while a fight popup is open): clicks on the cards
+    // are ignored. Needed because OnMouseDown can come before the UI takes the click (TableCardController).
+    public bool TablePaused { get; set; }
 
     // The preset of the next game, from the next Reset.
     public void SetNextPreset(DeckPreset preset) => deckPreset = preset;
@@ -184,7 +193,7 @@ public class TableDeckManager : MonoBehaviour
     public async UniTask PlayPath(CardDisplay3D clickedCard)
     {
         int startSlot = table.SlotOf(clickedCard.cardData);
-        if (encounterOver || startSlot < 0 || table.IsFaceUp(startSlot))
+        if (encounterOver || TablePaused || startSlot < 0 || table.IsFaceUp(startSlot))
         {
             return;
         }
