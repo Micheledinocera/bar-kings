@@ -5,6 +5,8 @@ aggiornato: 2026-10-29
 verificato: 2026-10-15
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/antigravity-commands/2026-10-29-obiettivo.md
+  - raw/compiled/antigravity-commands/2026-10-29-sessione.md
   - raw/compiled/gemini/2026-10-29-setup-antigravity.md
   - raw/compiled/preset-builder/2026-10-19-strumenti.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
@@ -24,6 +26,7 @@ Come l'agent fa modifiche nell'Editor e verifica il progetto (compilazione, Cons
 
 - L'agent accede all'Editor tramite il **server MCP ufficiale di Unity**: pacchetto `com.unity.ai.assistant` (`Packages/manifest.json`, impostazioni in `ProjectSettings/Packages/com.unity.ai.assistant/`), relay `relay_win.exe --mcp` registrato in Claude Code come server `unity-mcp` o in Antigravity tramite plugin locale `.agents/plugins/unity/`.
 - La registrazione è per macchina (scope utente di Claude Code, o cartella locale ignorata da git per Antigravity): ogni persona la fa una volta (`claude mcp add unity-mcp --scope user -- "<home>/.unity/relay/relay_win.exe" --mcp` o configurazione in `.agents/plugins/unity/mcp_config.json`).
+- **Invocazione skill tra agenti**: le skill di workflow (`start`, `close`, `ingest`, `lint-wiki`, `report`) sono compatibili sia con Claude Code che con Antigravity. Possono essere invocate con `/` (es. `/close`), con `-` (es. `-close`) o con nome diretto (`close`). Nella TUI di Antigravity, digitando `/` appaiono i comandi di sistema, mentre le skill disponibili sono mostrate dal comando nativo `/skills`.
 - Funziona solo con l'Editor aperto sul progetto.
 - **Regola** (`AGENTS.md`, *Writing code*): le modifiche a scene, prefab e ScriptableObject passano da `unity-mcp` (`Unity_RunCommand`), **mai** dallo YAML a mano.
   - Le modifiche all'Editor di una feature si elencano a parte rispetto al codice; l'agent le esegue **solo dopo la conferma** dell'utente. Leggere e verificare (Console, catture, gerarchia) non richiede conferma.
