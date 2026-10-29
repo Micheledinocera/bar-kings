@@ -62,3 +62,4 @@ Nessuna alternativa scartata finora.
 - **Bilanciamento**: la lunghezza media dei path va da ~2,3 carte (tribuna) a 8–15 (index>40), quindi gli effetti dipendono dalla variante del mazzo, ancora in analisi. Da tenere a mente (proposta: effetti relativi, non numeri fissi, finché la variante non è scelta).
 - Da rivedere più avanti: gli HP persistono tra gli incontri o si azzerano? Perdere contro uno scagnozzo chiude la run? Bastano 9 incontri per run (8 momenti di modifica del mazzo)?
 - Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento.
+- **Momento del fight nel path**: il fight parte quando il re si incontra nella risoluzione in ordine (le carte prima del re si applicano, quelle dopo solo se il re è battuto), oppure a fine path, dopo tutte le carte? Nella scena `TribunaRpg` si prova per ora la prima (utente, 2026-10-28): punto aperto.
