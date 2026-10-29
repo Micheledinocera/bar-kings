@@ -111,5 +111,10 @@ InitTestScene*.unity*
 # Claude Code: personal local settings
 .claude/settings.local.json
 
+# Antigravity / Gemini agent customizations
+.agents/
+.agent/
+
 # CSV files of the table simulations (TableSimulationRunner)
 /[Ss]imulations/
+
