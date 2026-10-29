@@ -1,6 +1,6 @@
 # Riassunto della sessione — rpg_implementation (2026-10-28)
 
-Punto di partenza per una conversazione futura su questa feature. Dettagli delle richieste nelle altre note della cartella: `2026-10-28-obiettivo.md`, `2026-10-28-fight.md`, `2026-10-28-popup-e-config.md`.
+Punto di partenza per una conversazione futura su questa feature. Dettagli delle richieste nelle altre note della cartella: `2026-10-28-obiettivo-rpg.md`, `2026-10-28-fight.md`, `2026-10-28-popup-e-config.md`.
 
 ## Stato del lavoro
 
