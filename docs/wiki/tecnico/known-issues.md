@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-25
-verificato: 2026-10-25
+aggiornato: 2026-10-29
+verificato: 2026-10-29
 consolidato: 2026-10-16
 fonti:
+  - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
   - raw/compiled/build/2026-10-16-sistemazione.md
@@ -26,12 +27,12 @@ fonti:
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done, and the build (**I**) is done except the company name; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done, and the build (**I**) is done except the company name; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
 | [C — Game state in hierarchy and statics](#block-c--game-state-in-hierarchy-and-statics) | 4 | debt, dead-code | — |
-| [D — Input](#block-d--input) | 1 | debt | — |
+| [D — Input](#block-d--input) | 2 | debt, to-verify | — |
 | [F — Cleanup and conventions](#block-f--cleanup-and-conventions) | 3 | debt | — |
 | [H — Stats and simulation](#block-h--stats-and-simulation) | 2 | ux, duplicate | — |
 | [I — Build](#block-i--build) | 1 | debt | — |
@@ -47,6 +48,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 ## Block D — Input
 
 - `debt` — Clicks go through `OnMouseDown`, which ignores the UI (a check of `EventSystem.IsPointerOverGameObject` stops clicks over the panels); `Assets/InputSystem_Actions.inputactions` is unused. Works today; to move to the Input System when the card view is rewritten. `Assets/Scripts/Shared/Table/TableCardController.cs` — [TableCardController](./table.md#tablecardcontroller)
+- `to-verify` — `OnMouseDown` gets the click before the UI: the "Continua" button of the TribunaRpg fight popup also played the card below it, fixed with `TableDeckManager.TablePaused`. The options panel of the other scenes may have the same problem on the click that closes it. `Assets/Scripts/Shared/Table/TableCardController.cs` — [TableDeckManager](./table.md#tabledeckmanager)
 
 ## Block F — Cleanup and conventions
 

@@ -25,7 +25,7 @@ Scripts in `Assets/Scripts/Shared/Hud/`: the HUD of the Bar scene (`Assets/Scene
 
 `Assets/Scripts/Shared/Hud/PathReceipt.cs`. Text of the receipt, in pieces so it can be written while the path plays: `Header(pathNumber)` ("scontrino non fiscale - path n. N" and a dashed line), `Line(number, card)` (" 1  7 SPADE"), `Footer(moves)` (how the path ended, "CICLO CHIUSO", "FINITO IN UN BUCO" or "SU UN DOPPIONE", and the number of cards; a bench card filling the starting slot on a line of its own), `Empty` (before the first path). `CardLabel(card)`: "ASSO DENARI", "7 SPADE", "FANTE/CAVALLO/RE COPPE".
 
-- **Used by**: [ReceiptView](#receiptview), [RoadStopView](#pathroadview-roadstopview) (`CardLabel`).
+- **Used by**: [ReceiptView](#receiptview), [RoadStopView](#pathroadview-roadstopview) (`CardLabel`), [RpgStatsView](./rpg.md#rpgstatsview) and [CardEffects](./rpg.md#cardeffects) (`CardLabel`).
 
 ## ReceiptView
 

@@ -1,7 +1,7 @@
 ---
 tipo: info
-aggiornato: 2026-10-25
-verificato: 2026-10-23
+aggiornato: 2026-10-29
+verificato: 2026-10-29
 consolidato: 2026-10-19
 fonti:
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
@@ -104,4 +104,4 @@ Shapes of holes on the base table grid, measured for the tribuna bonus being stu
 - **Serialized fields**: `tableDeckManager`, `gameLog` (optional; scene overrides of the prefab instance), `button`, `presetLibrary` (`Assets/Instances/DeckPresetLibrary.asset`, set on the prefab), `snapshotGames` (20), `games` (300 on the prefab, snapshot games included), `seed` (0 = a new one at every run, written in the averages), `strategies` ([AutoplayStrategy](#autoplaystrategy) list, `Random` and `Targeted`).
 - **Output**: `Simulations/` in the project root (git-ignored, `.gitignore`); `Application.persistentDataPath/Simulations` in a build.
 - Yields a frame every `GamesPerFrame` (50) games. With the Editor in the background the frames stop (`Application.runInBackground` off), and so does the simulation: run it with the Editor focused.
-- **Prefab**: `Assets/Prefab/SimulationButton.prefab`, in the three table scenes ([scenes](./scenes.md#panchina-tribuna-and-index40)).
+- **Prefab**: `Assets/Prefab/SimulationButton.prefab`, in the table scenes ([scenes](./scenes.md#panchina-tribuna-and-index40)).
