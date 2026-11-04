@@ -444,6 +444,8 @@ MonoBehaviour:
   presetLibrary: {fileID: 11400000, guid: 65716d78043453f47a6f0b5f387e884f, type: 2}
   seed: 0
   excessCards: 1
+  endAtFourthKing: 0
+  pathShortening: {fileID: 11400000, guid: c793b2ab1e1291b4a993f9d479681600, type: 2}
   gameLog: {fileID: 439368790}
   animationSpeed: 2
   slowTiming:

@@ -1095,6 +1095,7 @@ MonoBehaviour:
   seed: 0
   excessCards: 1
   endAtFourthKing: 1
+  pathShortening: {fileID: 11400000, guid: c793b2ab1e1291b4a993f9d479681600, type: 2}
   gameLog: {fileID: 439368790}
   animationSpeed: 2
   slowTiming:
