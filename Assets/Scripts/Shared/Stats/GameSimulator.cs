@@ -15,11 +15,20 @@ public static class GameSimulator
         ExcessCards excess,
         int gameSeed,
         Random choices,
-        AutoplayStrategy strategy = AutoplayStrategy.Random
+        AutoplayStrategy strategy = AutoplayStrategy.Random,
+        PathShorteningConfig shortening = null
     )
     {
-        DeckDeal deal = DeckBuilder.Build(excess, baseCards, preset, new Random(gameSeed));
-        TableState table = new(deal.TableSlots, deal.BenchCards(excess));
+        // As in TableDeckManager: the path shortening continues the random source of the deal.
+        Random random = new(gameSeed);
+        DeckDeal deal = DeckBuilder.Build(excess, baseCards, preset, random);
+        TableState table = new(
+            deal.TableSlots,
+            deal.BenchCards(excess),
+            shortening != null
+                ? shortening.Create(PathShorteningConfig.FirstEncounter, random)
+                : null
+        );
         HashSet<int> removedSlots = new(
             deal.Removed.Select(card => card.index).Where(slot => slot < table.SlotCount)
         );

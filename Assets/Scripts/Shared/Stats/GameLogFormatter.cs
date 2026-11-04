@@ -52,6 +52,10 @@ public static class GameLogFormatter
         return text.ToString();
     }
 
+    public static string FormatSwap(int pathNumber, CardSwap swap) =>
+        $"Path {pathNumber} shortened: {CardName(swap.Closer)} [{swap.CloserFrom}] swapped with "
+        + $"{CardName(swap.Replaced)} [{swap.Target}]";
+
     public static string FormatAllKings(int pathNumber) =>
         $"All {DeckRules.KingCount} kings face up at path {pathNumber}";
 

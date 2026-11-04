@@ -38,6 +38,10 @@ public class TableDeckManager : MonoBehaviour
     [SerializeField]
     private bool endAtFourthKing;
 
+    // Hidden shortening of long paths in the first encounters (Assets/Instances/PathShortening); empty: off.
+    [SerializeField]
+    private PathShorteningConfig pathShortening;
+
     // On-screen log; optional, the Console always gets the log.
     [SerializeField]
     private GameLogView gameLog;
@@ -71,6 +75,8 @@ public class TableDeckManager : MonoBehaviour
     public CardDatabase DeckDatabase => deckDatabase;
 
     public ExcessCards Excess => excessCards;
+
+    public PathShorteningConfig PathShortening => pathShortening;
 
     public DeckPreset CurrentPreset => currentPreset;
 
@@ -134,11 +140,13 @@ public class TableDeckManager : MonoBehaviour
             deckPreset = presetLibrary.Presets.FirstOrDefault();
         }
         currentPreset = deckPreset;
+        // The path shortening continues the random source of the deal: the seed replays it too.
+        System.Random random = new(gameSeed);
         DeckDeal deal = DeckBuilder.Build(
             excessCards,
             deckDatabase.CreateCardsInGame(),
             currentPreset,
-            new System.Random(gameSeed)
+            random
         );
         List<CardDataInGame> benchCards = deal.BenchCards(excessCards).ToList();
 
@@ -161,7 +169,11 @@ public class TableDeckManager : MonoBehaviour
         ShowSlots(deal.TableSlots.Count);
         RenderDeck(deal.TableSlots, benchCards);
         await MoveCards(deal.TableSlots, cancellationToken);
-        table = new TableState(deal.TableSlots, benchCards);
+        PathShortening shortening =
+            pathShortening != null
+                ? pathShortening.Create(PathShorteningConfig.FirstEncounter, random)
+                : null;
+        table = new TableState(deal.TableSlots, benchCards, shortening);
         GameManager.isClickBlocked = false;
         GameStarted?.Invoke();
     }
@@ -198,10 +210,15 @@ public class TableDeckManager : MonoBehaviour
             return;
         }
 
-        List<PathMove> moves = table.PlayPath(startSlot);
+        List<PathMove> moves = table.PlayPath(startSlot, out CardSwap? swap);
         pathCount++;
         int faceUpKings = table.FaceUpKings;
         Log(GameLogFormatter.FormatPath(pathCount, startSlot, moves, faceUpKings));
+        if (swap.HasValue)
+        {
+            Log(GameLogFormatter.FormatSwap(pathCount, swap.Value));
+            SwapViews(swap.Value);
+        }
         if (!allKingsLogged && faceUpKings == DeckRules.KingCount)
         {
             allKingsLogged = true;
@@ -241,6 +258,17 @@ public class TableDeckManager : MonoBehaviour
         {
             EncounterEnded?.Invoke(pathCount);
         }
+    }
+
+    // Mirrors a swap of the path shortening before the path is animated: both cards are face down, so swapping their
+    // places at once is not visible.
+    void SwapViews(CardSwap swap)
+    {
+        Transform closer = cardViews[swap.Closer].transform;
+        Transform replaced = cardViews[swap.Replaced].transform;
+        (closer.position, replaced.position) = (replaced.position, closer.position);
+        closer.SetParent(GetSlotByIndex(swap.Target), true);
+        replaced.SetParent(GetSlotByIndex(swap.CloserFrom), true);
     }
 
     public Transform GetSlotByIndex(int index)

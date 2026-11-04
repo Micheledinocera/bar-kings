@@ -10,14 +10,17 @@ public class TableState
     readonly List<CardDataInGame>[] stacks;
     readonly bool[] faceUp;
     readonly Queue<CardDataInGame> bench;
+    readonly PathShortening shortening;
 
     // dealtCards[i] is the card dealt to slot i, face down; null leaves slot i a hole (a deck smaller than the
-    // table). benchCards are drawn in order to fill holes.
+    // table). benchCards are drawn in order to fill holes. shortening: null plays the paths as dealt.
     public TableState(
         IReadOnlyList<CardDataInGame> dealtCards,
-        IEnumerable<CardDataInGame> benchCards
+        IEnumerable<CardDataInGame> benchCards,
+        PathShortening shortening = null
     )
     {
+        this.shortening = shortening;
         stacks = new List<CardDataInGame>[dealtCards.Count];
         faceUp = new bool[dealtCards.Count];
         for (int i = 0; i < dealtCards.Count; i++)
@@ -87,9 +90,12 @@ public class TableState
     // When the path stops, the starting slot is left empty: the next card of the panchina fills it face down
     // (PathEnd.FilledFromBench). With the panchina empty, the slot stays a hole. POC rules, see wiki
     // business/modifica-del-mazzo.md.
-    public List<PathMove> PlayPath(int startSlot)
+    // With a PathShortening, the path may close early: swap is the two face-down cards swapped so that the next
+    // card closes, null when the path was played as dealt.
+    public List<PathMove> PlayPath(int startSlot, out CardSwap? swap)
     {
-        List<PathMove> moves = PlayPathMoves(startSlot);
+        swap = null;
+        List<PathMove> moves = PlayPathMoves(startSlot, ref swap);
         if (IsHole(startSlot) && bench.Count > 0)
         {
             CardDataInGame benchCard = bench.Dequeue();
@@ -100,7 +106,9 @@ public class TableState
         return moves;
     }
 
-    List<PathMove> PlayPathMoves(int startSlot)
+    public List<PathMove> PlayPath(int startSlot) => PlayPath(startSlot, out _);
+
+    List<PathMove> PlayPathMoves(int startSlot, ref CardSwap? swap)
     {
         List<PathMove> moves = new();
         CardDataInGame inHand = stacks[startSlot][^1];
@@ -137,6 +145,14 @@ public class TableState
                 return moves;
             }
 
+            if (
+                shortening != null
+                && stacks[target][^1].index != startSlot
+                && shortening.ShouldClose(moves.Count + 1)
+            )
+            {
+                swap = SwapInCloser(target, startSlot);
+            }
             CardDataInGame displaced = stacks[target][^1];
             stacks[target].Clear();
             stacks[target].Add(inHand);
@@ -144,6 +160,31 @@ public class TableState
             moves.Add(new PathMove(inHand, target, 0, PathEnd.None));
             inHand = displaced;
         }
+    }
+
+    // Swaps the face-down card of target with a face-down card that belongs to the starting slot, so that the path
+    // closes with the next card. Null when there is none (removed from the deck, or already face up): the path goes
+    // on as dealt. Face-down slots hold one card: cards stack only on face-up slots.
+    CardSwap? SwapInCloser(int target, int startSlot)
+    {
+        for (int slot = 0; slot < stacks.Length; slot++)
+        {
+            if (
+                slot == target
+                || faceUp[slot]
+                || IsHole(slot)
+                || stacks[slot][^1].index != startSlot
+            )
+            {
+                continue;
+            }
+            CardDataInGame closer = stacks[slot][^1];
+            CardDataInGame replaced = stacks[target][^1];
+            stacks[slot][^1] = replaced;
+            stacks[target][^1] = closer;
+            return new CardSwap(closer, slot, replaced, target);
+        }
+        return null;
     }
 }
 

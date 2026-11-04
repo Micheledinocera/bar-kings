@@ -64,9 +64,11 @@ public class TableSimulationRunner : MonoBehaviour
             System.Random random = new(simulationSeed);
             List<CardDataInGame> baseCards = tableDeckManager.DeckDatabase.CreateCardsInGame();
             IReadOnlyList<DeckPreset> presets = presetLibrary.Presets;
+            PathShorteningConfig shortening = tableDeckManager.PathShortening;
             Log(
                 $"Simulation | {tableDeckManager.Excess} | {presets.Count} presets x {strategies.Count} strategies "
-                    + $"x {games} games, to the 4th king | seed {simulationSeed}"
+                    + $"x {games} games, to the 4th king | seed {simulationSeed} | "
+                    + (shortening != null ? shortening.ToString() : "no shortening")
             );
 
             // Rows written result by result, so the games of a result can be dropped.
@@ -94,7 +96,8 @@ public class TableSimulationRunner : MonoBehaviour
                                 tableDeckManager.Excess,
                                 gameSeed,
                                 random,
-                                strategy
+                                strategy,
+                                shortening
                             )
                         );
                         if (++played % GamesPerFrame == 0)
