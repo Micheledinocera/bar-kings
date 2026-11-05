@@ -5,6 +5,7 @@ aggiornato: 2026-10-29
 verificato: 2026-10-20
 consolidato: 2026-10-29
 fonti:
+  - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
   - raw/compiled/merge-rpg/2026-10-28-obiettivo-rpg.md
   - raw/compiled/merge-rpg/2026-10-28-fight.md
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
@@ -41,7 +42,7 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
   - **non parametrici** (speciali) solo per alcune carte: probabilmente figure, assi e 7 di denari (settebello);
   - **combattimento**: per ora solo i **re**, ma anche altre carte potrebbero triggerare eventi simili.
 - **Struttura della run** (idea, non decisa):
-  - 3 livelli, i **bar**; ogni bar ha 3 incontri: 2 **scagnozzi** (miniboss) e un **capobar** (boss) che, se battuto, fa passare al bar successivo;
+  - 3 livelli, i **bar**; ogni bar ha 3 incontri: 2 **scagnozzi** (miniboss) e un **capobar** (boss) che, se battuto, fa passare al bar successivo; la [vertical slice](../progetto/roadmap-vertical-slice.md) ne fa uno solo (team, 2026-10-29);
   - ogni bar ha i suoi **malus**: ogni scagnozzo ne applica uno (uno sulla parte RPG, l'altro sulla parte pathbuilder), il capobar li applica entrambi;
   - la parte RPG potrebbe essere un **autobattler** con parametri e skill (vedi l'autobattler "programmabile" in [Meccaniche della run](./meccaniche-della-run.md#opzioni)).
 
