@@ -10,7 +10,9 @@ using UnityEngine;
 // starts a fight (Fight) with the stats reached so far, its summary waits in a popup (FightPopup), and the cards
 // after it are applied once the popup is closed, only if the king is beaten. A defeat ends the encounter. Logs
 // everything in the Console and shows the stats on screen. Listens to TableDeckManager only; a new game (Reset)
-// starts from the stats of the Inspector.
+// starts from the stats of the Inspector. Owns the player's santini and amari (PlayerInventory, editable in the
+// Inspector during Play mode): the santini change the card effects, an amaro is drunk from the InventoryView
+// between two paths (not while a path is resolved, not after the encounter is over).
 public class RpgStatsView : MonoBehaviour
 {
     [SerializeField, Required]
@@ -25,18 +27,34 @@ public class RpgStatsView : MonoBehaviour
     [SerializeField, Required]
     private FightPopup fightPopup;
 
+    [SerializeField, Required]
+    private InventoryView inventoryView;
+
     [SerializeField]
     private PlayerConfig player = new();
 
     [SerializeField]
     private KingConfig king = new();
 
+    [SerializeField]
+    private PlayerInventory inventory = new();
+
     private PlayerStats stats;
+    private bool resolving; // a path is being resolved: no amaro can be drunk
+    private bool encounterOver;
+
+    // What the InventoryView shows, to redraw it when the inventory changes (also from the Inspector).
+    private readonly List<object> shownItems = new();
+    private bool shownCanDrink;
+
+    private bool CanDrink => !resolving && !encounterOver;
 
     void OnEnable()
     {
         tableDeckManager.GameStarted += ResetStats;
         tableDeckManager.PathPlayed += OnPathPlayed;
+        tableDeckManager.EncounterEnded += OnEncounterEnded;
+        inventoryView.DrinkRequested += DrinkAmaro;
         ResetStats();
     }
 
@@ -44,13 +62,59 @@ public class RpgStatsView : MonoBehaviour
     {
         tableDeckManager.GameStarted -= ResetStats;
         tableDeckManager.PathPlayed -= OnPathPlayed;
+        tableDeckManager.EncounterEnded -= OnEncounterEnded;
+        inventoryView.DrinkRequested -= DrinkAmaro;
     }
+
+    // Picks up the changes made to the inventory in the Inspector during Play mode.
+    void Update() => RefreshInventory(force: false);
 
     void ResetStats()
     {
         stats = player.CreateStats();
+        encounterOver = false;
         eventsText.text = "nessun path ancora";
         RefreshStats();
+        RefreshInventory(force: true);
+    }
+
+    void OnEncounterEnded(int paths)
+    {
+        encounterOver = true;
+        RefreshInventory(force: true);
+    }
+
+    void DrinkAmaro(int index)
+    {
+        if (
+            !CanDrink
+            || index < 0
+            || index >= inventory.amari.Count
+            || inventory.amari[index] == null
+        )
+        {
+            return;
+        }
+        Amaro amaro = inventory.amari[index];
+        inventory.amari.RemoveAt(index);
+        string line = amaro.Drink(stats);
+        Debug.Log($"RPG - amaro: {line}\n  {StatsLine()}");
+        eventsText.text = line;
+        RefreshStats();
+        RefreshInventory(force: true);
+    }
+
+    void RefreshInventory(bool force)
+    {
+        List<object> items = inventory.santini.Cast<object>().Concat(inventory.amari).ToList();
+        if (!force && shownCanDrink == CanDrink && shownItems.SequenceEqual(items))
+        {
+            return;
+        }
+        shownItems.Clear();
+        shownItems.AddRange(items);
+        shownCanDrink = CanDrink;
+        inventoryView.Show(inventory.santini, inventory.amari, CanDrink);
     }
 
     void OnPathPlayed(int pathNumber, IReadOnlyList<PathMove> moves)
@@ -69,13 +133,35 @@ public class RpgStatsView : MonoBehaviour
         CancellationToken cancellationToken
     )
     {
+        resolving = true;
+        RefreshInventory(force: true);
+        try
+        {
+            await ResolveCards(pathNumber, cards, cancellationToken);
+        }
+        finally
+        {
+            resolving = false;
+            if (this != null)
+            {
+                RefreshInventory(force: true);
+            }
+        }
+    }
+
+    async UniTask ResolveCards(
+        int pathNumber,
+        List<CardDataInGame> cards,
+        CancellationToken cancellationToken
+    )
+    {
         List<string> log = new() { $"RPG - path n. {pathNumber}" };
         List<string> fights = new();
         foreach (CardDataInGame card in cards)
         {
             if (!CardEffects.IsKing(card))
             {
-                log.Add($"  {CardEffects.Apply(card, stats, player)}");
+                log.Add($"  {CardEffects.Apply(card, stats, player, inventory.santini)}");
                 continue;
             }
 
