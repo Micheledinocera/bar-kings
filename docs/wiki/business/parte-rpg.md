@@ -1,7 +1,7 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-29
+aggiornato: 2026-11-05
 verificato: 2026-10-20
 consolidato: 2026-10-29
 fonti:
@@ -10,6 +10,8 @@ fonti:
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
   - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/merge-rpg/2026-10-29-obiettivo.md
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-obiettivo.md
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
   - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
@@ -31,6 +33,8 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
   - **Momento**: il combattimento parte quando il re si incontra nel path (vedi l'opzione *Il re interrompe la risoluzione*): le carte prima si applicano, quelle dopo solo se il re è battuto.
   - **Sconfitta** (vita a 0): l'incontro finisce, le carte dopo il re non si applicano. **Pareggio**: se nessuno dei due passa l'armatura dell'altro, il combattimento finisce subito e si va avanti (proposta dell'agent, accettata dall'utente il 2026-10-29).
   - Un popup riassume ogni combattimento e va chiuso per continuare.
+  - **Vita tra i combattimenti** (2026-11-05, solo per la prova): le statistiche valgono per tutto l'incontro, quindi la vita resta da un combattimento all'altro; solo il Reset la riporta ai valori iniziali. Tra gli incontri resta una domanda aperta.
+  - **Santini e amari** in prova sopra queste regole: vedi [Meccaniche della run](./meccaniche-della-run.md#cosa-sappiamo).
 - **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso; per la tribuna si propone la fine al 4° re scoperto, vedi [Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)); **path** = un ciclo.
 - **Perché pathbuilder**: alla fine di un ciclo le carte girate formano un path, che triggera **un evento per ogni carta, in sequenza**. Modificare il mazzo orienta la lunghezza dei cicli e quali eventi appaiono.
 - **Pathbuilder ↔ RPG**:

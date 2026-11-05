@@ -1,9 +1,11 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-28
+aggiornato: 2026-11-05
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-obiettivo.md
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idea-balatro-like.md
@@ -23,6 +25,11 @@ Cosa succede tra un incontro e l'altro di una run, in stile Balatro. Sono idee e
 | **Amari** | Consumabili ("si bevono") con effetto immediato, su una carta, sulla partita o fuori dallo scontro; slot massimi | Regolarmente, meno comuni dei santini | Scambia due carte; il prossimo ciclo conta una carta in più; cambia il seme di una carta; buff a una carta; rimescola un re già pescato; fai apparire uno shop |
 | **Imbrogli** | Effetti passivi, positivi o negativi; non si comprano, capitano | Casuali, abbastanza rari | — |
 | **Azioni** | Azioni del giocatore sul piazzamento | — | Swap (mettere una carta a distanza x dalla sua posizione); discard (prendere al suo posto una delle carte escluse all'inizio); peek (sbirciare dove si sta per piazzare) |
+
+- **Prima implementazione in prova** (2026-11-05, scena `TribunaRpg`, sopra la [parte RPG](./parte-rpg.md#cosa-sappiamo); codice in [RPG scripts](../tecnico/rpg.md#playerinventory-santino-sanfrancesco-sanmatteo)). Niente di questo è deciso: serve a creare la meccanica e a provarla. Provata a mano dall'utente: funziona.
+  - **Santini** (passivi per tutta la run), dal nome del santo e da cosa si racconta di lui: **San Francesco** (parlava agli animali) fa applicare due volte l'effetto del cavallo (9) di un path, di qualunque seme; **San Matteo** (esattore, patrono dei banchieri) dà il 50% di Lire in più sulle carte di Denari. Si sommano tra loro, e due copie dello stesso santino si sommano. La variante di San Matteo "lo shop costa un decimo in meno" non è provata: lo shop non c'è.
+  - **Amari** (consumabili, spariscono una volta bevuti): si bevono **durante l'incontro, tra la fine di un path e l'inizio del successivo** (non mentre un path si risolve, non dopo la sconfitta). Due amari di prova: **Cerottino Martini** cura il 25% della vita massima; **Amaro Affilato** (nome segnaposto) dà +5 danno per il resto della run.
+  - **Testing**: santini e amari posseduti si cambiano dall'Inspector durante il Play, senza limite di slot; numeri (50%, 25%, +5) modificabili per singola voce.
 
 ## Opzioni
 
@@ -48,5 +55,7 @@ Nessuna alternativa scartata finora.
 ## Domande aperte
 
 - Struttura della run: incontri, shop, punti fissi in cui cambiare lo starter o trovare santini. Prima proposta (3 bar, scagnozzi e capobar) in [Parte RPG](./parte-rpg.md).
-- Numero di slot per santini e amari.
+- Numero di slot per santini e amari (nella prova: nessun limite).
+- Amari: si bevono durante il combattimento, tra un combattimento e l'altro, o dipende dall'amaro? In prova: durante l'incontro, tra un path e l'altro.
+- Nome dell'amaro che dà danno (oggi il segnaposto "Amaro Affilato").
 - Esempi concreti di imbrogli.
