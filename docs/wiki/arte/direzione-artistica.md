@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-25
+aggiornato: 2026-10-29
 verificato: 2026-10-24
 fonti:
+  - raw/compiled/study-roadmap/2026-10-29-ispirazioni.md
   - raw/compiled/art-style/2026-10-25-obiettivo.md
   - raw/compiled/art-style/2026-10-25-scelte-design.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
@@ -25,6 +26,7 @@ Lo stile grafico del gioco: ambientazione, carte, riferimenti. Prime indicazioni
 - **Stile generale**: il **bar di provincia anni '70** (indicazione dell'utente). Si lega al lessico del gioco: bar, scagnozzi e capobar ([Parte RPG](../business/parte-rpg.md)), santini e amari ([Meccaniche della run](../business/meccaniche-della-run.md)), tombola per le forme dei buchi ([Modifica del mazzo](../business/modifica-del-mazzo.md)).
 - **Carte**: "una cosa sui generis", come il **Mercante in fiera di Jacovitti** o i **video di Felix Colgrave** (indicazione dell'utente). Sono riferimenti di stile: le carte vanno disegnate originali, non copiate.
 - **Tono di voce**: **demenziale e satirico**; si gioca sulla nostalgia ma si vuole mostrare anche il lato **grottesco** dell'Italia "squisitamente berlusconiana", fatta soprattutto di ex poveri (indicazione dell'utente).
+- **Nomi**: giochi di parole come quelli di Vampire Survivors (team, 2026-10-29), per esempio *Poe Ratcho* (letto all'americana suona "poveraccio") e *La Borra* (meme italiano volgare). Prime proposte sugli amari in [Meccaniche della run](../business/meccaniche-della-run.md#idee-di-amari).
 - **Design system** (cosa deve contenere, indicazione dell'utente): soprattutto qualche **alternativa di colori** e le **note sull'animazione**, dove si guarda a giochi esistenti e "soddisfacenti" (vedi *Giochi di ispirazione* sotto).
 - **Oggi** le scene usano le carte napoletane classiche (`Assets/Images/Cards/Fronte/`, vedi [tecnico/scenes](../tecnico/scenes.md)): sono segnaposto della POC.
 - **Design prototipo su Claude Design** (fatto): [King Bar — Prototipo grafico](https://claude.ai/artifact/5BrbVvSx78nCQRwABub9Uy), due prove. La **prima** ("bar di provincia anni '70, cartoon"): tavolo, combattimento RPG, mixed, le carte. La **seconda** ("grottesco, carte segnaposto"): tavola 1 pathbuilder (il tavolo con avventori, scontrino, cartella della tombola, santini e amari), tavola 2 combattimento RPG, tavola 3 mixed (tavolo sopra, omino che cammina sulla strada del path sotto), tre palette (Nicotina, Tinello anni '70, Varietà del sabato sera), carta segnaposto. All'utente la seconda prova sembra **più a fuoco**.

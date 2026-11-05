@@ -1,10 +1,11 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-28
+aggiornato: 2026-10-29
 verificato: 2026-10-25
 consolidato: 2026-10-25
 fonti:
+  - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-obiettivo.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
@@ -129,7 +130,7 @@ Panchina: se nella configurazione iniziale delle 36 non escono doppioni, la panc
 - Tribuna: con la fine al 4° re le forme piccole restano quasi certe per chi gioca mirato (73–79% con le 4 carte tolte). Basta, o servono forme più grandi, malus, altro?
 - Tribuna: le forme si sommano (il 4×4 contiene 4 colonne e quadrati più piccoli) o vale solo la più grande? La stessa forma presa in più incontri somma il bonus? C'è un limite?
 - Tribuna: nome del concetto (vincita o altro) e delle singole forme.
-- Tribuna: le azioni che modificano l'indice tra un incontro e l'altro (scambio di due semi, di due valori, di due carte) come si ottengono (shop, santini, amari, a ogni incontro), quante se ne fanno e valgono per tutta la run? Lo scambio di semi o valori tocca anche i malus dei boss su un seme o sui pari/dispari?
+- Tribuna: le azioni che modificano l'indice tra un incontro e l'altro (scambio di due semi, di due valori, di due carte) come si ottengono (shop, santini, amari, a ogni incontro); idea del 2026-10-29: con gli amari, vedi [Meccaniche della run](./meccaniche-della-run.md#idee-di-amari), quante se ne fanno e valgono per tutta la run? Lo scambio di semi o valori tocca anche i malus dei boss su un seme o sui pari/dispari?
 - Tribuna: quali bonus dà ogni forma fra un incontro e l'altro (pool dello shop, santini garantiti, altro) e come si collegano a quanto è difficile farla?
 - Malus dei boss su gruppi di carte: si applicano a fine incontro o durante? Colpiscono i buchi su quelle carte o le carte scoperte? (In prova: fante 8 pari, cavallo 9 dispari.)
 - Un effetto che cambia il mazzo durante l'incontro (la bomba): vale subito sul tavolo, a fine incontro sul mazzo, o tutte e due? Su una carta coperta, il buco è nello slot fisico o in quello del suo indice?
