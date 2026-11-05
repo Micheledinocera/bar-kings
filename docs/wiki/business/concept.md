@@ -1,6 +1,6 @@
 ---
 tipo: info
-aggiornato: 2026-10-29
+aggiornato: 2026-11-05
 verificato: 2026-10-07
 consolidato: 2026-10-29
 fonti:
@@ -11,6 +11,7 @@ fonti:
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-concept.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
+  - raw/compiled/study-05-11-2026/2026-11-05-recap-call.md
 ---
 
 # Concept
@@ -52,3 +53,4 @@ Si sceglie una carta e si girano carte fino a tornare a quella iniziale: il cicl
 
 - Nome del gioco: si decide più avanti.
 - Pubblico, piattaforme e modello di business: non ancora discussi.
+- Tutorial: da fare (call del 2026-11-05); quando e come non discusso. La [roadmap](../progetto/roadmap-vertical-slice.md) lo tiene fuori dalla vertical slice, giocata solo dal team.
