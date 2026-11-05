@@ -1,13 +1,14 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-28
+aggiornato: 2026-11-05
 verificato: 2026-10-07
 fonti:
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idea-balatro-like.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
+  - raw/compiled/study-05-11-2026/2026-11-05-recap-call.md
 ---
 
 # Meccaniche della run
@@ -40,6 +41,7 @@ Cosa succede tra un incontro e l'altro di una run, in stile Balatro. Sono idee e
 - Le carte hanno una posizione: se ne può cambiare il valore, ma restano nello stesso slot.
 - **Modifiche del mazzo tra un incontro e l'altro** (call del 2026-10-28): oltre a togliere e aggiungere carte, azioni che **modificano l'indice** delle carte (scambiare due semi, due valori o due carte), per rendere le forme dei buchi meno dipendenti dall'ordine dei semi ([Modifica del mazzo](./modifica-del-mazzo.md#forme-dei-buchi-tribuna)).
 - **Shop legato alle forme** (call del 2026-10-28): le forme fatte in un incontro migliorano il pool di un eventuale shop; il 4×4, quasi impossibile, garantisce un santino leggendario.
+- **Parametro di chiusura/allungamento del path** (call del 2026-11-05): una specie di parametro **fortuna** che agisce su quanto i path si chiudono o si allungano. Da valutare più avanti, sicuramente dopo aver definito qualche tipologia di evento e abbozzato la [parte RPG](./parte-rpg.md). Diverso dallo starter "fortuna" (pool di carte iniziali) in *Opzioni*.
 
 ## Alternative scartate
 

@@ -1,7 +1,7 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-29
+aggiornato: 2026-11-05
 verificato: 2026-10-20
 consolidato: 2026-10-29
 fonti:
@@ -16,6 +16,7 @@ fonti:
   - raw/compiled/study-rpg/2026-10-20-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
   - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
+  - raw/compiled/study-05-11-2026/2026-11-05-recap-call.md
 ---
 
 # Parte RPG e collegamento con il pathbuilder
@@ -73,6 +74,6 @@ Nessuna alternativa scartata finora.
 - **Scelta durante l'incontro**: si sceglie solo la carta di partenza, coperta, e in tribuna i path sono in media di circa 2,5 carte: il rischio è guardare il path più che costruirlo. Da tenere a mente (vedi *Buchi che valgono a fine path*).
 - **Bilanciamento**: la lunghezza media dei path va da ~2,3 carte (tribuna) a 8–15 (index>40), quindi gli effetti dipendono dalla variante del mazzo, ancora in analisi. Da tenere a mente (proposta: effetti relativi, non numeri fissi, finché la variante non è scelta).
 - Da rivedere più avanti: gli HP persistono tra gli incontri o si azzerano? Perdere contro uno scagnozzo chiude la run? Bastano 9 incontri per run (8 momenti di modifica del mazzo)?
-- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento. In prova: effetti per seme e combattimento al re (vedi *Cosa sappiamo*).
+- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento. In prova: effetti per seme e combattimento al re (vedi *Cosa sappiamo*). Dalla call del 2026-11-05 ognuno porta alla call successiva idee per le **36 carte evento** e, facoltativo, per un flusso **bar + incontro (modifica del mazzo e/o disposizione delle carte) + bar** e per le forme.
 - **Momento del combattimento nel path**: quando il re si incontra nella risoluzione (in prova) o a fine path, dopo tutte le carte? Punto aperto (utente, 2026-10-28).
 - **Velocità**: una statistica che dà più turni prima di quello del re. Idea per dopo, non implementata.
