@@ -19,4 +19,5 @@ Le decisioni ancora `aperta` o `in analisi`. Quelle prese sono negli indici dell
 | [Meccaniche della run](./business/meccaniche-della-run.md) | Business | in analisi |
 | [Modifica del mazzo: panchina, tribuna, index>40](./business/modifica-del-mazzo.md) | Business | in analisi |
 | [Parte RPG e collegamento con il pathbuilder](./business/parte-rpg.md) | Business | in analisi |
+| [Roadmap verso la vertical slice](./progetto/roadmap-vertical-slice.md) | Progetto | in analisi |
 | [Tipi di ramo e release](./progetto/tipi-di-ramo-e-release.md) | Progetto | aperta |

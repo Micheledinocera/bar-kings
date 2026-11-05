@@ -1,16 +1,16 @@
 ---
 tipo: info
-aggiornato: 2026-11-05
+aggiornato: 2026-10-29
 verificato: 2026-10-07
-consolidato: 2026-11-05
+consolidato: 2026-10-29
 fonti:
+  - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
   - raw/compiled/study-direzione-artistica/2026-10-24-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
   - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-concept.md
   - raw/compiled/study-initialize-llm-wiki/2026-10-07-chiarimenti-gameplay.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
-  - raw/compiled/study-05-11-2026/2026-11-05-recap-call.md
 ---
 
 # Concept
@@ -42,9 +42,9 @@ Si sceglie una carta e si girano carte fino a tornare a quella iniziale: il cicl
 | Scagnozzo, capobar | Miniboss e boss di un bar (in studio) |
 | Path / ciclo | La sequenza di carte girate a partire da quella scelta, fino a tornare a quella iniziale |
 | Risoluzione | Il momento in cui ogni carta del path chiuso genera un evento (parte RPG) |
-| Starter | "Filosofia" della run, una sola alla volta, cambiabile in punti fissi |
-| Santini | Power-up fissi, in slot limitati |
-| Amari | Consumabili, effetto immediato |
+| Starter | "Filosofia" della run, una sola alla volta, cambiabile in punti fissi; nella vertical slice sono i preset del mazzo |
+| Santini | Power-up fissi, in slot limitati: effetti passivi che scattano su eventi, legati alla figura del santo |
+| Amari | Consumabili, effetto immediato; idea: la modifica del mazzo passa da loro |
 | Imbrogli | Effetti passivi casuali, positivi o negativi |
 | Panchina, tribuna, index>40 | Tre modi di gestire le carte oltre le 40 (vedi [Modifica del mazzo](./modifica-del-mazzo.md)) |
 
@@ -52,4 +52,3 @@ Si sceglie una carta e si girano carte fino a tornare a quella iniziale: il cicl
 
 - Nome del gioco: si decide più avanti.
 - Pubblico, piattaforme e modello di business: non ancora discussi.
-- Tutorial: da fare (call del 2026-11-05); come e quando non ancora discusso.

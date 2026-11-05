@@ -5,18 +5,20 @@ aggiornato: 2026-11-05
 verificato: 2026-10-20
 consolidato: 2026-10-29
 fonti:
+  - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
   - raw/compiled/merge-rpg/2026-10-28-obiettivo-rpg.md
   - raw/compiled/merge-rpg/2026-10-28-fight.md
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
   - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/merge-rpg/2026-10-29-obiettivo.md
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-obiettivo.md
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/study-tribuna/2026-10-22-discussione-call.md
   - raw/compiled/study-tribuna/2026-10-22-riassunto-call.md
   - raw/compiled/study-rpg/2026-10-20-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
   - raw/compiled/study-rpg/2026-10-20-criticita-e-idee.md
-  - raw/compiled/study-05-11-2026/2026-11-05-recap-call.md
 ---
 
 # Parte RPG e collegamento con il pathbuilder
@@ -32,6 +34,8 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
   - **Momento**: il combattimento parte quando il re si incontra nel path (vedi l'opzione *Il re interrompe la risoluzione*): le carte prima si applicano, quelle dopo solo se il re è battuto.
   - **Sconfitta** (vita a 0): l'incontro finisce, le carte dopo il re non si applicano. **Pareggio**: se nessuno dei due passa l'armatura dell'altro, il combattimento finisce subito e si va avanti (proposta dell'agent, accettata dall'utente il 2026-10-29).
   - Un popup riassume ogni combattimento e va chiuso per continuare.
+  - **Vita tra i combattimenti** (2026-11-05, solo per la prova): le statistiche valgono per tutto l'incontro, quindi la vita resta da un combattimento all'altro; solo il Reset la riporta ai valori iniziali. Tra gli incontri resta una domanda aperta.
+  - **Santini e amari** in prova sopra queste regole: vedi [Meccaniche della run](./meccaniche-della-run.md#cosa-sappiamo).
 - **Terminologia** (accettata il 2026-10-20): **run** = l'intera partita alla Balatro (i 3 bar); **incontro** = una partita sul tavolo, finita quando tutte le carte sono girate (per adesso; per la tribuna si propone la fine al 4° re scoperto, vedi [Modifica del mazzo](./modifica-del-mazzo.md#cosa-sappiamo)); **path** = un ciclo.
 - **Perché pathbuilder**: alla fine di un ciclo le carte girate formano un path, che triggera **un evento per ogni carta, in sequenza**. Modificare il mazzo orienta la lunghezza dei cicli e quali eventi appaiono.
 - **Pathbuilder ↔ RPG**:
@@ -42,7 +46,7 @@ Come la parte pathbuilder (tavolo, path, mazzo) e la parte RPG (eventi, combatti
   - **non parametrici** (speciali) solo per alcune carte: probabilmente figure, assi e 7 di denari (settebello);
   - **combattimento**: per ora solo i **re**, ma anche altre carte potrebbero triggerare eventi simili.
 - **Struttura della run** (idea, non decisa):
-  - 3 livelli, i **bar**; ogni bar ha 3 incontri: 2 **scagnozzi** (miniboss) e un **capobar** (boss) che, se battuto, fa passare al bar successivo;
+  - 3 livelli, i **bar**; ogni bar ha 3 incontri: 2 **scagnozzi** (miniboss) e un **capobar** (boss) che, se battuto, fa passare al bar successivo; la [vertical slice](../progetto/roadmap-vertical-slice.md) ne fa uno solo (team, 2026-10-29);
   - ogni bar ha i suoi **malus**: ogni scagnozzo ne applica uno (uno sulla parte RPG, l'altro sulla parte pathbuilder), il capobar li applica entrambi;
   - la parte RPG potrebbe essere un **autobattler** con parametri e skill (vedi l'autobattler "programmabile" in [Meccaniche della run](./meccaniche-della-run.md#opzioni)).
 
@@ -74,6 +78,6 @@ Nessuna alternativa scartata finora.
 - **Scelta durante l'incontro**: si sceglie solo la carta di partenza, coperta, e in tribuna i path sono in media di circa 2,5 carte: il rischio è guardare il path più che costruirlo. Da tenere a mente (vedi *Buchi che valgono a fine path*).
 - **Bilanciamento**: la lunghezza media dei path va da ~2,3 carte (tribuna) a 8–15 (index>40), quindi gli effetti dipendono dalla variante del mazzo, ancora in analisi. Da tenere a mente (proposta: effetti relativi, non numeri fissi, finché la variante non è scelta).
 - Da rivedere più avanti: gli HP persistono tra gli incontri o si azzerano? Perdere contro uno scagnozzo chiude la run? Bastano 9 incontri per run (8 momenti di modifica del mazzo)?
-- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento. In prova: effetti per seme e combattimento al re (vedi *Cosa sappiamo*). Dalla call del 2026-11-05 ognuno porta alla call successiva idee per le **36 carte evento** e, facoltativo, per un flusso **bar + incontro (modifica del mazzo e/o disposizione delle carte) + bar** e per le forme.
+- Quali eventi dà ogni carta, parametrici e speciali; come si vince e si perde un combattimento. In prova: effetti per seme e combattimento al re (vedi *Cosa sappiamo*).
 - **Momento del combattimento nel path**: quando il re si incontra nella risoluzione (in prova) o a fine path, dopo tutte le carte? Punto aperto (utente, 2026-10-28).
 - **Velocità**: una statistica che dà più turni prima di quello del re. Idea per dopo, non implementata.
