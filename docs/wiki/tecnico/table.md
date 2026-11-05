@@ -1,7 +1,7 @@
 ---
 tipo: info
-aggiornato: 2026-10-29
-verificato: 2026-10-29
+aggiornato: 2026-11-05
+verificato: 2026-11-05
 consolidato: 2026-10-19
 fonti:
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
@@ -83,7 +83,7 @@ Scripts in `Assets/Scripts/Shared/Table/`, used by the scenes `Assets/Scenes/Pan
 - **Static state**: only `instance`; the card lists are instance fields. A script recompile during Play nulls `instance`: clicks then throw until Play is restarted.
 - **Constants**: deck and table numbers in [DeckRules](./deck.md#deckrules), `StackOffset`; the grid layout in `SlotPosition` is still literal numbers.
 - `SetNextPreset(preset)`, `NextPreset`, `CurrentPreset`, `SetSpeed(speed)`, `Speed`: used by [OptionsPanel](#optionspanel).
-- **Used by**: [TableCardController](#tablecardcontroller) (`instance.PlayPath`), the [HUD views](./hud.md) of the Bar scene (events and `Table`), the `ResetButton` of the table scenes (`ResetTable`, persistent `OnClick`), [OptionsPanel](#optionspanel) (`tableDeckManager`), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`tableDeckManager`), [RpgStatsView](./rpg.md#rpgstatsview) (`GameStarted`, `PathPlayed`, `EndEncounter`, `TablePaused`).
+- **Used by**: [TableCardController](#tablecardcontroller) (`instance.PlayPath`), the [HUD views](./hud.md) of the Bar scene (events and `Table`), the `ResetButton` of the table scenes (`ResetTable`, persistent `OnClick`), [OptionsPanel](#optionspanel) (`tableDeckManager`), [TableSimulationRunner](./stats.md#tablesimulationrunner) (`tableDeckManager`), [RpgStatsView](./rpg.md#rpgstatsview) (`GameStarted`, `PathPlayed`, `EncounterEnded`, `EndEncounter`, `TablePaused`).
 
 ## AnimationSpeed, AnimationTiming
 

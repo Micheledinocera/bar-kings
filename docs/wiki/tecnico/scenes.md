@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-29
-verificato: 2026-10-29
+aggiornato: 2026-11-05
+verificato: 2026-11-05
 consolidato: 2026-10-29
 fonti:
+  - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-buchi/2026-10-23-implementazione.md
@@ -86,7 +87,8 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 
 `Assets/Scenes/TribunaRpg.unity`: a copy of [Tribuna](#panchina-tribuna-and-index40) (same deal, rules, buttons and lighting data `Assets/Scenes/Tribuna/LightingData.asset`; `endAtFourthKing` off) with the first [RPG part](./rpg.md). Tribuna itself is unchanged. Added under `UI`:
 
-- `RpgStats` (bottom right, 440×300) with [RpgStatsView](./rpg.md#rpgstatsview) and the texts `Statistiche` and `Eventi`; its `player` and `king` fields hold the starting stats of the player and of the kings;
+- `RpgStats` (bottom right, 440×300) with [RpgStatsView](./rpg.md#rpgstatsview) and the texts `Statistiche` and `Eventi`; its `player` and `king` fields hold the starting stats of the player and of the kings, `inventory` the santini and amari owned (editable in Play mode);
+- `Inventario` (bottom right, left of `RpgStats`, 380×300, same background, vertical layout) with [InventoryView](./rpg.md#inventoryview): the text `Santini` and `Amari`, where one "Bevi" button per amaro is created at runtime from `Assets/Prefab/OptionButton.prefab`;
 - `FightPopup` (last child, full screen, inactive at start) with [FightPopup](./rpg.md#fightpopup): a background that blocks raycasts, `Riquadro` (700×450) with `Titolo`, `Riepilogo` and `Continua` (instance of `Assets/Prefab/OptionButton.prefab`).
 
 ## Prefabs
