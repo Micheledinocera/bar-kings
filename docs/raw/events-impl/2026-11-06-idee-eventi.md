@@ -31,3 +31,10 @@ Dubbio sullo scambio di due indici: chiede una scelta di due posizioni a metà p
 
 - **Re**: esce **sempre** la scelta "Scappa" / "Combatti". Con almeno una fuga si scappa gratis (consuma una fuga); **senza fughe** si può scappare lo stesso con un **malus**: per ora si perde il **25% delle Lire** possedute (malus provvisorio, da capire; alternative valutate: perdere il 10% della vita massima, un colpo del re mentre scappi, il re rimandato a più avanti).
 - **8 (fanti)**: popup simile con "Entra nello shop" / "Salta". Lo shop per ora non fa niente (messaggio "in arrivo"). Saltandolo si prendono **un quarto delle Lire guadagnabili in una partita**: denari parametrici da 1 a 7 = 28.000 Lire, quindi **7.000 Lire** (calcolate dalle regole, santini esclusi). L'8 non dà più statistiche (parametrico fino al 7).
+
+## I 7 (iterazione 3, in prova)
+
+- Un 7 **dà ancora la sua statistica** per seme, come le carte da 1 a 6, e in più **conta per il bonus**. Le carte parametriche restano 1-7, quindi lo skip dello shop resta 7.000 Lire.
+- Il bonus scatta quando si gira il **quarto 7 dell'incontro**, anche in path diversi; Reset ricomincia il conteggio. Il pannello del giocatore mostra "Sette n/4".
+- **Bonus provvisorio**: il doppio di quanto danno i quattro 7 da soli, cioè **+14 danno, +14 armatura, cura 14 vita, +14.000 Lire**, con un popup "I quattro 7!" a metà path. Alternative valutate: vita piena più una fuga; un santino gratis.
+- Scartato per ora: il bonus solo con i quattro 7 nello stesso path (troppo raro).
