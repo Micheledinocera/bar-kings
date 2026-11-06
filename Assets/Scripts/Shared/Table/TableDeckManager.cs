@@ -105,6 +105,11 @@ public class TableDeckManager : MonoBehaviour
     // are ignored. Needed because OnMouseDown can come before the UI takes the click (TableCardController).
     public bool TablePaused { get; set; }
 
+    // Optional, set from outside: awaited after the animation of each move of a path (after MovePlayed), before the
+    // next one, so a card can be resolved as soon as it is turned (Bar-Michele: the fight popup of a king opens
+    // mid-path). Its position in the moves, the move. Null in the other scenes: the path plays without stopping.
+    public Func<int, PathMove, CancellationToken, UniTask> MoveResolver { get; set; }
+
     // The preset of the next game, from the next Reset.
     public void SetNextPreset(DeckPreset preset) => deckPreset = preset;
 
@@ -235,6 +240,10 @@ public class TableDeckManager : MonoBehaviour
             }
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
             MovePlayed?.Invoke(i, moves[i]);
+            if (MoveResolver != null)
+            {
+                await MoveResolver(i, moves[i], cancellationToken);
+            }
         }
         PathPlayed?.Invoke(pathCount, moves);
         if (encounterOver)
