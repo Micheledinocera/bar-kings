@@ -5,18 +5,20 @@ using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // TEMP Bar-Michele (feature events-impl): copy of RpgStatsView for the Bar-Michele test scene, where the events
 // are tried without touching TribunaRpg. To merge back or delete when one idea is chosen. Differences from
 // RpgStatsView: the stats are in a panel of the left column (Il giocatore); each card is resolved as soon as it is
-// turned (TableDeckManager.MoveResolver), not at the end of the path; a horse (9) gives escapes instead of a
-// stat (HorseEscape), and a king met with an escape left asks whether to escape or fight (EscapeChoicePopup).
+// turned (TableDeckManager.MoveResolver), not at the end of the path; the 8 and 9 are events instead of stats
+// (BarEvents): a horse (9) gives escapes, a fante (8) asks shop or skip, and every king asks escape or fight
+// (ChoicePopup).
 //
 // RPG part of the scene: resolves the cards of a path in order while they are turned (CardEffects); a king
 // starts a fight (Fight) with the stats reached so far, its summary opens in a popup (FightPopup) at once, and
 // the path goes on when the popup is closed; the next cards are applied only if the king is beaten. A defeat
-// ends the encounter. Logs everything in the Console and shows the stats on screen. Listens to TableDeckManager only; a new game (Reset)
-// starts from the stats of the Inspector. Owns the player's santini and amari (PlayerInventory, editable in the
+// ends the encounter. Logs everything in the Console and shows the stats on screen. Listens to
+// TableDeckManager only; a new game (Reset) starts from the stats of the Inspector. Owns the player's santini and amari (PlayerInventory, editable in the
 // Inspector during Play mode): the santini change the card effects, an amaro is drunk from the InventoryView
 // between two paths (not while a path is resolved, not after the encounter is over).
 public class BarRpgView : MonoBehaviour
@@ -33,8 +35,8 @@ public class BarRpgView : MonoBehaviour
     [SerializeField, Required]
     private FightPopup fightPopup;
 
-    [SerializeField, Required]
-    private EscapeChoicePopup escapeChoicePopup;
+    [SerializeField, Required, FormerlySerializedAs("escapeChoicePopup")]
+    private ChoicePopup choicePopup;
 
     [SerializeField, Required]
     private InventoryView inventoryView;
@@ -51,7 +53,7 @@ public class BarRpgView : MonoBehaviour
     private PlayerStats stats;
     private bool resolving; // a path is being resolved: no amaro can be drunk
     private bool encounterOver;
-    private int escapes; // fights with a king that can still be skipped in this encounter (HorseEscape)
+    private int escapes; // fights with a king that can still be skipped for free in this encounter (BarEvents)
 
     // The path being played: its number, the cards resolved so far, whether a defeat stopped it, its fights and
     // the Console lines not written yet.
@@ -166,12 +168,17 @@ public class BarRpgView : MonoBehaviour
         }
         pathCards++;
         CardDataInGame card = move.Card;
-        if (HorseEscape.IsHorse(card))
+        if (BarEvents.IsHorse(card))
         {
-            int gained = HorseEscape.EscapesFrom(card, inventory.santini);
+            int gained = BarEvents.EscapesFrom(card, inventory.santini);
             escapes += gained;
             pathLog.Add($"  {PathReceipt.CardLabel(card)}: +{gained} fuga (fughe {escapes})");
             RefreshStats();
+            return;
+        }
+        if (BarEvents.IsFante(card))
+        {
+            await ResolveFante(card, cancellationToken);
             return;
         }
         if (!CardEffects.IsKing(card))
@@ -183,13 +190,9 @@ public class BarRpgView : MonoBehaviour
 
         string kingName = PathReceipt.CardLabel(card);
         KingFighter fighter = king.CreateFighter(kingName);
-        if (escapes > 0 && await AskEscape(kingName, fighter, cancellationToken))
+        if (await AskEscape(kingName, fighter, cancellationToken))
         {
-            escapes--;
-            pathFights.Add($"scappato da {kingName}");
-            pathLog.Add($"  {kingName}: scappato, nessun combattimento (fughe {escapes})");
-            eventsText.text = $"path n. {currentPath}: scappato da {kingName}";
-            RefreshStats();
+            Escape(kingName);
             return;
         }
 
@@ -212,19 +215,11 @@ public class BarRpgView : MonoBehaviour
 
         RefreshStats();
         eventsText.text = $"path n. {currentPath}: fight con {kingName}";
-        tableDeckManager.TablePaused = true;
-        try
-        {
-            await fightPopup.Show(
-                FightTitle(kingName, result.Outcome),
-                FightSummary(fighter, result),
-                cancellationToken
-            );
-        }
-        finally
-        {
-            tableDeckManager.TablePaused = false;
-        }
+        await ShowPopup(
+            FightTitle(kingName, result.Outcome),
+            FightSummary(fighter, result),
+            cancellationToken
+        );
     }
 
     void OnPathPlayed(int pathNumber, IReadOnlyList<PathMove> moves)
@@ -241,23 +236,109 @@ public class BarRpgView : MonoBehaviour
         RefreshInventory(force: true);
     }
 
-    // Asks whether to escape from the king just turned, with what the fight would be; the table waits meanwhile.
-    async UniTask<bool> AskEscape(
+    // Asks whether to escape from the king just turned (true) or fight it, with what the fight would be and what
+    // the escape costs.
+    UniTask<bool> AskEscape(
         string kingName,
         KingFighter fighter,
         CancellationToken cancellationToken
     )
     {
+        string cost =
+            escapes > 0
+                ? $"Fughe: {escapes}. Scappare usa una fuga."
+                : $"Nessuna fuga: scappare costa il {BarEvents.EscapePenaltyLirePercent}% delle Lire "
+                    + $"({BarEvents.EscapePenalty(stats.Money)} Lire).";
         string body =
             $"{kingName}: vita {fighter.Health}, armatura {fighter.Armor}, danno {fighter.Damage}\n"
             + $"Il tuo colpo: {Fight.HitDamage(stats, fighter)} - "
             + $"colpo del re: {Fight.HitDamage(fighter, stats)}\n"
             + $"La tua vita: {stats.Health}/{stats.MaxHealth}\n\n"
-            + $"Fughe rimaste: {escapes}. Scappando non combatti e il re e' perso.";
+            + $"{cost}\nScappando non combatti e il re e' perso.";
+        string escapeLabel =
+            escapes > 0
+                ? "Scappa (1 fuga)"
+                : $"Scappa (-{BarEvents.EscapePenalty(stats.Money)} L.)";
+        return Ask($"{kingName}!", body, escapeLabel, "Combatti", cancellationToken);
+    }
+
+    // Escapes from a king: an escape if one is left, otherwise the Lire malus. No fight, the king is lost.
+    void Escape(string kingName)
+    {
+        string paid;
+        if (escapes > 0)
+        {
+            escapes--;
+            paid = $"1 fuga (fughe {escapes})";
+        }
+        else
+        {
+            int lost = BarEvents.EscapePenalty(stats.Money);
+            stats.AddMoney(-lost);
+            paid = $"-{lost} Lire";
+        }
+        pathFights.Add($"scappato da {kingName} ({paid})");
+        pathLog.Add($"  {kingName}: scappato, nessun combattimento, {paid}");
+        eventsText.text = $"path n. {currentPath}: scappato da {kingName}";
+        RefreshStats();
+    }
+
+    // A fante opens the shop (nothing to buy yet) or is skipped for a share of the Lire of a game.
+    async UniTask ResolveFante(CardDataInGame card, CancellationToken cancellationToken)
+    {
+        string label = PathReceipt.CardLabel(card);
+        int skipLire = BarEvents.SkipShopLire;
+        bool enter = await Ask(
+            $"{label}: lo shop",
+            $"Il {label} ti apre lo shop.\n\nSe tiri dritto prendi {skipLire} Lire.",
+            "Entra nello shop",
+            $"Salta (+{skipLire} L.)",
+            cancellationToken
+        );
+        if (enter)
+        {
+            pathLog.Add($"  {label}: shop (vuoto per ora)");
+            eventsText.text = $"path n. {currentPath}: shop del {label}";
+            await ShowPopup(
+                "Lo shop",
+                "Lo shop e' in arrivo: qui si compreranno santini e amari.",
+                cancellationToken
+            );
+            return;
+        }
+        stats.AddMoney(skipLire);
+        pathLog.Add($"  {label}: shop saltato, +{skipLire} Lire");
+        eventsText.text = $"path n. {currentPath}: shop saltato, +{skipLire} Lire";
+        RefreshStats();
+    }
+
+    // The choice popup, with the table paused meanwhile.
+    async UniTask<bool> Ask(
+        string title,
+        string body,
+        string firstLabel,
+        string secondLabel,
+        CancellationToken cancellationToken
+    )
+    {
         tableDeckManager.TablePaused = true;
         try
         {
-            return await escapeChoicePopup.Ask($"{kingName}!", body, cancellationToken);
+            return await choicePopup.Ask(title, body, firstLabel, secondLabel, cancellationToken);
+        }
+        finally
+        {
+            tableDeckManager.TablePaused = false;
+        }
+    }
+
+    // The message popup (FightPopup), with the table paused meanwhile.
+    async UniTask ShowPopup(string title, string body, CancellationToken cancellationToken)
+    {
+        tableDeckManager.TablePaused = true;
+        try
+        {
+            await fightPopup.Show(title, body, cancellationToken);
         }
         finally
         {

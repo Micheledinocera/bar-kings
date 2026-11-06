@@ -6892,7 +6892,7 @@ GameObject:
   - component: {fileID: 880415145}
   - component: {fileID: 880415144}
   m_Layer: 5
-  m_Name: EscapeChoicePopup
+  m_Name: ChoicePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6932,8 +6932,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscapeChoicePopup
   title: {fileID: 1017159956}
   body: {fileID: 70695235}
-  escapeButton: {fileID: 1570153640}
-  fightButton: {fileID: 1345723118}
+  firstButton: {fileID: 1570153640}
+  secondButton: {fileID: 1345723118}
 --- !u!114 &880415145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7411,7 +7411,7 @@ MonoBehaviour:
   statsText: {fileID: 191367429}
   eventsText: {fileID: 450009057}
   fightPopup: {fileID: 436226378}
-  escapeChoicePopup: {fileID: 880415144}
+  choicePopup: {fileID: 880415144}
   inventoryView: {fileID: 757981700}
   player:
     maxHealth: 100
@@ -12152,7 +12152,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4757367268854738752, guid: 93cc6913e5a1b1649b4a0c0948f61d9d, type: 3}
       propertyPath: m_Name
-      value: Combatti
+      value: SecondaScelta
       objectReference: {fileID: 0}
     - target: {fileID: 5093663924690006224, guid: 93cc6913e5a1b1649b4a0c0948f61d9d, type: 3}
       propertyPath: m_Pivot.x
@@ -13992,7 +13992,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4757367268854738752, guid: 93cc6913e5a1b1649b4a0c0948f61d9d, type: 3}
       propertyPath: m_Name
-      value: Scappa
+      value: PrimaScelta
       objectReference: {fileID: 0}
     - target: {fileID: 5093663924690006224, guid: 93cc6913e5a1b1649b4a0c0948f61d9d, type: 3}
       propertyPath: m_Pivot.x
