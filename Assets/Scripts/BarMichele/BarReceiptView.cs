@@ -6,9 +6,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // TEMP Bar-Michele (feature events-impl): copy of ReceiptView for the Bar-Michele test scene, with the receipts of
-// the paths already played kept and browsable. To merge back or delete when one idea is chosen.
+// the paths already played kept and browsable, the lines in a scroll view (a long path keeps its font size) and
+// the lines of BarPathReceipt. To merge back or delete when one idea is chosen.
 //
-// The receipt (PathReceipt): a new receipt when a path starts, a line for every card as it is turned, the end of
+// The receipt (BarPathReceipt): a new receipt when a path starts, a line for every card as it is turned, the end of
 // the path when it is over. While a path is played the receipt follows it and the arrows are off; between two
 // paths the arrows go back and forth through the receipts of the game, from the first to the last. Cleared at
 // every new game.
@@ -28,6 +29,10 @@ public class BarReceiptView : MonoBehaviour
 
     [SerializeField, Required]
     private TMP_Text pageText;
+
+    // Scroll view of the lines: follows the last card while a path is played, starts from the top otherwise.
+    [SerializeField, Required]
+    private ScrollRect scroll;
 
     readonly List<string> receipts = new(); // paths over, in order
     readonly StringBuilder current = new(); // path being played
@@ -79,13 +84,13 @@ public class BarReceiptView : MonoBehaviour
         {
             return;
         }
-        current.Append('\n').Append(PathReceipt.Line(moveIndex + 1, move.Card));
+        current.Append('\n').Append(BarPathReceipt.Line(move.Card));
         Refresh();
     }
 
     void EndReceipt(int pathNumber, IReadOnlyList<PathMove> moves)
     {
-        current.Append('\n').Append(PathReceipt.Footer(moves));
+        current.Append('\n').Append(BarPathReceipt.Footer(moves));
         receipts.Add(current.ToString());
         playing = false;
         shown = receipts.Count - 1;
@@ -127,6 +132,9 @@ public class BarReceiptView : MonoBehaviour
             text.text = receipts[shown];
             pageText.text = $"{shown + 1} di {receipts.Count}";
         }
+        // The size of the lines changes with the text: rebuild it before moving the scroll view.
+        Canvas.ForceUpdateCanvases();
+        scroll.verticalNormalizedPosition = playing ? 0 : 1;
         previousButton.interactable = !playing && shown > 0;
         nextButton.interactable = !playing && shown < receipts.Count - 1;
     }
