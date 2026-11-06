@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-10-29
+aggiornato: 2026-11-06
 verificato: 2026-10-29
 fonti:
+  - raw/compiled/events-impl/2026-11-06-task.md
   - raw/compiled/study-roadmap/2026-10-29-obiettivo.md
   - raw/compiled/study-roadmap/2026-10-29-proposta-roadmap.md
   - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
@@ -45,7 +46,7 @@ Perché: è il più piccolo pezzo di gioco con il ciclo completo **costruisci il
 
 | Fase | Feature | Cosa fa | Known issues | Dopo |
 |---|---|---|---|---|
-| 1 | `encounter-scene` | La parte RPG di `TribunaRpg` dentro la scena `Bar`: statistiche al posto dei segnaposto, popup del combattimento nello stile | D, J | — |
+| 1 | `encounter-scene` | La parte RPG di `TribunaRpg` dentro la scena `Bar`: statistiche al posto dei segnaposto, popup del combattimento nello stile. Provato in una copia di Bar, la scena di prova `Bar-Michele` (events-impl, 2026-11-06), insieme ai primi eventi di 7, 8 e 9: da riprendere da lì | D, J | — |
 | 2 | `run-loop` | Stato della run in C# senza MonoBehaviour (mazzo, statistiche, incontro, inventario) tra gli incontri; scelta del preset-starter; percorso scagnozzo → tappa → scagnozzo → tappa → capobar con `KingConfig` per incontro; vittoria e sconfitta; primi test Edit Mode | C | 1 |
 | 2 | `run-events` | Eventi della run per santini, amari e malus (carta risolta, path chiuso, re incontrato, colpo, combattimento vinto, incontro finito, forma fatta, tappa raggiunta, Lire spese); operazioni sul mazzo (togli, duplica, scambia due semi, due valori, due carte); schermata di debug | — | `run-loop` |
 | 3 | `rpg-simulation` | Autoplay della run con effetti e combattimenti; CSV con vittorie per incontro, vita residua, re battuti | H | `run-loop` |

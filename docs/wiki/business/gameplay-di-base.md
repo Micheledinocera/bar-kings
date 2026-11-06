@@ -1,9 +1,10 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-20
+aggiornato: 2026-11-06
 verificato: 2026-10-07
 fonti:
+  - raw/compiled/events-impl/2026-11-06-idee-eventi.md
   - raw/compiled/demo-1/2026-10-16-obiettivo.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-embrionali.md
   - raw/compiled/study-initialize-llm-wiki/2026-06-10-idee-gameplay.md
@@ -38,6 +39,7 @@ Le altre due idee non piacevano e non portavano da nessuna parte.
 
 ## Domande aperte
 
+- **Momento della risoluzione**: la regola dice che il path si risolve a ciclo chiuso; in prova nella scena `Bar-Michele` (2026-11-06) ogni carta si risolve appena si gira e un re ferma il path sulla sua scelta ([Parte RPG](./parte-rpg.md#cosa-sappiamo)). Se la prova si tiene, la regola di *Risoluzione* va aggiornata.
 - Regole esatte del tavolo: come si assegna il posto di una carta (fila = seme, colonna = valore?).
 - Quando si ferma un path: tornando alla carta iniziale (chiarimenti del 2026-10-07), trovando un re o girando una carta già al suo posto (idea 3)? Che ruolo ha il re nel ciclo?
 - Quando si vince e quando si perde un incontro; contro cosa si gioca (punteggio, HP, un altro mazzo). Prime idee (re = combattimento, scagnozzi e capobar) in [Parte RPG](./parte-rpg.md).

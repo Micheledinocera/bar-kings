@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-11-05
-verificato: 2026-11-05
+aggiornato: 2026-11-06
+verificato: 2026-11-06
 consolidato: 2026-10-29
 fonti:
+  - raw/compiled/events-impl/2026-11-06-task.md
   - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/merge-rpg/2026-10-28-riassunto-sessione.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
@@ -33,11 +34,11 @@ fonti:
 
 # Scenes, prefabs and data assets
 
-Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/` and their library, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md).
+Scenes in `Assets/Scenes/`, prefabs in `Assets/Prefab/`, card assets in `Assets/Instances/Cards/`, deck presets in `Assets/Instances/DeckPresets/` and their library, and the project settings that the code depends on. Scripts: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md), [Bar-Michele](./bar-michele.md).
 
 The three scenes of the [deck modification ideas](../business/modifica-del-mazzo.md) (`Panchina`, `Tribuna`, `Index40`) are **temporary**: they let each idea be explored without breaking the previous version. When one idea is chosen, the other scenes and the code only they use are deleted.
 
-The **Menu** opens first and leads to the three table scenes and to **Bar**, a copy of Tribuna with the first art style being tried ([Direzione artistica](../arte/direzione-artistica.md)): a mini demo to show the ideas and to try the builds. If the style is kept, the work goes on in Bar only. **TribunaRpg** is another copy of Tribuna, with the first [RPG part](./rpg.md) being tried ([Parte RPG](../business/parte-rpg.md), decision in analysis).
+The **Menu** opens first and leads to the three table scenes and to **Bar**, a copy of Tribuna with the first art style being tried ([Direzione artistica](../arte/direzione-artistica.md)): a mini demo to show the ideas and to try the builds. If the style is kept, the work goes on in Bar only. **TribunaRpg** is another copy of Tribuna, with the first [RPG part](./rpg.md) being tried ([Parte RPG](../business/parte-rpg.md), decision in analysis). **Bar-Michele** is a copy of Bar with the RPG part merged into its HUD, to try the card events: a test scene, not reachable from the Menu.
 
 | Scene | Path | Deck manager | Card prefab |
 |---|---|---|---|
@@ -47,8 +48,9 @@ The **Menu** opens first and leads to the three table scenes and to **Bar**, a c
 | [Index40](#panchina-tribuna-and-index40) | `Assets/Scenes/Index40.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Index`) | `3DCardTable` |
 | [Bar](#bar) | `Assets/Scenes/Bar.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`, `endAtFourthKing`) | `3DCardTable` |
 | [TribunaRpg](#tribunarpg) | `Assets/Scenes/TribunaRpg.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`) | `3DCardTable` |
+| [Bar-Michele](#bar-michele) | `Assets/Scenes/Bar-Michele.unity` | [TableDeckManager](./table.md#tabledeckmanager) (`excessCards = Discard`, `endAtFourthKing`) | `3DCardTable` |
 
-All six scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`, `Bar`, `TribunaRpg`.
+All seven scenes are in the Build Settings (`ProjectSettings/EditorBuildSettings.asset`), in this order: `Menu` (the scene a build opens), `Panchina`, `Tribuna`, `Index40`, `Bar`, `TribunaRpg`, `Bar-Michele` (in a build it has no Menu button, so it cannot be opened).
 
 ## Menu
 
@@ -91,6 +93,19 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - `Inventario` (bottom right, left of `RpgStats`, 380×300, same background, vertical layout) with [InventoryView](./rpg.md#inventoryview): the text `Santini` and `Amari`, where one "Bevi" button per amaro is created at runtime from `Assets/Prefab/OptionButton.prefab`;
 - `FightPopup` (last child, full screen, inactive at start) with [FightPopup](./rpg.md#fightpopup): a background that blocks raycasts, `Riquadro` (700×450) with `Titolo`, `Riepilogo` and `Continua` (instance of `Assets/Prefab/OptionButton.prefab`).
 
+## Bar-Michele
+
+`Assets/Scenes/Bar-Michele.unity`: a copy of [Bar](#bar) (same table, camera, light, HUD and buttons, `endAtFourthKing` on) where Michele tries the card events of the RPG part ([Bar-Michele scripts](./bar-michele.md), [Parte RPG](../business/parte-rpg.md#cosa-sappiamo)). Bar itself is unchanged. The RPG part is merged into the Bar HUD, in its style (fonts Caveat Brush and Special Elite, colours of the Bar):
+
+- `UI/BarHud/Rpg` (first child of `BarHud`): [BarRpgView](./bar-michele.md#barrpgview);
+- `BarHud/ColonnaSinistra`: `Giocatore` (title "Il giocatore" and `Statistiche`, the stats of the player) under the capobar post-it, then "Santini e amari" and `Inventario` with [InventoryView](./rpg.md#inventoryview) (`Santini` text, `Amari` vertical layout with one `OptionButton Bar` per amaro). The santini and amari placeholders and `Nota` of Bar are inactive;
+- `BarHud/Header/Statistiche` (the stats placeholder of Bar) inactive; `BarHud/Strada/Eventi` (was `EventiPlaceholder`, 560×70) shows the last path or event;
+- `BarHud/ColonnaDestra/Scontrino`: [BarReceiptView](./bar-michele.md#barreceiptview) instead of `ReceiptView`, arrows `Precedente` and `Successivo` beside "BAR SPORT", `Pagina` at the bottom right, `Scorrimento` (`ScrollRect`, `RectMask2D`, thin `Barra` scrollbar shown only when needed) with `Righe` (fixed size 17, `ContentSizeFitter`) as content;
+- `BarHud/FineIncontro`: [BarEncounterEndView](./bar-michele.md#barencounterendview) instead of `EncounterEndView`, `Titolo` auto-sized;
+- `UI/FightPopup` and `UI/ChoicePopup` (last children, full screen, inactive at start): a dark `Riquadro` with outline and shadow like `FineIncontro`, `Titolo`, `Riepilogo`; `FightPopup` ([FightPopup](./rpg.md#fightpopup)) has `Continua`, `ChoicePopup` ([ChoicePopup](./bar-michele.md#choicepopup)) has `PrimaScelta` and `SecondaScelta`, all instances of `Assets/Prefab/OptionButton Bar.prefab`.
+
+Saving after Play can rewrite values driven by layouts (the `TombolaCell` instances of `Cartella`, the scrollbar of `Scorrimento`): it is Unity recomputing them, not a change.
+
 ## Prefabs
 
 - `Assets/Prefab/3DCardTable.prefab`: the card, root with [CardDisplay3D](./shared.md#carddisplay3d) and [TableCardController](./table.md#tablecardcontroller); children `Fronte` and `Retro` (`Mat_Carta_Fronte`, `Mat_Carta_Retro`); used by the three table scenes.
@@ -104,6 +119,7 @@ Same structure, same [table scripts](./table.md); they differ in `TableDeckManag
 - `Assets/Prefab/LogToggleButton.prefab`: the `ResetButton` look, text "Log", empty `OnClick` (set on the scene instances).
 - `Assets/Prefab/Options.prefab`: full-canvas root (no graphic) with [OptionsPanel](./table.md#optionspanel), the `OptionsButton` (text "Opzioni") and a hidden `Panel` (dark, 400 px wide, at the left of the button column): status text, "Preset (dal prossimo Reset)" with `PresetScroll`, "Velocità animazioni" with `SpeedButtons`. `Panel` has a raycast-target `Image`, so UI clicks stop on it (cards ignore clicks over the UI, [TableCardController](./table.md#tablecardcontroller)). `PresetScroll`: vertical-only `ScrollRect` 400 px high (about 6 presets, mouse wheel and drag), `Viewport` (`RectMask2D`, transparent `Image` for the wheel) with `PresetButtons` as content (top-anchored, `ContentSizeFitter` on the height), and a vertical `Scrollbar` shown only when the presets do not fit (`AutoHideAndExpandViewport`); with few presets the area stays 400 px high. The preset library is set on the prefab (`presetLibrary`).
 - `Assets/Prefab/OptionButton.prefab`: smaller button (360×60) for the entries of the options panel, instantiated by [OptionsPanel](./table.md#optionspanel); also the `Continua` button of the [TribunaRpg](#tribunarpg) fight popup.
+- `Assets/Prefab/OptionButton Bar.prefab`: Prefab Variant of `OptionButton` in the style of the Bar top-bar buttons (background `#3A2618`, Special Elite 22, cream text, 330×50); the amari buttons, `Continua`, `PrimaScelta` and `SecondaScelta` of [Bar-Michele](#bar-michele).
 
 ## Card assets
 

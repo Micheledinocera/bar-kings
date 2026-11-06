@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-11-05
+aggiornato: 2026-11-06
 verificato: 2026-10-07
 consolidato: 2026-10-29
 fonti:
+  - raw/compiled/events-impl/2026-11-06-idee-eventi.md
   - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
   - raw/compiled/study-direzione-artistica/2026-10-24-obiettivo.md
   - raw/compiled/study-rpg/2026-10-20-idee.md
@@ -42,7 +43,8 @@ Si sceglie una carta e si girano carte fino a tornare a quella iniziale: il cicl
 | Incontro | Una partita sul tavolo (contro uno scagnozzo o il capobar), finita quando tutte le carte sono girate |
 | Scagnozzo, capobar | Miniboss e boss di un bar (in studio) |
 | Path / ciclo | La sequenza di carte girate a partire da quella scelta, fino a tornare a quella iniziale |
-| Risoluzione | Il momento in cui ogni carta del path chiuso genera un evento (parte RPG) |
+| Risoluzione | Il momento in cui ogni carta del path chiuso genera un evento (parte RPG); in prova nella scena Bar-Michele: carta per carta, mentre il path si gira ([Parte RPG](./parte-rpg.md#cosa-sappiamo)) |
+| Indice | Il posto del tavolo dove va una carta: nella griglia 4×10 la riga è il seme (denari, coppe, spade, bastoni) e la colonna il valore, quindi il 2 di denari ha di default l'indice 2. Le azioni che "modificano l'indice" (scambiare due semi, due valori, due carte) spostano dove va una carta ([Modifica del mazzo](./modifica-del-mazzo.md#forme-dei-buchi-tribuna)) |
 | Starter | "Filosofia" della run, una sola alla volta, cambiabile in punti fissi; nella vertical slice sono i preset del mazzo |
 | Santini | Power-up fissi, in slot limitati: effetti passivi che scattano su eventi, legati alla figura del santo |
 | Amari | Consumabili, effetto immediato; idea: la modifica del mazzo passa da loro |
