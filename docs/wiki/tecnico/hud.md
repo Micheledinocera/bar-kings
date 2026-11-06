@@ -1,8 +1,9 @@
 ---
 tipo: info
-aggiornato: 2026-10-25
+aggiornato: 2026-11-06
 verificato: 2026-10-25
 fonti:
+  - raw/compiled/events-impl/2026-11-06-task.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/art-style/2026-10-25-scelte-design.md
 ---
@@ -25,11 +26,11 @@ Scripts in `Assets/Scripts/Shared/Hud/`: the HUD of the Bar scene (`Assets/Scene
 
 `Assets/Scripts/Shared/Hud/PathReceipt.cs`. Text of the receipt, in pieces so it can be written while the path plays: `Header(pathNumber)` ("scontrino non fiscale - path n. N" and a dashed line), `Line(number, card)` (" 1  7 SPADE"), `Footer(moves)` (how the path ended, "CICLO CHIUSO", "FINITO IN UN BUCO" or "SU UN DOPPIONE", and the number of cards; a bench card filling the starting slot on a line of its own), `Empty` (before the first path). `CardLabel(card)`: "ASSO DENARI", "7 SPADE", "FANTE/CAVALLO/RE COPPE".
 
-- **Used by**: [ReceiptView](#receiptview), [RoadStopView](#pathroadview-roadstopview) (`CardLabel`), [RpgStatsView](./rpg.md#rpgstatsview) and [CardEffects](./rpg.md#cardeffects) (`CardLabel`).
+- **Used by**: [ReceiptView](#receiptview), [RoadStopView](#pathroadview-roadstopview) (`CardLabel`), [RpgStatsView](./rpg.md#rpgstatsview) and [CardEffects](./rpg.md#cardeffects) (`CardLabel`); in Bar-Michele [BarReceiptView](./bar-michele.md#barreceiptview) (`Header`, `Empty`), [BarPathReceipt](./bar-michele.md#barpathreceipt) and [BarRpgView](./bar-michele.md#barrpgview) (`CardLabel`). [BarPathReceipt](./bar-michele.md#barpathreceipt) is a copy with lines without numbers and "TOTALE".
 
 ## ReceiptView
 
-`Assets/Scripts/Shared/Hud/ReceiptView.cs`. On `Scontrino` (right column of the Bar HUD). `PathStarted` opens a new receipt (header), `MovePlayed` adds a line for each card as it is turned (the bench move is skipped), `PathPlayed` writes the footer; `GameStarted` shows `Empty`. Serialized: `tableDeckManager`, `text` (the TMP `Righe`, auto-size 10–17 for long paths).
+`Assets/Scripts/Shared/Hud/ReceiptView.cs`. On `Scontrino` (right column of the Bar HUD). `PathStarted` opens a new receipt (header), `MovePlayed` adds a line for each card as it is turned (the bench move is skipped), `PathPlayed` writes the footer; `GameStarted` shows `Empty`. Serialized: `tableDeckManager`, `text` (the TMP `Righe`, auto-size 10–17 for long paths). Bar-Michele uses a copy, [BarReceiptView](./bar-michele.md#barreceiptview), with the receipts of the game browsable and a scroll view.
 
 ## KingCounterView
 
@@ -39,7 +40,7 @@ Scripts in `Assets/Scripts/Shared/Hud/`: the HUD of the Bar scene (`Assets/Scene
 
 `Assets/Scripts/Shared/Hud/TombolaCard.cs`. Plain C#: the tombola card from a [TableState](./table.md#tablestate). `Cells` (40, slot order, base grid only; slots beyond 40 are ignored): `TombolaCell.Empty` (a card), `Hole`, `ShapeHole` (a hole of a complete shape). `CompleteShapes`: [TableShapes](./stats.md#tableshape-tableshapes-shapekind)`.Complete` with every hole counted (no path history). `Summary()`: count per shape kind ("colonna: 2 | quadrato 2x2: 3"), or "nessuna forma, per ora". `TombolaCell` (`Assets/Scripts/Shared/Hud/TombolaCell.cs`) is the enum.
 
-- **Used by**: [TombolaCardView](#tombolacardview-tombolacellview), [EncounterEndView](#encounterendview).
+- **Used by**: [TombolaCardView](#tombolacardview-tombolacellview), [EncounterEndView](#encounterendview), [BarEncounterEndView](./bar-michele.md#barencounterendview).
 
 ## TombolaCardView, TombolaCellView
 
@@ -55,4 +56,4 @@ Scripts in `Assets/Scripts/Shared/Hud/`: the HUD of the Bar scene (`Assets/Scene
 
 ## EncounterEndView
 
-`Assets/Scripts/Shared/Hud/EncounterEndView.cs` on `FineIncontro` (a panel over the table, "Quarto re!"). `EncounterEnded`: writes the paths played and the shapes made ([TombolaCard](#tombolacard)) in `body` and fades the `group` (`CanvasGroup`) in (`fadeDuration`, `fadeEase`); `GameStarted` hides it. The panel stays active with alpha 0; it blocks raycasts only while shown. The rule is in [TableDeckManager](./table.md#tabledeckmanager) (`endAtFourthKing`).
+`Assets/Scripts/Shared/Hud/EncounterEndView.cs` on `FineIncontro` (a panel over the table, "Quarto re!"). `EncounterEnded`: writes the paths played and the shapes made ([TombolaCard](#tombolacard)) in `body` and fades the `group` (`CanvasGroup`) in (`fadeDuration`, `fadeEase`); `GameStarted` hides it. The panel stays active with alpha 0; it blocks raycasts only while shown. The rule is in [TableDeckManager](./table.md#tabledeckmanager) (`endAtFourthKing`). Bar-Michele uses a copy, [BarEncounterEndView](./bar-michele.md#barencounterendview), titled by why the encounter ended (defeat, all cards turned, 4th king).

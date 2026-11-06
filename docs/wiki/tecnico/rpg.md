@@ -1,8 +1,9 @@
 ---
 tipo: info
-aggiornato: 2026-11-05
+aggiornato: 2026-11-06
 verificato: 2026-11-05
 fonti:
+  - raw/compiled/events-impl/2026-11-06-task.md
   - raw/compiled/merge-rpg/2026-10-28-obiettivo-rpg.md
   - raw/compiled/merge-rpg/2026-10-28-fight.md
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
@@ -13,7 +14,7 @@ fonti:
 
 # RPG scripts
 
-Scripts in `Assets/Scripts/Shared/Rpg/`, used only by the scene `Assets/Scenes/TribunaRpg.unity` ([scenes](./scenes.md#tribunarpg)): the first try of the RPG part, the rules of [Parte RPG](../business/parte-rpg.md#cosa-sappiamo) and the first santini and amari of [Meccaniche della run](../business/meccaniche-della-run.md#cosa-sappiamo) being tried (decisions in analysis, nothing here is fixed). At the end of each path the cards are resolved in order: values 1–9 raise a stat of the player (changed by the santini owned), a king starts a fight; between two paths the player can drink an amaro. Rules in plain C# classes (`CardEffects`, `Fight`, stats, santini, amari), view in three MonoBehaviours. Texts are ASCII only, as [GameLogFormatter](./stats.md#gamelogformatter).
+Scripts in `Assets/Scripts/Shared/Rpg/`, used by the scene `Assets/Scenes/TribunaRpg.unity` ([scenes](./scenes.md#tribunarpg)), and except `RpgStatsView` also by the test scene Bar-Michele ([Bar-Michele scripts](./bar-michele.md), where [BarRpgView](./bar-michele.md#barrpgview) is a copy of `RpgStatsView` that resolves card by card and makes the 7, 8 and 9 events): the first try of the RPG part, the rules of [Parte RPG](../business/parte-rpg.md#cosa-sappiamo) and the first santini and amari of [Meccaniche della run](../business/meccaniche-della-run.md#cosa-sappiamo) being tried (decisions in analysis, nothing here is fixed). At the end of each path the cards are resolved in order: values 1–9 raise a stat of the player (changed by the santini owned), a king starts a fight; between two paths the player can drink an amaro. Rules in plain C# classes (`CardEffects`, `Fight`, stats, santini, amari), view in three MonoBehaviours. Texts are ASCII only, as [GameLogFormatter](./stats.md#gamelogformatter).
 
 | Class | Path | Kind |
 |---|---|---|
@@ -45,21 +46,21 @@ Scripts in `Assets/Scripts/Shared/Rpg/`, used only by the scene `Assets/Scenes/T
 `Assets/Scripts/Shared/Rpg/FightPopup.cs`. On `UI/FightPopup` of `TribunaRpg` (last child, full screen, inactive while hidden). `Show(title, body, cancellationToken)` (`UniTask`) sets the texts, activates the popup and completes when `closeButton` ("Continua") is clicked, then hides it. The full-screen background blocks the UI raycasts; the table cards are blocked by `TableDeckManager.TablePaused`, set by [RpgStatsView](#rpgstatsview), because `OnMouseDown` gets the click before the UI ([known issues](./known-issues.md#block-d--input)).
 
 - **Serialized fields**: `title`, `body`, `closeButton` (an instance of `Assets/Prefab/OptionButton.prefab`).
-- **Used by**: [RpgStatsView](#rpgstatsview).
+- **Used by**: [RpgStatsView](#rpgstatsview), [BarRpgView](./bar-michele.md#barrpgview) (fight summaries, the four sevens, the shop message).
 
 ## InventoryView
 
 `Assets/Scripts/Shared/Rpg/InventoryView.cs`. On `UI/Inventario` of `TribunaRpg`. Pure view: `Show(santini, amari, canDrink)` writes the names of the santini in `santiniText` and rebuilds one button per amaro ("Bevi <name>") under `amariContainer`, instantiated from `amaroButtonPrefab`, not interactable when `canDrink` is off. A click raises `DrinkRequested(index)` (index in the amari list); null entries are skipped.
 
 - **Serialized fields**: `santiniText`, `amariContainer` (the `Amari` child, vertical layout), `amaroButtonPrefab` (`Assets/Prefab/OptionButton.prefab`), all `[Required]`.
-- **Used by**: [RpgStatsView](#rpgstatsview) (`inventoryView`).
+- **Used by**: [RpgStatsView](#rpgstatsview) (`inventoryView`), [BarRpgView](./bar-michele.md#barrpgview) (`inventoryView`, Bar-Michele).
 
 ## CardEffects
 
 `Assets/Scripts/Shared/Rpg/CardEffects.cs`. Rule being tried for a card of value `n` (1–9), by suit: **Spade** +n damage, **Denari** +n × `RpgRules.LirePerDenaro` (1000) Lire, **Coppe** +n health (not above the maximum), **Bastoni** +n armour. `IsKing(card)`: value `DeckRules.KingValue` ([DeckRules](./deck.md#deckrules)). `Apply(card, stats, config, santini)` changes the [PlayerStats](#ifighter-playerstats-kingfighter) and returns the log line; `config.healingFromCards` and `config.armorFromCards` off turn the Coppe and Bastoni effects off.
 
 - **Santini**: the effect is applied `1 + Σ ExtraApplications(card)` times, and the Lire of each application are raised by `Σ LireBonusPercent(card)` %. The santini that triggered are named in the log line (e.g. `(x2 San Francesco)`). Null entries are ignored; duplicates add up.
-- **Used by**: [RpgStatsView](#rpgstatsview).
+- **Used by**: [RpgStatsView](#rpgstatsview), [BarRpgView](./bar-michele.md#barrpgview) (Bar-Michele).
 
 ## PlayerInventory, Santino, SanFrancesco, SanMatteo
 
@@ -72,7 +73,7 @@ Scripts in `Assets/Scripts/Shared/Rpg/`, used only by the scene `Assets/Scenes/T
 | San Francesco | `SanFrancesco` (`Assets/Scripts/Shared/Rpg/SanFrancesco.cs`) | The horse (`RpgRules.HorseValue`, 9) of a path applies its effect twice, any suit | — |
 | San Matteo | `SanMatteo` (`Assets/Scripts/Shared/Rpg/SanMatteo.cs`) | A Denari card gives `lireBonusPercent` % more Lire | `lireBonusPercent` (default `RpgRules.SanMatteoLireBonusPercent`, 50) |
 
-- **Used by**: [RpgStatsView](#rpgstatsview), [CardEffects](#cardeffects), [InventoryView](#inventoryview) (names).
+- **Used by**: [RpgStatsView](#rpgstatsview), [CardEffects](#cardeffects), [InventoryView](#inventoryview) (names), [BarRpgView](./bar-michele.md#barrpgview) (Bar-Michele).
 
 ## Amaro, HealingAmaro, DamageAmaro
 
@@ -83,7 +84,7 @@ Scripts in `Assets/Scripts/Shared/Rpg/`, used only by the scene `Assets/Scenes/T
 | Cerottino Martini | `HealingAmaro` (`Assets/Scripts/Shared/Rpg/HealingAmaro.cs`) | Heals `healthPercent` % of the maximum health (at least 1), not above the maximum | `healthPercent` (default `RpgRules.HealingAmaroPercent`, 25) |
 | Amaro Affilato | `DamageAmaro` (`Assets/Scripts/Shared/Rpg/DamageAmaro.cs`) | +`damageBonus` damage for the rest of the run (until Reset). Test amaro, placeholder name | `damageBonus` (default `RpgRules.DamageAmaroBonus`, 5) |
 
-- **Used by**: [RpgStatsView](#rpgstatsview), [InventoryView](#inventoryview) (names).
+- **Used by**: [RpgStatsView](#rpgstatsview), [InventoryView](#inventoryview) (names), [BarRpgView](./bar-michele.md#barrpgview) (Bar-Michele).
 
 ## Fight, FightClock, FightResult, FightOutcome
 
@@ -92,19 +93,19 @@ Scripts in `Assets/Scripts/Shared/Rpg/`, used only by the scene `Assets/Scenes/T
 - **Stalemate** (`FightOutcome.Stalemate`): when neither side can get past the other's armour the fight ends at once, without turns; the king stays and the path goes on. Agent's choice, accepted by the user on 2026-10-29 as the rule being tried.
 - `FightClock` (`Assets/Scripts/Shared/Rpg/FightClock.cs`): order of the turns, not timed; today each fighter acts once per round, the player first. Meant for a future speed stat (more turns before the king), **not implemented**.
 - `FightOutcome` (`Assets/Scripts/Shared/Rpg/FightOutcome.cs`): `PlayerWon`, `KingWon`, `Stalemate`.
-- **Used by**: [RpgStatsView](#rpgstatsview).
+- **Used by**: [RpgStatsView](#rpgstatsview), [BarRpgView](./bar-michele.md#barrpgview) (Bar-Michele).
 
 ## IFighter, PlayerStats, KingFighter
 
 `Assets/Scripts/Shared/Rpg/IFighter.cs`: a side of a fight (name, health, max health, armour, damage, `TakeDamage` returning the health actually lost). `PlayerStats` (`Assets/Scripts/Shared/Rpg/PlayerStats.cs`): the player ("GIOCATORE"), also with `Money`; `Heal` is capped at `MaxHealth` and returns the amount healed. `KingFighter` (`Assets/Scripts/Shared/Rpg/KingFighter.cs`): a king, with fresh stats for every fight.
 
-- **Used by**: [Fight](#fight-fightclock-fightresult-fightoutcome), [CardEffects](#cardeffects), [RpgStatsView](#rpgstatsview), the amari ([Amaro](#amaro-healingamaro-damageamaro)).
+- **Used by**: [Fight](#fight-fightclock-fightresult-fightoutcome), [CardEffects](#cardeffects), [RpgStatsView](#rpgstatsview), the amari ([Amaro](#amaro-healingamaro-damageamaro)), [BarRpgView](./bar-michele.md#barrpgview) (Bar-Michele).
 
 ## PlayerConfig, KingConfig, RpgRules
 
-`[Serializable]` Inspector fields of [RpgStatsView](#rpgstatsview). `PlayerConfig` (`Assets/Scripts/Shared/Rpg/PlayerConfig.cs`): `maxHealth`, `startingHealth` (lowered to the maximum), `damage`, `armor`, the toggles `healingFromCards` and `armorFromCards`; `CreateStats()`. `KingConfig` (`Assets/Scripts/Shared/Rpg/KingConfig.cs`): `health`, `armor`, `damage`, the same for every king; `CreateFighter(name)`.
+`[Serializable]` Inspector fields of [RpgStatsView](#rpgstatsview) and [BarRpgView](./bar-michele.md#barrpgview). `PlayerConfig` (`Assets/Scripts/Shared/Rpg/PlayerConfig.cs`): `maxHealth`, `startingHealth` (lowered to the maximum), `damage`, `armor`, the toggles `healingFromCards` and `armorFromCards`; `CreateStats()`. `KingConfig` (`Assets/Scripts/Shared/Rpg/KingConfig.cs`): `health`, `armor`, `damage`, the same for every king; `CreateFighter(name)`.
 
-`RpgRules` (`Assets/Scripts/Shared/Rpg/RpgRules.cs`): the defaults of the fields. Player: max health 100, damage 1, armour 1. King: health 10, armour 0, damage 1. `LirePerDenaro` 1000. Santini and amari: `HorseValue` 9, `SanMatteoLireBonusPercent` 50, `HealingAmaroPercent` 25, `DamageAmaroBonus` 5.
+`RpgRules` (`Assets/Scripts/Shared/Rpg/RpgRules.cs`): the defaults of the fields. Player: max health 100, damage 1, armour 1. King: health 10, armour 0, damage 1. `LirePerDenaro` 1000. Santini and amari: `HorseValue` 9 (also the horse of [BarEvents](./bar-michele.md#barevents)), `SanMatteoLireBonusPercent` 50, `HealingAmaroPercent` 25, `DamageAmaroBonus` 5.
 
 ## Open questions
 

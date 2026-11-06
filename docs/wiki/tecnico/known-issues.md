@@ -1,9 +1,10 @@
 ---
 tipo: info
-aggiornato: 2026-10-29
-verificato: 2026-10-29
-consolidato: 2026-10-16
+aggiornato: 2026-11-06
+verificato: 2026-11-06
+consolidato: 2026-11-06
 fonti:
+  - raw/compiled/events-impl/2026-11-06-task.md
   - raw/compiled/merge-rpg/2026-10-28-popup-e-config.md
   - raw/compiled/art-style/2026-10-25-implementazione.md
   - raw/compiled/preset-builder/2026-10-19-obiettivo.md
@@ -27,7 +28,7 @@ fonti:
 
 # Known issues
 
-Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done, and the build (**I**) is done except the company name; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md), [scenes](./scenes.md).
+Issues of the project code, grouped in blocks: one block per area meant to be fixed in one code feature. Planned order (study-new-implementations): blocks A (card generation), B (first-POC duplicates, removed with SampleScene), E (async and animations) and G (path into a hole) are done, and the build (**I**) is done except the company name; next cleanup and conventions (**F**; formatting is done), then **C** with **D** inside it. Mixed Italian/English identifiers are **not** an issue (`AGENTS.md`). Detail: [shared](./shared.md), [table](./table.md), [deck](./deck.md), [stats](./stats.md), [RPG](./rpg.md), [Bar-Michele](./bar-michele.md), [scenes](./scenes.md).
 
 | Block | Items | Tags | Waits for |
 |---|---|---|---|
@@ -37,6 +38,7 @@ Issues of the project code, grouped in blocks: one block per area meant to be fi
 | [H — Stats and simulation](#block-h--stats-and-simulation) | 2 | ux, duplicate | — |
 | [I — Build](#block-i--build) | 1 | debt | — |
 | [J — Bar scene HUD](#block-j--bar-scene-hud) | 3 | ux, debt | [Direzione artistica](../arte/direzione-artistica.md) |
+| [K — Bar-Michele test scene](#block-k--bar-michele-test-scene) | 5 | duplicate, debt, ux | [Parte RPG](../business/parte-rpg.md) |
 
 ## Block C — Game state in hierarchy and statics
 
@@ -72,3 +74,13 @@ Only if the Bar style is kept ([Direzione artistica](../arte/direzione-artistica
 - `ux` — "Re scoperti" and the tombola card are refreshed at the end of a path, while the receipt and the road follow the cards one by one. `Assets/Scripts/Shared/Hud/KingCounterView.cs`, `Assets/Scripts/Shared/Hud/TombolaCardView.cs` — [KingCounterView](./hud.md#kingcounterview)
 - `ux` — The grid lines of the tombola card (2 px gaps) look uneven when the Canvas is scaled down. `Assets/Prefab/TombolaCell.prefab` — [TombolaCardView](./hud.md#tombolacardview-tombolacellview)
 - `debt` — The Tribuna buttons, the options panel and the game log are restyled with overrides on the scene instances, not with Prefab Variants. `Assets/Scenes/Bar.unity` — [scenes](./scenes.md#bar)
+
+## Block K — Bar-Michele test scene
+
+The copies are deliberate (user, 2026-11-06: try the card events freely, clean up later); fix them when the ideas of Bar-Michele are merged into the final feature, or delete the scene ([Parte RPG](../business/parte-rpg.md), decision in analysis).
+
+- `duplicate` — `BarRpgView` is a copy of `RpgStatsView` (stats, fights, santini, amari) with card-by-card resolution and the 7, 8, 9 events. `Assets/Scripts/BarMichele/BarRpgView.cs` — [BarRpgView](./bar-michele.md#barrpgview)
+- `duplicate` — `BarReceiptView` and `BarPathReceipt` copy `ReceiptView` and `PathReceipt` (browsable receipts, no card numbers, "TOTALE"). `Assets/Scripts/BarMichele/BarReceiptView.cs`, `Assets/Scripts/BarMichele/BarPathReceipt.cs` — [BarReceiptView](./bar-michele.md#barreceiptview)
+- `duplicate` — `BarEncounterEndView` copies `EncounterEndView` (title by why the encounter ended). `Assets/Scripts/BarMichele/BarEncounterEndView.cs` — [BarEncounterEndView](./bar-michele.md#barencounterendview)
+- `debt` — After a defeat the rest of the path is not animated: the cards on the table no longer match the `TableState` until Reset. `Assets/Scripts/Shared/Table/TableDeckManager.cs` — [TableDeckManager](./table.md#tabledeckmanager)
+- `ux` — Bar-Michele is in the Build Settings but the Menu has no button for it: in a build it cannot be opened. `Assets/Scenes/Menu.unity` — [scenes](./scenes.md#bar-michele)
