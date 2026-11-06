@@ -8,7 +8,8 @@ using System.Linq;
 // - king: the player chooses to fight or escape. An escape is free while escapes are left, otherwise it costs a
 //   part of the Lire (a placeholder malus, to be decided);
 // - fante (8): the player chooses to enter the shop (nothing yet) or to skip it for a share of the Lire a game
-//   can give.
+//   can give;
+// - seven: raises its stat like the cards below it, and the four sevens of an encounter give a bonus.
 // ASCII only, as GameLogFormatter.
 public static class BarEvents
 {
@@ -20,6 +21,25 @@ public static class BarEvents
     public static bool IsHorse(CardDataInGame card) => card.cardData.valore == RpgRules.HorseValue;
 
     public static bool IsFante(CardDataInGame card) => card.cardData.valore == FanteValue;
+
+    // Sevens: each raises its stat like the other parametric cards, and turning all of them in one encounter
+    // gives a bonus on every stat, twice what the four sevens give on their own.
+    public const int SevenValue = 7;
+    public const int SevensForBonus = 4; // one per suit
+    public const int SevensBonus = 2 * SevenValue;
+
+    public static bool IsSeven(CardDataInGame card) => card.cardData.valore == SevenValue;
+
+    // Applies the bonus of the four sevens and returns a line describing it.
+    public static string ApplySevensBonus(PlayerStats stats)
+    {
+        int lire = SevensBonus * RpgRules.LirePerDenaro;
+        stats.AddDamage(SevensBonus);
+        stats.AddArmor(SevensBonus);
+        int healed = stats.Heal(SevensBonus);
+        stats.AddMoney(lire);
+        return $"+{SevensBonus} danno, +{SevensBonus} armatura, +{healed} vita, +{lire} Lire";
+    }
 
     // Escapes given by a horse: one, plus one for each extra application of the santini owned.
     public static int EscapesFrom(CardDataInGame card, IReadOnlyList<Santino> santini) =>

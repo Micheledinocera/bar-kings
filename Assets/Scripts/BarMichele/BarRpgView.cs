@@ -11,8 +11,8 @@ using UnityEngine.Serialization;
 // are tried without touching TribunaRpg. To merge back or delete when one idea is chosen. Differences from
 // RpgStatsView: the stats are in a panel of the left column (Il giocatore); each card is resolved as soon as it is
 // turned (TableDeckManager.MoveResolver), not at the end of the path; the 8 and 9 are events instead of stats
-// (BarEvents): a horse (9) gives escapes, a fante (8) asks shop or skip, and every king asks escape or fight
-// (ChoicePopup).
+// (BarEvents): a horse (9) gives escapes, a fante (8) asks shop or skip, every king asks escape or fight
+// (ChoicePopup), and the four sevens of an encounter give a bonus.
 //
 // RPG part of the scene: resolves the cards of a path in order while they are turned (CardEffects); a king
 // starts a fight (Fight) with the stats reached so far, its summary opens in a popup (FightPopup) at once, and
@@ -54,6 +54,7 @@ public class BarRpgView : MonoBehaviour
     private bool resolving; // a path is being resolved: no amaro can be drunk
     private bool encounterOver;
     private int escapes; // fights with a king that can still be skipped for free in this encounter (BarEvents)
+    private int sevens; // sevens turned in this encounter, for the bonus of the four sevens (BarEvents)
 
     // The path being played: its number, the cards resolved so far, whether a defeat stopped it, its fights and
     // the Console lines not written yet.
@@ -97,6 +98,7 @@ public class BarRpgView : MonoBehaviour
     {
         stats = player.CreateStats();
         escapes = 0;
+        sevens = 0;
         encounterOver = false;
         eventsText.text = "nessun path ancora";
         RefreshStats();
@@ -185,6 +187,10 @@ public class BarRpgView : MonoBehaviour
         {
             pathLog.Add($"  {CardEffects.Apply(card, stats, player, inventory.santini)}");
             RefreshStats();
+            if (BarEvents.IsSeven(card))
+            {
+                await CountSeven(cancellationToken);
+            }
             return;
         }
 
@@ -312,6 +318,26 @@ public class BarRpgView : MonoBehaviour
         RefreshStats();
     }
 
+    // A seven was turned (its stat already applied): the fourth of the encounter gives the bonus, in a popup.
+    async UniTask CountSeven(CancellationToken cancellationToken)
+    {
+        sevens++;
+        RefreshStats();
+        if (sevens != BarEvents.SevensForBonus)
+        {
+            return;
+        }
+        string bonus = BarEvents.ApplySevensBonus(stats);
+        pathLog.Add($"  i quattro 7: {bonus}");
+        eventsText.text = $"path n. {currentPath}: i quattro 7!";
+        RefreshStats();
+        await ShowPopup(
+            "I quattro 7!",
+            $"Hai girato tutti e quattro i 7 dell'incontro.\n\nBonus: {bonus}.",
+            cancellationToken
+        );
+    }
+
     // The choice popup, with the table paused meanwhile.
     async UniTask<bool> Ask(
         string title,
@@ -388,7 +414,7 @@ public class BarRpgView : MonoBehaviour
         statsText.text =
             $"Vita {stats.Health}/{stats.MaxHealth}<pos=55%>Danno {stats.Damage}\n"
             + $"Armatura {stats.Armor}<pos=55%>Fughe {escapes}\n"
-            + $"Lire {stats.Money}";
+            + $"Lire {stats.Money}<pos=55%>Sette {sevens}/{BarEvents.SevensForBonus}";
     }
 
     string StatsLine() =>
