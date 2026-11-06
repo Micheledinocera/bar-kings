@@ -38,3 +38,9 @@ Dubbio sullo scambio di due indici: chiede una scelta di due posizioni a metà p
 - Il bonus scatta quando si gira il **quarto 7 dell'incontro**, anche in path diversi; Reset ricomincia il conteggio. Il pannello del giocatore mostra "Sette n/4".
 - **Bonus provvisorio**: il doppio di quanto danno i quattro 7 da soli, cioè **+14 danno, +14 armatura, cura 14 vita, +14.000 Lire**, con un popup "I quattro 7!" a metà path. Alternative valutate: vita piena più una fuga; un santino gratis.
 - Scartato per ora: il bonus solo con i quattro 7 nello stesso path (troppo raro).
+
+## Fine dell'incontro (iterazione 4, in prova)
+
+- **Sconfitta**: se il re ti batte si interrompe subito tutto, anche il path in corso (le carte dopo il re non si girano più), e il pannello di fine incontro dice "Sconfitto!" con il re, i turni e "premi Reset".
+- **Tutte le carte girate**: se dopo un path non resta nessuna carta coperta sul tavolo, lo si notifica con il pannello "Tutte le carte girate!", anche se l'incontro non finirebbe. Con la fine al quarto re succede solo se le ultime carte coperte escono nello stesso path del quarto re.
+- Altrimenti, come prima, "Quarto re!".
