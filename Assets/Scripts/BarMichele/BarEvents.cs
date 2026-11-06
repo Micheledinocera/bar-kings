@@ -30,6 +30,12 @@ public static class BarEvents
 
     public static bool IsSeven(CardDataInGame card) => card.cardData.valore == SevenValue;
 
+    // Every slot of the table is face up or a hole: no card is left to turn.
+    public static bool AllCardsTurned(TableState table) =>
+        Enumerable
+            .Range(0, table.SlotCount)
+            .All(slot => table.IsHole(slot) || table.IsFaceUp(slot));
+
     // Applies the bonus of the four sevens and returns a line describing it.
     public static string ApplySevensBonus(PlayerStats stats)
     {

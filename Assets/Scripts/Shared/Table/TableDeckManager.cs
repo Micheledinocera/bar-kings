@@ -94,7 +94,8 @@ public class TableDeckManager : MonoBehaviour
     public event Action<int, IReadOnlyList<PathMove>> PathPlayed;
 
     // Raised after PathPlayed when the path turned the 4th king and endAtFourthKing is on, or when a subscriber of
-    // PathPlayed called EndEncounter: the paths played.
+    // PathPlayed called EndEncounter; or, without PathPlayed, when a MoveResolver stopped the path: the paths
+    // played.
     public event Action<int> EncounterEnded;
 
     // Ends the encounter from outside (the RPG part, when the player is defeated): every click is ignored until
@@ -107,8 +108,10 @@ public class TableDeckManager : MonoBehaviour
 
     // Optional, set from outside: awaited after the animation of each move of a path (after MovePlayed), before the
     // next one, so a card can be resolved as soon as it is turned (Bar-Michele: the fight popup of a king opens
-    // mid-path). Its position in the moves, the move. Null in the other scenes: the path plays without stopping.
-    public Func<int, PathMove, CancellationToken, UniTask> MoveResolver { get; set; }
+    // mid-path). Its position in the moves, the move; it returns false to stop the path there (Bar-Michele: the
+    // player is defeated by a king): the next moves are not animated, PathPlayed is not raised and the encounter
+    // ends (EncounterEnded). Null in the other scenes: the path plays without stopping.
+    public Func<int, PathMove, CancellationToken, UniTask<bool>> MoveResolver { get; set; }
 
     // The preset of the next game, from the next Reset.
     public void SetNextPreset(DeckPreset preset) => deckPreset = preset;
@@ -240,9 +243,13 @@ public class TableDeckManager : MonoBehaviour
             }
             card.transform.SetParent(GetSlotByIndex(moves[i].ToSlot), true);
             MovePlayed?.Invoke(i, moves[i]);
-            if (MoveResolver != null)
+            if (MoveResolver != null && !await MoveResolver(i, moves[i], cancellationToken))
             {
-                await MoveResolver(i, moves[i], cancellationToken);
+                // Stopped from outside: the table state already has the whole path, the views stay where they
+                // are until ResetTable.
+                encounterOver = true;
+                EncounterEnded?.Invoke(pathCount);
+                return;
             }
         }
         PathPlayed?.Invoke(pathCount, moves);

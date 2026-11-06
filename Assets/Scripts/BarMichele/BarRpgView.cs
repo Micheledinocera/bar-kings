@@ -56,11 +56,10 @@ public class BarRpgView : MonoBehaviour
     private int escapes; // fights with a king that can still be skipped for free in this encounter (BarEvents)
     private int sevens; // sevens turned in this encounter, for the bonus of the four sevens (BarEvents)
 
-    // The path being played: its number, the cards resolved so far, whether a defeat stopped it, its fights and
+    // The path being played: its number, the cards resolved so far, its fights and
     // the Console lines not written yet.
     private int currentPath;
     private int pathCards;
-    private bool pathStopped;
     private readonly List<string> pathFights = new();
     private readonly List<string> pathLog = new();
 
@@ -69,6 +68,10 @@ public class BarRpgView : MonoBehaviour
     private bool shownCanDrink;
 
     private bool CanDrink => !resolving && !encounterOver;
+
+    // Set when a king defeats the player (the path and the encounter stop there): what to tell them. Null
+    // otherwise, until the next game.
+    public string DefeatText { get; private set; }
 
     void OnEnable()
     {
@@ -99,6 +102,7 @@ public class BarRpgView : MonoBehaviour
         stats = player.CreateStats();
         escapes = 0;
         sevens = 0;
+        DefeatText = null;
         encounterOver = false;
         eventsText.text = "nessun path ancora";
         RefreshStats();
@@ -149,7 +153,6 @@ public class BarRpgView : MonoBehaviour
     {
         currentPath = pathNumber;
         pathCards = 0;
-        pathStopped = false;
         pathFights.Clear();
         pathLog.Clear();
         pathLog.Add($"RPG - path n. {pathNumber}");
@@ -160,13 +163,13 @@ public class BarRpgView : MonoBehaviour
 
     // Awaited by TableDeckManager after each turned card, before the next one: a card is applied at once (the
     // stats change while the path goes on), a king opens its fight popup mid-path and the path goes on when it is
-    // closed. After a defeat the remaining cards still move on the table but are not applied.
-    async UniTask ResolveMove(int index, PathMove move, CancellationToken cancellationToken)
+    // closed. Returns false at a defeat: the path stops there and the encounter ends (DefeatText).
+    async UniTask<bool> ResolveMove(int index, PathMove move, CancellationToken cancellationToken)
     {
         // The bench move only fills a hole face down: it is not a card of the path.
-        if (pathStopped || move.End == PathEnd.FilledFromBench)
+        if (move.End == PathEnd.FilledFromBench)
         {
-            return;
+            return true;
         }
         pathCards++;
         CardDataInGame card = move.Card;
@@ -176,12 +179,12 @@ public class BarRpgView : MonoBehaviour
             escapes += gained;
             pathLog.Add($"  {PathReceipt.CardLabel(card)}: +{gained} fuga (fughe {escapes})");
             RefreshStats();
-            return;
+            return true;
         }
         if (BarEvents.IsFante(card))
         {
             await ResolveFante(card, cancellationToken);
-            return;
+            return true;
         }
         if (!CardEffects.IsKing(card))
         {
@@ -191,7 +194,7 @@ public class BarRpgView : MonoBehaviour
             {
                 await CountSeven(cancellationToken);
             }
-            return;
+            return true;
         }
 
         string kingName = PathReceipt.CardLabel(card);
@@ -199,7 +202,7 @@ public class BarRpgView : MonoBehaviour
         if (await AskEscape(kingName, fighter, cancellationToken))
         {
             Escape(kingName);
-            return;
+            return true;
         }
 
         pathLog.Add(
@@ -212,20 +215,29 @@ public class BarRpgView : MonoBehaviour
         pathLog.Add($"  {pathFights[^1]}");
         Debug.Log(string.Join("\n", pathLog));
         pathLog.Clear();
+        RefreshStats();
         if (result.Outcome == FightOutcome.KingWon)
         {
-            // The cards after the king are not applied: the encounter is over.
-            pathStopped = true;
-            tableDeckManager.EndEncounter();
+            // Defeat: everything stops at once, the path included; the end panel (BarEncounterEndView) says it.
+            DefeatText =
+                $"Sei stato sconfitto da {kingName} in {result.Turns.Count} turni.\n"
+                + $"Vita {stats.Health}/{stats.MaxHealth}, colpo del re "
+                + $"{Fight.HitDamage(fighter, stats)}.";
+            pathLog.Add($"  {StatsLine()}");
+            Debug.Log(string.Join("\n", pathLog));
+            pathLog.Clear();
+            eventsText.text = $"path n. {currentPath}: sconfitto da {kingName}";
+            resolving = false;
+            return false;
         }
 
-        RefreshStats();
         eventsText.text = $"path n. {currentPath}: fight con {kingName}";
         await ShowPopup(
             FightTitle(kingName, result.Outcome),
             FightSummary(fighter, result),
             cancellationToken
         );
+        return true;
     }
 
     void OnPathPlayed(int pathNumber, IReadOnlyList<PathMove> moves)
@@ -385,7 +397,6 @@ public class BarRpgView : MonoBehaviour
         outcome switch
         {
             FightOutcome.PlayerWon => $"{kingName} battuto!",
-            FightOutcome.KingWon => $"Sconfitto da {kingName}",
             _ => $"{kingName}: pareggio",
         };
 
@@ -402,7 +413,6 @@ public class BarRpgView : MonoBehaviour
             + $"{Fight.HitDamage(fighter, stats)}";
         return result.Outcome switch
         {
-            FightOutcome.KingWon => summary + "\n\nIncontro finito: Reset per rigiocare.",
             FightOutcome.Stalemate => summary + "\n\nNessuno passa l'armatura dell'altro.",
             _ => summary,
         };
