@@ -26,3 +26,8 @@ Dubbio sullo scambio di due indici: chiede una scelta di due posizioni a metà p
 - Il cavallo dà **solo una fuga**, nessuna statistica (parametrico fino al 7). San Francesco (cavallo applicato due volte) dà 2 fughe.
 - **A scelta**: quando arriva un re e si ha almeno una fuga, il giocatore sceglie "Scappa" o "Combatti" (può tenersi la fuga per un re più forte).
 - Le fughe si **accumulano per tutto l'incontro** (Reset le azzera); il re da cui si scappa è perso, nessun combattimento, ma conta comunque tra i 4 re scoperti.
+
+## Re e 8 con scelta (iterazione 2, in prova)
+
+- **Re**: esce **sempre** la scelta "Scappa" / "Combatti". Con almeno una fuga si scappa gratis (consuma una fuga); **senza fughe** si può scappare lo stesso con un **malus**: per ora si perde il **25% delle Lire** possedute (malus provvisorio, da capire; alternative valutate: perdere il 10% della vita massima, un colpo del re mentre scappi, il re rimandato a più avanti).
+- **8 (fanti)**: popup simile con "Entra nello shop" / "Salta". Lo shop per ora non fa niente (messaggio "in arrivo"). Saltandolo si prendono **un quarto delle Lire guadagnabili in una partita**: denari parametrici da 1 a 7 = 28.000 Lire, quindi **7.000 Lire** (calcolate dalle regole, santini esclusi). L'8 non dà più statistiche (parametrico fino al 7).
