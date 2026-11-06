@@ -8,13 +8,14 @@ using UnityEngine;
 
 // TEMP Bar-Michele (feature events-impl): copy of RpgStatsView for the Bar-Michele test scene, where the events
 // are tried without touching TribunaRpg. To merge back or delete when one idea is chosen. Differences from
-// RpgStatsView: the stats are one line, for the header of the Bar HUD; each card is resolved as soon as it is
-// turned (TableDeckManager.MoveResolver), not at the end of the path.
+// RpgStatsView: the stats are in a panel of the left column (Il giocatore); each card is resolved as soon as it is
+// turned (TableDeckManager.MoveResolver), not at the end of the path; a horse (9) gives escapes instead of a
+// stat (HorseEscape), and a king met with an escape left asks whether to escape or fight (EscapeChoicePopup).
 //
 // RPG part of the scene: resolves the cards of a path in order while they are turned (CardEffects); a king
 // starts a fight (Fight) with the stats reached so far, its summary opens in a popup (FightPopup) at once, and
-// the path goes on when the popup is closed; the next cards are applied only if the king is beaten. A defeat ends the encounter. Logs
-// everything in the Console and shows the stats on screen. Listens to TableDeckManager only; a new game (Reset)
+// the path goes on when the popup is closed; the next cards are applied only if the king is beaten. A defeat
+// ends the encounter. Logs everything in the Console and shows the stats on screen. Listens to TableDeckManager only; a new game (Reset)
 // starts from the stats of the Inspector. Owns the player's santini and amari (PlayerInventory, editable in the
 // Inspector during Play mode): the santini change the card effects, an amaro is drunk from the InventoryView
 // between two paths (not while a path is resolved, not after the encounter is over).
@@ -33,6 +34,9 @@ public class BarRpgView : MonoBehaviour
     private FightPopup fightPopup;
 
     [SerializeField, Required]
+    private EscapeChoicePopup escapeChoicePopup;
+
+    [SerializeField, Required]
     private InventoryView inventoryView;
 
     [SerializeField]
@@ -47,6 +51,7 @@ public class BarRpgView : MonoBehaviour
     private PlayerStats stats;
     private bool resolving; // a path is being resolved: no amaro can be drunk
     private bool encounterOver;
+    private int escapes; // fights with a king that can still be skipped in this encounter (HorseEscape)
 
     // The path being played: its number, the cards resolved so far, whether a defeat stopped it, its fights and
     // the Console lines not written yet.
@@ -89,6 +94,7 @@ public class BarRpgView : MonoBehaviour
     void ResetStats()
     {
         stats = player.CreateStats();
+        escapes = 0;
         encounterOver = false;
         eventsText.text = "nessun path ancora";
         RefreshStats();
@@ -160,6 +166,14 @@ public class BarRpgView : MonoBehaviour
         }
         pathCards++;
         CardDataInGame card = move.Card;
+        if (HorseEscape.IsHorse(card))
+        {
+            int gained = HorseEscape.EscapesFrom(card, inventory.santini);
+            escapes += gained;
+            pathLog.Add($"  {PathReceipt.CardLabel(card)}: +{gained} fuga (fughe {escapes})");
+            RefreshStats();
+            return;
+        }
         if (!CardEffects.IsKing(card))
         {
             pathLog.Add($"  {CardEffects.Apply(card, stats, player, inventory.santini)}");
@@ -169,6 +183,16 @@ public class BarRpgView : MonoBehaviour
 
         string kingName = PathReceipt.CardLabel(card);
         KingFighter fighter = king.CreateFighter(kingName);
+        if (escapes > 0 && await AskEscape(kingName, fighter, cancellationToken))
+        {
+            escapes--;
+            pathFights.Add($"scappato da {kingName}");
+            pathLog.Add($"  {kingName}: scappato, nessun combattimento (fughe {escapes})");
+            eventsText.text = $"path n. {currentPath}: scappato da {kingName}";
+            RefreshStats();
+            return;
+        }
+
         pathLog.Add(
             $"  {kingName}: fight! (vita {fighter.Health}, armatura {fighter.Armor}, "
                 + $"danno {fighter.Damage})"
@@ -217,6 +241,30 @@ public class BarRpgView : MonoBehaviour
         RefreshInventory(force: true);
     }
 
+    // Asks whether to escape from the king just turned, with what the fight would be; the table waits meanwhile.
+    async UniTask<bool> AskEscape(
+        string kingName,
+        KingFighter fighter,
+        CancellationToken cancellationToken
+    )
+    {
+        string body =
+            $"{kingName}: vita {fighter.Health}, armatura {fighter.Armor}, danno {fighter.Damage}\n"
+            + $"Il tuo colpo: {Fight.HitDamage(stats, fighter)} - "
+            + $"colpo del re: {Fight.HitDamage(fighter, stats)}\n"
+            + $"La tua vita: {stats.Health}/{stats.MaxHealth}\n\n"
+            + $"Fughe rimaste: {escapes}. Scappando non combatti e il re e' perso.";
+        tableDeckManager.TablePaused = true;
+        try
+        {
+            return await escapeChoicePopup.Ask($"{kingName}!", body, cancellationToken);
+        }
+        finally
+        {
+            tableDeckManager.TablePaused = false;
+        }
+    }
+
     static string FightLine(string kingName, FightResult result) =>
         result.Outcome switch
         {
@@ -255,10 +303,11 @@ public class BarRpgView : MonoBehaviour
 
     void RefreshStats()
     {
-        // One line, as the StatistichePlaceholder of the Bar header it replaces.
+        // Two columns, for the "Il giocatore" panel of the left column: the stats used by the fights first.
         statsText.text =
-            $"L. {stats.Money}    vita {stats.Health}/{stats.MaxHealth}    "
-            + $"armatura {stats.Armor}    danno {stats.Damage}";
+            $"Vita {stats.Health}/{stats.MaxHealth}<pos=55%>Danno {stats.Damage}\n"
+            + $"Armatura {stats.Armor}<pos=55%>Fughe {escapes}\n"
+            + $"Lire {stats.Money}";
     }
 
     string StatsLine() =>
