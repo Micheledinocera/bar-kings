@@ -38,11 +38,20 @@ I 4 Re rappresentano i boss principali dell'incontro. Affrontarli e sconfiggerli
 
 ---
 
-### 3.2 Gli 8 (Fanti) — Lo Shop (Fissato)
-I Fanti sono gli incontri commerciali / shop del gioco, dove spendere le Lire guadagnate.
+### 3.2 Gli 8 (Fanti) — Lo Shop durante il Tavolo
+Gli 8 aprono un negozio istantaneo a metà partita (con l'opzione "Salta lo Shop" per incassare subito Lire).
 
-- **Struttura base**: Girare un 8 dà accesso allo shop (con opzione di saltarlo per ottenere un bonus immediato in Lire).
-- **Domanda aperta**: Unico shop generale oppure shop specializzato per seme (Denari = generale, Coppe = bar/cure, Bastoni = difesa, Spade = armeria/danno).
+- **Impostazione generale**: Lo shop è di base **generico** (mostra consumabili, amari, cure, oggetti comuni per tutti i semi).
+- **Slot Tematico del Seme**: Ogni 8 ha **1 slot/meccanica esclusiva** legata al seme della carta girata:
+  - **8 di Denari**: Offerta finanziaria (es. sconto su tutti gli articoli, o investimento con rendita futura).
+  - **8 di Coppe**: Ristoro del barista (cura istantanea, caffè corretto, aumento temporaneo HP max).
+  - **8 di Bastoni**: Difesa e sicurezza (scudo rinforzato per il prossimo re, armatura extra).
+  - **8 di Spade**: Potenza d'attacco (colpo critico, armi affilate, aumento danni permanenti).
+- **I Buoni del Mercante**:
+  - Tra le merci acquistabili negli shop dell'8 ci sono dei **Buoni / Voucher** da conservare per il Mercante del mazzo (vedi sez. 4):
+    - *Buono Cancellazione*: permette di eliminare gratis una carta dal mazzo dal Mercante.
+    - *Buono Scambio*: permette di scambiare il seme o il valore di una carta.
+    - *Buono Sconto*: riduce del 50% il costo della prossima spesa dal Mercante.
 
 ---
 
@@ -59,24 +68,36 @@ I 4 Cavalli offrono una scelta strategica attiva al giocatore, bilanciata tra **
 - **Opzione Bossfight (Fuga)**: Ottieni **1 carica di Fuga** da conservare e usare per evitare un Re pericoloso senza subire penalità.
 - **Opzione Tavolo (Inversione)**: **Inverti due righe intere o due colonne intere** sul tavolo, rimescolando la griglia per sbloccare nuove combinazioni di path.
 
-#### ⚔️ Cavallo di Spade (9 di Spade) — Proposte per Attacco / Tavolo
-In linea con il seme dell'attacco e del fendente:
-- **Opzione A (Bossfight — Carica Offensiva)**:
-  - Paga una somma di lire per infliggere un danno all'armatura del prossimo re
+#### ⚔️ Cavallo di Spade (9 di Spade) — Attacco al Re o Manovra con Bastonata
+- **Opzione A (Bossfight — Danno all'armatura)**:
+  - Paga una somma di Lire per infliggere un danno diretto all'armatura del prossimo Re.
 - **Opzione B (Tavolo — Scambio Tattico o Sbirciata Mirata)**:
-  - **Scambio di 2 carte mirate (Bastonata pesante)**: scambia liberamente di posto 2 singole carte coperte sul tavolo per creare un allineamento perfetto al costo di una somma di lire.
+  - **Scambio di 2 carte mirate (Bastonata pesante)**: scambia liberamente di posto 2 singole carte coperte sul tavolo per creare un allineamento perfetto al costo di una somma di Lire.
   - **Sbirciata (Bastonata leggera)**: scopre temporaneamente 2–3 carte coperte a scelta sul tavolo per individuare Re o risorse chiave.
 
-#### 🛡️ Cavallo di Bastoni (9 di Bastoni) — Proposte per Difesa / Controllo
-In linea con il seme dello scudo, del blocco e dell'ostacolo:
+#### 🛡️ Cavallo di Bastoni (9 di Bastoni) — Difesa o Elusione
 - **Opzione A (Bossfight — Barricata / Blocco)**:
   - Neutralizza completamente (100% blocco) il primo colpo del prossimo Re, assorbendo qualsiasi quantità di danno.
-- **Opzione B (Tavolo — Salto dell'Ostacolo o Blocco Carta)**:
+- **Opzione B (Tavolo — Salto dell'Ostacolo)**:
   - **Salto dell'ostacolo**: permette di "scavalcare" una carta coperta sul tavolo lasciandola coperta e continuando il path oltre di essa (ideale per non girare un Re prima del tempo).
 
 ---
 
-## 4. Dinamiche di Incontro e Flusso di Gioco
+## 4. Deckbuilding: Il Mercante tra gli Incontri
+
+La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fase di transizione tra un bar/incontro e il successivo).
+
+- **Il Mercante Ambulante**: Una figura/PNG che incontri tra le tappe del viaggio.
+- **Servizi Offerti (a pagamento in Lire o tramite Buoni)**:
+  1. **Acquisto Carte**: Aggiungi nuove carte al mazzo (per potenziare semi o valori specifici).
+  2. **Cancellazione / Rimozione Carte**: Rimuovi carte deboli o ingombranti (operazione preziosa per rendere il mazzo più consistente e chiudere i path con meno sprechi).
+  3. **Scambio / Trasformazione**: Sostituisci una carta esistente con un'altra (es. cambia un 2 di Bastoni in un 2 di Spade, o inverti due valori).
+- **Integrazione con gli 8 (Fanti)**:
+  - Negli shop degli 8 durante il tavolo puoi comprare i **Buoni del Mercante** a prezzo vantaggioso o trovarli come ricompensa, preparando la strategia di modifica del mazzo per la tappa successiva.
+
+---
+
+## 5. Dinamiche di Incontro e Flusso di Gioco
 
 - **Forme geometriche e Combo**: premiare path che formano percorsi particolari sul tavolo (linee, quadrati 2x2, croci).
 - **Sinergie con Santini e Amari**: come gli eventi delle carte innescano i santini posseduti nell'inventario.
@@ -84,6 +105,6 @@ In linea con il seme dello scudo, del blocco e dell'ostacolo:
 
 ---
 
-## 5. Appunti e Proposte Libere
+## 6. Appunti e Proposte Libere
 
 *(Spazio aperto per annotare spunti, varianti, commenti o regole da approfondire insieme)*
