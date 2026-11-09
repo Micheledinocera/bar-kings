@@ -1,10 +1,12 @@
 ---
 tipo: decisione
 stato: in analisi
-aggiornato: 2026-11-05
-verificato: 2026-10-07
+aggiornato: 2026-11-09
+verificato: 2026-11-09
 consolidato: 2026-11-05
 fonti:
+  - raw/compiled/study-eventi-aru/2026-11-09-obiettivo.md
+  - raw/compiled/study-eventi-aru/2026-11-09-idee-eventi-carte.md
   - raw/compiled/santini-and-amari-first-implementation/2026-11-05-obiettivo.md
   - raw/compiled/santini-and-amari-first-implementation/2026-11-05-sessione.md
   - raw/compiled/study-roadmap/2026-10-29-delucidazioni.md
@@ -50,8 +52,8 @@ Cosa succede tra un incontro e l'altro di una run, in stile Balatro. Sono idee e
 - In un autobattler, una via di mezzo tra i joker di Balatro e i gambit di Final Fantasy XII: l'autobattler si "programma".
 - I potenziamenti sono i numeri della smorfia.
 - Le carte hanno una posizione: se ne può cambiare il valore, ma restano nello stesso slot.
-- **Modifiche del mazzo tra un incontro e l'altro** (call del 2026-10-28): oltre a togliere e aggiungere carte, azioni che **modificano l'indice** delle carte (scambiare due semi, due valori o due carte), per rendere le forme dei buchi meno dipendenti dall'ordine dei semi ([Modifica del mazzo](./modifica-del-mazzo.md#forme-dei-buchi-tribuna)). Dal 2026-10-29 l'idea è che passino dagli amari (vedi *Idee di amari*).
-- **Shop legato alle forme** (call del 2026-10-28): le forme fatte in un incontro migliorano il pool di un eventuale shop; il 4×4, quasi impossibile, garantisce un santino leggendario.
+- **Modifiche del mazzo tra un incontro e l'altro**: oltre a togliere e aggiungere carte, azioni che modificano l'indice delle carte (scambiare due semi, due valori o due carte), per rendere le forme dei buchi meno dipendenti dall'ordine dei semi ([Modifica del mazzo](./modifica-del-mazzo.md#forme-dei-buchi-tribuna)). In `study-eventi-aru` (2026-11-09) proposta la figura del **Mercante tra gli incontri**: compare prima di iniziare il tavolo successivo e offre acquisto carte, cancellazione/rimozione carte (che lascia buchi permanenti) e scambio/trasformazione carte; si paga in Lire o riscattando i **Buoni del Mercante** (cancellazione, scambio, sconto) acquistati negli shop degli 8 (fanti) durante il solitario.
+- **Forme dei buchi e ricompense**: le rimozioni di carte lasciano buchi che non vengono riempiti sul tavolo; in `study-eventi-aru` (2026-11-09) pattern geometrici (linea 3, linea 4, quadrato 2x2, croce/T, forme grandi 3x3/4x4) assegnano bonus specifici (Lire, difesa, sconti, ricompense leggendarie). Nella call del 2026-10-28 l'ipotesi era anche di migliorare il pool dello shop (il 4×4 garantisce un santino leggendario).
 - **Parametro di chiusura/allungamento del path** (call del 2026-11-05): una specie di parametro **fortuna** che agisce su quanto i path si chiudono o si allungano. Da valutare più avanti, sicuramente dopo aver definito qualche tipologia di evento e abbozzato la [parte RPG](./parte-rpg.md). Diverso dallo starter "fortuna" (pool di carte iniziali) in *Cosa sappiamo*.
 
 ### Idee di santini
