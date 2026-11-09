@@ -33,60 +33,51 @@ I numeri da 1 a 7 forniscono **esattamente il loro valore numerico** nella stati
 ### 3.1 I Re (10) — I Boss da Affrontare (Fissato)
 I 4 Re rappresentano i boss principali dell'incontro. Affrontarli e sconfiggerli è l'obiettivo del gioco.
 
-- **Combattimento**: scambio di turni di danno (il giocatore usa il danno accumulato e l'armatura assorbe i colpi del re).
-- **Identità distinta per seme (proposta da confermare)**:
-  - **Re di Spade**: Il Rissoso — infligge danni elevati, richiede alta difesa o abbattimento rapido.
-  - **Re di Bastoni**: Il Buttafuori Corazzato — possiede molta armatura/scudo prima di intaccare i suoi HP.
-  - **Re di Coppe**: L'Oste / Bevitore — si rigenera salute ogni tot turni o applica malus di sbornia.
-  - **Re di Denari**: Il Boss del Bar / Usuraio — estorce Lire ad ogni colpo subito o offre una "tangente" per farsi da parte.
-- **Timing del combattimento**:
-  - *Opzione A (Attuale in prova)*: Si combatte nel momento esatto in cui il Re si gira nel path.
-  - *Opzione B (Fine path)*: Il path si risolve per intero accumulando tutte le risorse, e l'eventuale combattimento avviene al termine del path.
+- **Stato**: Per ora i Re sono **semplici boss**, senza abilità speciali, poteri unici o statistiche differenziate. Il loro ruolo è unicamente essere l'avversario da sconfiggere nel combattimento.
+- **Combattimento**: Scambio a turni classico tra il giocatore (che usa il danno accumulato dalle Spade e l'armatura dai Bastoni) e il Re.
 
 ---
 
 ### 3.2 Gli 8 (Fanti) — Lo Shop (Fissato)
 I Fanti sono gli incontri commerciali / shop del gioco, dove spendere le Lire guadagnate.
 
-- **Opzione 1 (Unico Shop Generale)**:
-  - Girare un qualsiasi 8 apre il negozio del bar con una selezione mista (consumabili, amari, potenziamenti permanenti).
-  - Possibilità di scegliere "Salta lo Shop" ricevendo un bonus immediato in Lire.
-- **Opzione 2 (Shop Specializzato per Seme)**:
-  - **8 di Denari**: *Banca / Mercatino* — vende santini, amari, modifiche al mazzo.
-  - **8 di Coppe**: *Il Bancone del Barista* — vende caffè, digestivi, cure istantanee e aumenti di HP max.
-  - **8 di Bastoni**: *L'Artigiano / Sicurezza* — vende potenziamenti per l'armatura e scudi protettivi contro i re.
-  - **8 di Spade**: *L'Allibratore / Armaiolo* — vende colpi critici, armi, o scommesse sulle condizioni del prossimo path.
+- **Struttura base**: Girare un 8 dà accesso allo shop (con opzione di saltarlo per ottenere un bonus immediato in Lire).
+- **Domanda aperta**: Unico shop generale oppure shop specializzato per seme (Denari = generale, Coppe = bar/cure, Bastoni = difesa, Spade = armeria/danno).
 
 ---
 
-### 3.3 I 9 (Cavalli) — Focus di Brainstorming (In Definizione)
-I Cavalli sono le figure intermedie. Come possiamo valorizzarli per dare profondità e divertimento?
+### 3.3 I 9 (Cavalli) — Specializzati per Seme (Tavolo vs Bossfight)
 
-Di seguito 4 direzioni possibili per i 9:
+I 4 Cavalli offrono una scelta strategica attiva al giocatore, bilanciata tra **influenzare la bossfight/risorse** e **influenzare il tavolo**:
 
-#### Direzione 1: Mobilità e Salvezza (Fuga & Velocità)
-- **Fuga**: accumula una carica di fuga per evitare lo scontro con un Re pericoloso.
-- **Velocità / Iniziativa**: nel combattimento contro il Re, il giocatore guadagna un turno di vantaggio (attacca per primo prima che il Re possa colpire).
-- **Scatto**: raddoppia l'effetto della prossima carta del path.
+#### 💰 Cavallo di Denari (9 di Denari) — Il Banco e la Scommessa
+- **Scelta Sicura (Raddoppio)**: Raddoppia immediatamente tutte le Lire guadagnate in questo specifico path (2x).
+- **Scelta Rischio (La Scommessa / Il Totip)**: Tenta la scommessa per **triplicare le Lire** (3x nel path), ma con il rischio di **perdere 1/4 (25%)** delle Lire accumulate nel path se la scommessa viene persa!
+  *(Condizione della scommessa da definire: es. se il path ha almeno N carte, se finisce su un numero pari, o lancio di moneta/dado al bar).*
 
-#### Direzione 2: Manipolazione del Tavolo (Strategia del Solitario)
-- **Scambio di Indici / Posizioni**: permette al giocatore di scambiare di posto due carte sul tavolo (es. spostare una carta utile in una posizione strategica per chiudere un path lungo o una forma).
-- **Sbirciata (Scout)**: scopre temporaneamente 2–3 carte coperte adiacenti, dando preziose informazioni su dove si nascondono i Re o i semi necessari.
-- **Salto dell'ostacolo**: permette di scavalcare una carta indesiderata lasciandola coperta.
+#### 🍷 Cavallo di Coppe (9 di Coppe) — Salvezza o Grande Manovra
+- **Opzione Bossfight (Fuga)**: Ottieni **1 carica di Fuga** da conservare e usare per evitare un Re pericoloso senza subire penalità.
+- **Opzione Tavolo (Inversione)**: **Inverti due righe intere o due colonne intere** sul tavolo, rimescolando la griglia per sbloccare nuove combinazioni di path.
 
-#### Direzione 3: Il Tema Bar — "La Corsa dei Cavalli" (Scommesse / Totip)
-- Al bar c'è sempre la schedina o la corsa dei cavalli:
-  - Girare un 9 apre una **mini-scommessa**: "Se questo path ha almeno 5 carte, vinci 3x Lire", oppure "Se sconfiggi il prossimo Re senza perdere HP, vinci un amaro gratis".
+#### ⚔️ Cavallo di Spade (9 di Spade) — Proposte per Attacco / Tavolo
+In linea con il seme dell'attacco e del fendente:
+- **Opzione A (Bossfight — Carica Offensiva)**:
+  - Il prossimo attacco contro il Re infligge **danno raddoppiato (2x)**, oppure ottieni **1 turno di iniziativa** (attacchi per primo prima che il Re possa sferrare il suo colpo).
+- **Opzione B (Tavolo — Scambio Tattico o Sbirciata Mirata)**:
+  - **Scambio di 2 carte mirate**: scambia liberamente di posto 2 singole carte coperte sul tavolo per creare un allineamento perfetto.
+  - *Oppure* **Sbirciata (Scout)**: scopre temporaneamente 2–3 carte coperte a scelta sul tavolo per individuare Re o risorse chiave.
 
-#### Direzione 4: Effetto Unico per Seme dei Cavalli
-- **Cavallo di Spade (La Carica)**: +1 Turno di anticipo o doppio danno al primo colpo contro il Re.
-- **Cavallo di Bastoni (L'Ostacolo)**: Annulla il prossimo malus o neutralizza un attacco nemico.
-- **Cavallo di Coppe (Il Giro Veloce)**: Salva una carica di Fuga gratis curando anche un po' di HP.
-- **Cavallo di Denari (La Corsa Vincente)**: Moltiplica tutte le Lire guadagnate in questo specifico path.
+#### 🛡️ Cavallo di Bastoni (9 di Bastoni) — Proposte per Difesa / Controllo
+In linea con il seme dello scudo, del blocco e dell'ostacolo:
+- **Opzione A (Bossfight — Barricata / Blocco)**:
+  - Neutralizza completamente (100% blocco) il primo colpo del prossimo Re, assorbendo qualsiasi quantità di danno.
+- **Opzione B (Tavolo — Salto dell'Ostacolo o Blocco Carta)**:
+  - **Salto dell'ostacolo**: permette di "scavalcare" una carta coperta sul tavolo lasciandola coperta e continuando il path oltre di essa (ideale per non girare un Re prima del tempo).
+  - *Oppure* **Blocco sul tavolo**: "congela" o protegge una carta sul tavolo in modo che non si giri al prossimo path.
 
 ---
 
-## 3. Dinamiche di Incontro e Flusso di Gioco
+## 4. Dinamiche di Incontro e Flusso di Gioco
 
 - **Forme geometriche e Combo**: premiare path che formano percorsi particolari sul tavolo (linee, quadrati 2x2, croci).
 - **Sinergie con Santini e Amari**: come gli eventi delle carte innescano i santini posseduti nell'inventario.
@@ -94,6 +85,6 @@ Di seguito 4 direzioni possibili per i 9:
 
 ---
 
-## 4. Appunti e Proposte Libere
+## 5. Appunti e Proposte Libere
 
 *(Spazio aperto per annotare spunti, varianti, commenti o regole da approfondire insieme)*
