@@ -53,7 +53,7 @@ I 4 Cavalli offrono una scelta strategica attiva al giocatore, bilanciata tra **
 #### 💰 Cavallo di Denari (9 di Denari) — Il Banco e la Scommessa
 - **Scelta Sicura (Raddoppio)**: Raddoppia immediatamente tutte le Lire guadagnate in questo specifico path (2x).
 - **Scelta Rischio (La Scommessa / Il Totip)**: Tenta la scommessa per **triplicare le Lire** (3x nel path), ma con il rischio di **perdere 1/4 (25%)** delle Lire accumulate nel path se la scommessa viene persa!
-  *(Condizione della scommessa da definire: es. se il path ha almeno N carte, se finisce su un numero pari, o lancio di moneta/dado al bar).*
+  *(Condizione della scommessa: Vincere al gioco delle tre carte).*
 
 #### 🍷 Cavallo di Coppe (9 di Coppe) — Salvezza o Grande Manovra
 - **Opzione Bossfight (Fuga)**: Ottieni **1 carica di Fuga** da conservare e usare per evitare un Re pericoloso senza subire penalità.
@@ -62,10 +62,10 @@ I 4 Cavalli offrono una scelta strategica attiva al giocatore, bilanciata tra **
 #### ⚔️ Cavallo di Spade (9 di Spade) — Proposte per Attacco / Tavolo
 In linea con il seme dell'attacco e del fendente:
 - **Opzione A (Bossfight — Carica Offensiva)**:
-  - Il prossimo attacco contro il Re infligge **danno raddoppiato (2x)**, oppure ottieni **1 turno di iniziativa** (attacchi per primo prima che il Re possa sferrare il suo colpo).
+  - Paga una somma di lire per infliggere un danno all'armatura del prossimo re
 - **Opzione B (Tavolo — Scambio Tattico o Sbirciata Mirata)**:
-  - **Scambio di 2 carte mirate**: scambia liberamente di posto 2 singole carte coperte sul tavolo per creare un allineamento perfetto.
-  - *Oppure* **Sbirciata (Scout)**: scopre temporaneamente 2–3 carte coperte a scelta sul tavolo per individuare Re o risorse chiave.
+  - **Scambio di 2 carte mirate (Bastonata pesante)**: scambia liberamente di posto 2 singole carte coperte sul tavolo per creare un allineamento perfetto al costo di una somma di lire.
+  - **Sbirciata (Bastonata leggera)**: scopre temporaneamente 2–3 carte coperte a scelta sul tavolo per individuare Re o risorse chiave.
 
 #### 🛡️ Cavallo di Bastoni (9 di Bastoni) — Proposte per Difesa / Controllo
 In linea con il seme dello scudo, del blocco e dell'ostacolo:
@@ -73,7 +73,6 @@ In linea con il seme dello scudo, del blocco e dell'ostacolo:
   - Neutralizza completamente (100% blocco) il primo colpo del prossimo Re, assorbendo qualsiasi quantità di danno.
 - **Opzione B (Tavolo — Salto dell'Ostacolo o Blocco Carta)**:
   - **Salto dell'ostacolo**: permette di "scavalcare" una carta coperta sul tavolo lasciandola coperta e continuando il path oltre di essa (ideale per non girare un Re prima del tempo).
-  - *Oppure* **Blocco sul tavolo**: "congela" o protegge una carta sul tavolo in modo che non si giri al prossimo path.
 
 ---
 
