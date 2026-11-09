@@ -12,69 +12,67 @@ Documento di lavoro e brainstorming per definire il comportamento, le regole e g
 
 ---
 
-## 2. Categorizzazione delle Carte
+## 2. Il Sistema Base di Aru
 
-### Carte Numeriche (1–6 o 1–7)
-Approccio attuale in prova: effetti parametrici legati al seme.
+### Carte Numeriche (da 1 a 7): Statistiche Dirette 1:1
+I numeri da 1 a 7 forniscono **esattamente il loro valore numerico** nella statistica associata al seme. Semplice, leggibile e intuitivo.
 
-| Seme | Risorsa / Effetto base associato | Idee & Varianti |
-|---|---|---|
-| **Bastoni** | Difesa / Armatura | Blocca danni nei combattimenti; oppure stordimento/resistenza |
-| **Coppe** | Cura / Salute (HP) | Ripristino vita attuale o incremento salute max temporanea |
-| **Denari** | Economia / Lire | Guadagno valuta per acquisti allo shop e gestione malus |
-| **Spade** | Attacco / Danno | Potenza d'attacco contro i re o perforazione armatura |
+| Seme | Statistica / Risorsa | Effetto delle carte 1–7 | Esempio (Carta valore 5) |
+|---|---|---|---|
+| **Spade** | **Attacco / Danno** | Fornisce da +1 a +7 Danno per i combattimenti | 5 di Spade = +5 Danno |
+| **Bastoni** | **Armatura / Difesa** | Fornisce da +1 a +7 Scudo che assorbe i colpi | 5 di Bastoni = +5 Armatura |
+| **Coppe** | **Cura / Vita** | Ripristina da +1 a +7 HP (fino al cap massimo) | 5 di Coppe = +5 HP curati |
+| **Denari** | **Soldi / Lire** | Fornisce valuta (scala base: valore × 1.000 Lire) | 5 di Denari = +5.000 Lire |
 
-*Domanda*: il valore della carta (1..7) definisce solo la magnitudo dell'effetto (es. valore × moltiplicatore) o introduce comportamenti secondari?
-
----
-
-### Gli Assi (1)
-*Stato*: Finora non differenziati dalle carte numeriche base.
-- **Idee possibili**:
-  - Effetto moltiplicatore su tutto il path o sul prossimo evento.
-  - Carta "Jolly" / reset: raddoppia l'effetto dell'ultimo seme giocato.
-  - Attivazione di abilità o passiva legata al proprio starter/santo.
-  - Effetto speciale se l'asso chiude o apre il path.
+*Nota di bilanciamento*: la scala dei Denari può essere 1:1 (se i prezzi sono bassi) o 1:1.000 (1.000–7.000 Lire per carta, per un feeling realistico da bar).
 
 ---
 
-### I 7 (incluso il Settebello - 7 di Denari)
-*Stato in prova*: mantengono la statistica parametrica e sbloccano un bonus quando vengono girati tutti e 4 nel medesimo incontro.
-- **Idee possibili**:
-  - **Settebello (7 di Denari)**: effetto unico/leggendario (es. valuta rara, ricarica abilità, sblocco speciale).
-  - **I quattro 7**: bonus cumulativo a fine incontro o ricompensa istantanea (es. cura totale + potenziamento permanente).
-  - Combinazioni con altre carte dello stesso seme.
+## 3. Le Figure: Carte Speciali (Brainstorming da Zero)
 
----
+Le figure (**Fanti / 8**, **Cavalli / 9**, **Re / 10**) non danno semplici statistiche numeriche, ma attivano **meccaniche speciali**.
 
-### Gli 8 (Fanti) — Lo Shop e l'Interazione
-*Stato in prova*: scelta "Entra nello shop" o "Salta" (con ricompensa in Lire pari a 7.000). Lo shop al momento non è differenziato.
-- **Idee possibili per seme**:
-  - **Fante di Denari**: Shop classico (carte, consumabili, amari).
-  - **Fante di Coppe**: Oasi / Barista (cure, rimozione malus, pozioni/bevande).
-  - **Fante di Bastoni**: Fabbro / Rinforzi (armature, potenziamenti passivi, scudi per i re).
-  - **Fante di Spade**: Allibratore / Mercenario (danno extra, scommesse su condizioni del path).
-- **Alternative allo shop**:
-  - Scambio carte, sbirciata su carte coperte, potenziamento mazzo.
+Ci sono 12 figure in totale (3 figure × 4 semi). Possiamo definirle secondo due direzioni principali:
+1. **Ruolo per figura + sapore del seme**: ogni tipo di figura ha una funzione coerente (es. Fanti = NPC/scelte, Cavalli = manovra/tavolo/tempo, Re = boss/combattimento), declinata nei 4 semi.
+2. **12 eventi unici**: ogni carta figura ha un potere o evento completamente dedicato.
 
----
+Di seguito le proposte da discutere e personalizzare:
 
-### I 9 (Cavalli) — Manovra, Mobilità e Tavolo
-*Stato in prova*: Fuga (permette di saltare un combattimento con un re senza penalità).
-- **Idee possibili**:
-  - **Velocità**: turno bonus di anticipo contro il re (colpisci prima che il re risponda).
-  - **Manipolazione tavolo (Switch)**: invertire due posizioni/indici di carte sul tavolo per preparare path futuri.
-  - **Salto**: saltare una carta coperta o forzare la continuazione del path oltre un re.
-  - **Sbirciata (Scout)**: rivelare temporaneamente carte coperte adiacenti, di una riga o di una colonna.
+### 3.1 I Fanti (8) — Incontri, Scelte o Modifiche
+Idee per il ruolo dei Fanti:
+- **Idea A (Incontri tematici per seme)**:
+  - **Fante di Denari**: Il Banchiere / Shop ambulante (acquista consumabili o amari con le Lire).
+  - **Fante di Coppe**: Il Barista (offre un giro da bere: cura completa o rimozione malus).
+  - **Fante di Bastoni**: Il Buttafuori / Fabbro (rinforza la difesa, potenzia l'armatura base).
+  - **Fante di Spade**: L'Allibratore / Mercenario (permette di scommettere sul path o assoldare un colpo critico).
+- **Idea B (Moltiplicatori o Booster di Seme)**:
+  - Il Fante potenzia o raddoppia tutte le carte numeriche del suo seme incontrate nel path.
 
----
+### 3.2 I Cavalli (9) — Manovra, Fuga, Tavolo e Tempo
+Idee per il ruolo dei Cavalli:
+- **Idea A (Manovre di Combattimento e Fuga)**:
+  - Salvare una Fuga per evitare un Re difficile.
+  - Velocità / Iniziativa: permette di colpire per primo o avere turni extra contro il Re.
+- **Idea B (Manipolazione del Tavolo)**:
+  - Permette di scambiare di posto due carte sul tavolo.
+  - Salto: permette di saltare una carta coperta o rivelare carte coperte attorno (sbirciata).
+- **Idea C (Differenziazione per seme)**:
+  - **Cavallo di Spade**: Carica (il primo colpo al prossimo Re fa danno doppio).
+  - **Cavallo di Bastoni**: Parata in corsa (l'armatura non scade a fine incontro).
+  - **Cavallo di Coppe**: Ritirata strategica (se scappi da un re ti curi invece di perdere risorse).
+  - **Cavallo di Denari**: Fuga pagata (scappi corrompendo con poche Lire senza sprecare risorse).
 
-### I 10 (Re) — Incontri Boss e Combattimento
-*Stato in prova*: Quando il path incontra un re, si attiva la scelta Combatti o Scappa (con fuga gratis o penalità -25% Lire). Se si combatte, si applicano i turni di scambio danni.
-- **Idee possibili**:
-  - **Timing**: il combattimento avviene esattamente quando si incontra il re (a metà path) o si accumulano tutte le risorse del path e si combatte alla fine?
-  - **Identità dei Re**: ogni seme ha un Re con abilità/fasi distinte (es. Re di Spade picchia forte, Re di Bastoni ha armature pesanti, Re di Denari ruba Lire, Re di Coppe si rigenera).
-  - **Sconfitta / Fuga**: conseguenze diverse a seconda dello stage o della fuga utilizzata.
+### 3.3 I Re (10) — I Boss del Bar
+Idee per il ruolo dei Re:
+- Il Re è il boss: affrontarlo è il momento clou.
+- **Identità distinta per seme**:
+  - **Re di Spade**: Il Rissoso (tutto attacco, fa colpi pesanti, va abbattuto in fretta).
+  - **Re di Bastoni**: Il Corazzato (scudo altissimo, serve tanta forza per intaccare la sua vita).
+  - **Re di Coppe**: L'Ubriacone / Bevitore (si cura o rigenera vita ogni turno).
+  - **Re di Denari**: Il Boss del Quartiere / Usuraio (ruba Lire ad ogni colpo o ti offre di pagare per passare).
+- **Timing del combattimento**:
+  - Opzione 1: Si combatte nel momento esatto in cui il Re viene girato nel path.
+  - Opzione 2: Il path si completa accumulando tutto (attacco, armatura, cure), e il combattimento con il Re avviene alla fine del path.
 
 ---
 
