@@ -14,7 +14,7 @@ Documento di lavoro e brainstorming per definire il comportamento, le regole e g
 
 ## 2. Il Sistema Base di Aru
 
-### Carte Numeriche (da 1 a 7): Statistiche Dirette 1:1
+### 2.1 Carte Numeriche (da 1 a 7): Statistiche Dirette 1:1
 I numeri da 1 a 7 forniscono **esattamente il loro valore numerico** nella statistica associata al seme. Semplice, leggibile e intuitivo.
 
 | Seme | Statistica / Risorsa | Effetto delle carte 1–7 | Esempio (Carta valore 5) |
@@ -25,6 +25,12 @@ I numeri da 1 a 7 forniscono **esattamente il loro valore numerico** nella stati
 | **Denari** | **Soldi / Lire** | Fornisce valuta (scala base: valore × 1.000 Lire) | 5 di Denari = +5.000 Lire |
 
 *Nota di bilanciamento*: la scala dei Denari può essere 1:1 (se i prezzi sono bassi) o 1:1.000 (1.000–7.000 Lire per carta, per un feeling realistico da bar).
+
+### 2.2 Gli Assi (1): Meccanica "Capo-Path"
+- **Valore base**: L'Asso dà normalmente **+1** nella statistica del seme (1 Danno, 1 Armatura, 1 Cura, 1.000 Lire).
+- **Bonus di Apertura (Capo-Path)**: Se il path **inizia scegliendo un Asso**, scatta un bonus speciale per l'intero percorso:
+  - *Opzione A (Bonus di Seme)*: L'Asso che apre dona un potenziamento immediato legato al seme (es. Asso di Spade iniziale dà +3 Danno extra al primo colpo, Asso di Bastoni dà +3 Scudo iniziale, Asso di Coppe cura +3 HP, Asso di Denari regala +3.000 Lire extra).
+  - *Opzione B (Path Perfetto)*: Tutte le risorse numeriche raccolte durante quel path ricevono un bonus (es. +1 a ogni carta del path, oppure raddoppia il valore dell'ultima carta che chiude il ciclo).
 
 ---
 
@@ -90,7 +96,7 @@ La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fas
 - **Il Mercante Ambulante**: Una figura/PNG che incontri tra le tappe del viaggio.
 - **Servizi Offerti (a pagamento in Lire o tramite Buoni)**:
   1. **Acquisto Carte**: Aggiungi nuove carte al mazzo (per potenziare semi o valori specifici).
-  2. **Cancellazione / Rimozione Carte**: Rimuovi carte deboli o ingombranti (operazione preziosa per rendere il mazzo più consistente e chiudere i path con meno sprechi).
+  2. **Cancellazione / Rimozione Carte**: Rimuovi carte deboli o ingombranti (operazione preziosa per rendere il mazzo più consistente e creare "buchi" strategici).
   3. **Scambio / Trasformazione**: Sostituisci una carta esistente con un'altra (es. cambia un 2 di Bastoni in un 2 di Spade, o inverti due valori).
 - **Integrazione con gli 8 (Fanti)**:
   - Negli shop degli 8 durante il tavolo puoi comprare i **Buoni del Mercante** a prezzo vantaggioso o trovarli come ricompensa, preparando la strategia di modifica del mazzo per la tappa successiva.
@@ -99,20 +105,29 @@ La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fas
 
 ## 5. Dinamiche di Incontro e Flusso di Gioco
 
-- **Forme geometriche e Combo**: premiare path che formano percorsi particolari sul tavolo (linee, quadrati 2x2, croci).
-- **Sinergie con Santini e Amari**: come gli eventi delle carte innescano i santini posseduti nell'inventario.
 - **Condizioni di vittoria dell'incontro**: girare tutti e 4 i re, oppure girare l'intero mazzo, oppure sopravvivere a un numero fisso di path.
+- **Sinergie con Santini e Amari**: come gli eventi delle carte innescano i santini posseduti nell'inventario.
 
 ---
 
-## 6. Combinazioni
+## 6. Combinazioni e Carte Speciali
 
-- **i quattro 7**: Qando vengono raccolti i quattro 7, si radoppiano i varoli che questi danno singolarmente. es **+7 danno -> +14 danno**
-- **Il diavolo**: Quando vengono trovati in una singola path tre 6, questi attivano un effetto di bruciatura su tutti i re di questo tavolo. L'effetto termina appena viene trovato un successivo 6 oppure termina la partita al tavolo.
-  - **Effetto**: Dopo ogni attacco del re, questo subisce un tot di danno.
+- **I quattro 7**: Quando vengono raccolti tutti e quattro i 7 nell'incontro, si raddoppiano i valori che questi danno singolarmente (es. +7 danno → +14 danno, +7 armatura → +14 armatura, +7 vita → +14 vita, +7.000 Lire → +14.000 Lire).
+- **Il Settebello (7 di Denari) — Ricompensa Leggendaria**:
+  - Oltre a dare +7.000 Lire, conferisce un bonus unico al giocatore (es. Jackpot speciale in Lire + scelta tra un Amaro raro o un Buono Mercante gratis, oppure ripristino totale degli HP).
+- **Il Diavolo (6-6-6)**: Quando vengono trovati in una singola path tre 6, questi attivano un effetto di bruciatura su tutti i re di questo tavolo.
+  - **Effetto**: Dopo ogni attacco del re, questo subisce un tot di danno da bruciatura.
+  - L'effetto termina appena viene trovato un successivo 6 oppure termina la partita al tavolo.
 
 ---
 
-## 7. Le forme
+## 7. Le Forme e i Buchi sul Tavolo
 
-Durante la partita sarà possibile modificare il mazzo in modo tale che durante i path possono comparire dei buchi sulla tavola che non verranno riempiti. Se vengono creati buchi di determinate forme verranno assegnati dei bonus.
+Durante la partita sarà possibile modificare il mazzo in modo tale che durante i path possono comparire dei buchi sulla tavola che non verranno riempiti. Se vengono creati buchi di determinate forme geometriche verranno assegnati dei bonus.
+
+- **Origine dei Buchi**: Rimuovendo o consumando carte tramite il Mercante o speciali eventi, quelle caselle sul tavolo restano "vuote" (buchi).
+- **Pattern e Forme Possibili (Idee)**:
+  - **Linea / Tris (3 buchi allineati in riga o colonna)**: Bonus economico immediato (es. +Lire extra).
+  - **Quadrato 2x2 (4 buchi)**: Bonus difensivo o di cura (es. ripristino HP o scudo permanente).
+  - **Croce / T**: Sconto speciale al prossimo Mercante o Shop.
+  - **Forme Grandi (3x3 o 4x4)**: Ricompensa leggendaria (un santino raro o potenziamento massiccio).
