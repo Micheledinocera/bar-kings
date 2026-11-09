@@ -36,15 +36,7 @@ I numeri da 1 a 7 forniscono **esattamente il loro valore numerico** nella stati
 
 ## 3. Le Figure: Ruoli e Meccaniche Speciali
 
-### 3.1 I Re (10) — I Boss da Affrontare (Fissato)
-I 4 Re rappresentano i boss principali dell'incontro. Affrontarli e sconfiggerli è l'obiettivo del gioco.
-
-- **Stato**: Per ora i Re sono **semplici boss**, senza abilità speciali, poteri unici o statistiche differenziate. Il loro ruolo è unicamente essere l'avversario da sconfiggere nel combattimento.
-- **Combattimento**: Scambio a turni classico tra il giocatore (che usa il danno accumulato dalle Spade e l'armatura dai Bastoni) e il Re.
-
----
-
-### 3.2 Gli 8 (Fanti) — Lo Shop durante il Tavolo
+### 3.1 Gli 8 (Fanti) — Lo Shop durante il Tavolo
 Gli 8 aprono un negozio istantaneo a metà partita (con l'opzione "Salta lo Shop" per incassare subito Lire).
 
 - **Impostazione generale**: Lo shop è di base **generico** (mostra consumabili, amari, cure, oggetti comuni per tutti i semi).
@@ -61,7 +53,7 @@ Gli 8 aprono un negozio istantaneo a metà partita (con l'opzione "Salta lo Shop
 
 ---
 
-### 3.3 I 9 (Cavalli) — Specializzati per Seme (Tavolo vs Bossfight)
+### 3.2 I 9 (Cavalli) — Specializzati per Seme (Tavolo vs Bossfight)
 
 I 4 Cavalli offrono una scelta strategica attiva al giocatore, bilanciata tra **influenzare la bossfight/risorse** e **influenzare il tavolo**:
 
@@ -103,14 +95,7 @@ La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fas
 
 ---
 
-## 5. Dinamiche di Incontro e Flusso di Gioco
-
-- **Condizioni di vittoria dell'incontro**: girare tutti e 4 i re, oppure girare l'intero mazzo, oppure sopravvivere a un numero fisso di path.
-- **Sinergie con Santini e Amari**: come gli eventi delle carte innescano i santini posseduti nell'inventario.
-
----
-
-## 6. Combinazioni e Carte Speciali
+## 5. Combinazioni e Carte Speciali
 
 - **I quattro 7**: Quando vengono raccolti tutti e quattro i 7 nell'incontro, si raddoppiano i valori che questi danno singolarmente (es. +7 danno → +14 danno, +7 armatura → +14 armatura, +7 vita → +14 vita, +7.000 Lire → +14.000 Lire).
 - **Il Settebello (7 di Denari) — Ricompensa Leggendaria**:
@@ -121,13 +106,14 @@ La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fas
 
 ---
 
-## 7. Le Forme e i Buchi sul Tavolo
+## 6. Le Forme e i Buchi sul Tavolo
 
 Durante la partita sarà possibile modificare il mazzo in modo tale che durante i path possono comparire dei buchi sulla tavola che non verranno riempiti. Se vengono creati buchi di determinate forme geometriche verranno assegnati dei bonus.
 
 - **Origine dei Buchi**: Rimuovendo o consumando carte tramite il Mercante o speciali eventi, quelle caselle sul tavolo restano "vuote" (buchi).
 - **Pattern e Forme Possibili (Idee)**:
-  - **Linea / Tris (3 buchi allineati in riga o colonna)**: Bonus economico immediato (es. +Lire extra).
-  - **Quadrato 2x2 (4 buchi)**: Bonus difensivo o di cura (es. ripristino HP o scudo permanente).
-  - **Croce / T**: Sconto speciale al prossimo Mercante o Shop.
-  - **Forme Grandi (3x3 o 4x4)**: Ricompensa leggendaria (un santino raro o potenziamento massiccio).
+  - **Linea 3/ Tris (3 buchi allineati in riga o colonna)**: ToDo.
+  - **Linea 4 / Forza 4 (4 buchi allineati in riga o colonna)**: ToDo.
+  - **Quadrato 2x2 (4 buchi)**: ToDo.
+  - **Croce / T**: ToDo.
+  - **Forme Grandi (3x3 o 4x4)**: ToDo.
