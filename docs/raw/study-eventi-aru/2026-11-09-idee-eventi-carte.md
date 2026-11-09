@@ -105,6 +105,14 @@ La modifica del mazzo avviene **prima di affrontare l'intero tavolo** (nella fas
 
 ---
 
-## 6. Appunti e Proposte Libere
+## 6. Combinazioni
 
-*(Spazio aperto per annotare spunti, varianti, commenti o regole da approfondire insieme)*
+- **i quattro 7**: Qando vengono raccolti i quattro 7, si radoppiano i varoli che questi danno singolarmente. es **+7 danno -> +14 danno**
+- **Il diavolo**: Quando vengono trovati in una singola path tre 6, questi attivano un effetto di bruciatura su tutti i re di questo tavolo. L'effetto termina appena viene trovato un successivo 6 oppure termina la partita al tavolo.
+  - **Effetto**: Dopo ogni attacco del re, questo subisce un tot di danno.
+
+---
+
+## 7. Le forme
+
+Durante la partita sarà possibile modificare il mazzo in modo tale che durante i path possono comparire dei buchi sulla tavola che non verranno riempiti. Se vengono creati buchi di determinate forme verranno assegnati dei bonus.
