@@ -1,9 +1,12 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-29
+aggiornato: 2026-11-11
 verificato: 2026-10-07
+consolidato: 2026-11-11
 fonti:
+  - raw/compiled/new-ingest/2026-11-11-obiettivo.md
+  - raw/compiled/new-ingest/2026-11-11-risposte.md
   - raw/compiled/merge-rpg/2026-10-29-obiettivo.md
   - raw/compiled/study-call-28-10-2026/2026-10-28-note-call.md
   - raw/compiled/llm-wiki/2026-10-07-obiettivo.md
@@ -24,9 +27,9 @@ Fonti grezze che non si modificano (`docs/raw/`), pagine scritte e aggiornate da
 
 1. `/start <nome>` apre `feature/<nome>` e la cartella `raw/<nome>/` con la nota sull'obiettivo.
 2. Le note si aggiungono quando serve, solo dentro una feature; l'utente dice cosa va registrato.
-3. `/close` fa il merge di `origin/develop`, lancia l'ingest e il lint, esegue i controlli e apre la PR verso `develop`.
-4. L'**ingest** aggiorna il wiki in place, controlla la coerenza, gestisce i warning di manutenzione, sposta il raw in `raw/compiled/` e fa un commit `docs(wiki): …` dedicato.
-5. Michele rivede anche il wiki nella PR prima del merge.
+3. `/close` fa il merge di `origin/develop`, esegue i controlli, apre la PR verso `develop` e la unisce da solo (vedi [Branching, commit e pull request](./git-flow-e-convenzioni.md)). La feature non tocca il wiki.
+4. Subito dopo il merge, `/ingest <nome>` apre `feature/ingest-<nome>` dal `develop` aggiornato: aggiorna il wiki in place partendo dai raw e dal commit di squash della feature, controlla la coerenza, gestisce i warning di manutenzione, sposta il raw in `raw/compiled/<nome>/` e fa un commit `docs(wiki): update from <nome>`. Poi push, PR e merge immediato, senza altri controlli.
+5. Se la PR della feature è stata unita a mano (conflitti veri), chi l'ha unita lancia `/ingest <nome>`. Le cartelle in `raw/` diverse da `compiled/` su `develop` sono feature unite in attesa di ingest. Non si fa ingest a metà feature.
 
 ### Contenuto
 
@@ -51,11 +54,13 @@ Fonti grezze che non si modificano (`docs/raw/`), pagine scritte e aggiornate da
 
 - Stesso workflow del marketplace: le regole e le skill sono già provate, e si lavora allo stesso modo sui due progetti.
 - Poche aree di base, aggiunte quando servono: un'area vuota costa un indice da leggere e non dice niente all'agent.
+- **Ingest dopo il merge, in una feature a parte** (2026-11-11): con l'ingest dentro la PR della feature, al merge sul wiki c'erano spesso molti conflitti, perché due feature aperte insieme rigeneravano le stesse pagine. Una feature di solo ingest parte dal wiki corrente e viene aperta e chiusa subito, quindi è praticamente impossibile che qualcun altro unisca qualcosa nel mezzo; con solo wiki e raw non c'è niente che i controlli di `/close` possano trovare.
 - Unity non ha docs locali versionate come Mercur, e scene e prefab non si leggono come codice: per questo servono il "Used by" via GUID e le docs ufficiali citate.
 
 ## Alternative scartate
 
 - **Aree di base `gioco/` (game design) e `arte/` (direzione artistica, UI, audio) al posto di `business/`** — scartata il 2026-10-07: si parte sempre da `business/`, `tecnico/` e `progetto/` e le altre aree si aggiungono man mano (fonte: raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md)
+- **Ingest dentro la PR della feature, al `/close`, con revisione del wiki nella PR** (e rigenerazione del wiki di `develop` in caso di conflitto) — scartata il 2026-11-11: troppi conflitti sul wiki al merge; ora l'ingest gira dopo il merge in `feature/ingest-<nome>` (fonte: raw/compiled/new-ingest/2026-11-11-obiettivo.md)
 - **Cartella `guide/` di `docs/` per flussi e setup destinati alle persone**, come nel marketplace — scartata il 2026-10-07: per ora non serve, si aggiunge quando serve (fonte: raw/compiled/llm-wiki/2026-10-07-adattamento-da-marketplace.md)
 
 ## Domande aperte
