@@ -66,7 +66,7 @@ The wiki is split by **area** (topic), not by kind of page: an area holds both t
 
 ## Raw sources
 
-- Raw files are **never edited once processed** (`raw/compiled/`). If something changes, add a new file. The current feature's notes in `raw/<feature-name>/` may still be corrected until the ingest moves them. `/close` stops if the feature modifies or deletes raw files that already exist on `develop`.
+- Raw files are **never edited once processed** (`raw/compiled/`). If something changes, add a new file. A feature's notes in `raw/<feature-name>/` may still be corrected until the feature is merged; the ingest then moves them. `/close` stops if the feature modifies or deletes raw files that already exist on `develop`.
 - File names: `YYYY-MM-DD-topic.md`. Free format inside.
 - A feature's sources live in `raw/<feature-name>/`; its first note is the task goal. Tasks are features. Raw notes exist **only inside a feature**: no loose files directly in `raw/`.
 - A study resumed later keeps its name with a number: `study-scoring` → `study-scoring-2` → `study-scoring-3`.
@@ -74,7 +74,7 @@ The wiki is split by **area** (topic), not by kind of page: an area holds both t
 - **Study features** (analysis only) are named `study-<topic>` (e.g. `feature/study-scoring`). They **touch no code**: only documentation, i.e. any `*.md` file anywhere (wiki, raw, `AGENTS.md`, `CONTRIBUTING.md`, skills, templates) and anything under `docs/` or `.claude/`, so the rules and skills a study decides are updated in the study itself; `/close` checks it and skips the code checks. To implement what a study decided, close it and start a new feature. Keep features short: close a study even when the analysis is partial, and resume it later with a new feature.
 - There is **no backlog**: a task exists only as a feature (its goal note) and its PR. Knowledge that never reaches the wiki through an ingest was not worth keeping.
 - `raw/` is versioned: no secrets or personal data. If you find any, report them and do not copy them into the wiki.
-- Never read `raw/compiled/` when processing; `output/` is never read at all (see **Outputs**) (one exception: re-ingesting the current feature after a wiki conflict, see **Ingest**). `raw/compiled/` is history, read it only to trace where a page came from.
+- Never read `raw/compiled/` when processing; `output/` is never read at all (see **Outputs**). `raw/compiled/` is history, read it only to trace where a page came from.
 
 ## Wiki pages
 
@@ -96,7 +96,7 @@ The wiki is split by **area** (topic), not by kind of page: an area holds both t
   - `wiki/index.md` lists the areas, one line each, and the **radar**: every decision `aperta` or `in analisi`, with its status;
   - every folder has an `index.md` listing its pages (`- [Title](./page.md): one-line description`, plus ` · <stato>` for decisions) and its sub-folders' indexes. A folder with no pages says so ("Nessuna pagina." / "No pages.").
 - **Sub-folders**: split an area when it passes ~12 pages, or when a sub-topic reaches 4 pages (e.g. `business/carte/`). At most one level below an area. In `tecnico/` sub-folders follow `Assets/Scripts/` (e.g. `tecnico/shared/`, `tecnico/panchina/`), plus `tecnico/scene/` for scenes and prefabs when they need more than one page. Don't split ahead of time.
-- **Lint**: `/lint-wiki` checks links and anchors, indexes and their descriptions, frontmatter, radar, code and asset paths and page size, and warns on pages to verify or consolidate. `/ingest` runs it at its start (for the maintenance warnings) and before its commit, `/close` after the ingest.
+- **Lint**: `/lint-wiki` checks links and anchors, indexes and their descriptions, frontmatter, radar, code and asset paths and page size, and warns on pages to verify or consolidate. `/ingest` runs it at its start (for the maintenance warnings) and before its commit; `/close` runs it only when a feature edited the wiki by hand.
 - Unknowns go in a final `## Domande aperte` (or `## Open questions` in `tecnico/`) section. Never guess.
 - **Page formats in `tecnico/`**: a page per folder of `Assets/Scripts/` (or per system, when a system spans folders) with one `## <ClassName>` section each: what it does, where it lives (path), the scenes and prefabs it is attached to, the serialized fields that matter, what it calls and who uses it, traps. A page per scene: purpose, main GameObjects and the scripts on them, how it is entered and left. The first pages of each kind set the format for the next ones; new kinds of page follow the **Purpose** rules above.
 - **Known issues**: `wiki/tecnico/known-issues.md` (one page for the whole project), grouped in **blocks**, one block per area of code meant to be fixed in one code feature, with a summary table (block, items, tags, decision it waits for). Every item has a tag (`bug`, `ux`, `performance`, `dead-code`, `duplicate`, `debt`, `to-verify`, `decision`), the path of the file and a link to the detailed section. Detailed pages keep their `## Open questions`; `known-issues.md` is the index to plan the fixes.
@@ -175,12 +175,11 @@ Update pages **in place**: rewrite the section that changed, never append a chro
 
 What the ingest does, in order:
 
-1. Collect what to process: the files in `raw/<feature-name>/` not yet in `compiled/`, plus the feature's commits, to know what custom code was added, changed or removed:
+1. Collect what to process: the files in `raw/<feature-name>/`, plus the commit the feature's PR was squashed into on `develop`, to know what custom code was added, changed or removed:
    ```bash
-   git fetch origin
-   git log --no-merges origin/develop..HEAD
+   gh pr list --state merged --head feature/<feature-name> --json number,mergeCommit
+   git show --stat <mergeCommit>
    ```
-   Always compare with `origin/develop` after a fetch, never with the local `develop` (it may be stale, and then other features' merged commits look like this feature's). `--no-merges` drops the merges of `develop` into the feature. Commits of other open features are never in this range.
 
    Also run the lint script (`node .claude/skills/lint-wiki/lint-wiki.mjs`) and keep its **maintenance warnings** (stale, code changed, consolidate, missing `## Alternative scartate`) for step 7.
 2. Read `wiki/index.md`, the index of each area involved, and the pages involved.
@@ -206,18 +205,18 @@ What the ingest does, in order:
    - **Close every warning handled with a change that turns it off**, because the decision taken must be written: page confirmed or corrected → `verificato` to today; a doubt remains → add it to `## Domande aperte` and set `verificato` (the page was reviewed, the doubt is recorded); consolidation done, postponed or not needed → `consolidato` to today, with the reason in the commit body; missing `## Alternative scartate` → add it with the user. A warning that comes back in a later feature is then always a new problem.
    - **No report files**: the warnings live in the session and are solved there.
 8. Move the processed sources to `raw/compiled/`: the **whole feature folder** (`raw/<feature-name>/` must not remain).
-9. Create **one** commit with only the wiki and raw changes: `docs(wiki): update from <feature-name>`.
+9. Create **one** commit with only the wiki and raw changes: `docs(wiki): update from <feature-name>`, in the branch `feature/ingest-<feature-name>`, then open its PR and merge it at once.
 10. Report a summary: pages created, updated, deleted; pages aligned by the coherence check; conflicts; maintenance warnings handled and how, and those left out of scope; anything skipped.
 
 If there is nothing new to process (no new raw, no custom code), make no changes and no commit.
 
 A code feature that implemented a rule of a decision `aperta` or `in analisi` records it as the option being tried; the decision becomes `presa` (and leaves the radar) only if the user said explicitly during the feature that the rule is fixed (see **Decisions**).
 
-### Two features on the wiki at the same time
+### When the ingest runs — after the merge
 
-The wiki is derived from the raw sources, so wiki conflicts are not resolved by hand: they are regenerated. `/close` merges `origin/develop` into the feature **before** the ingest, so the ingest works on the current wiki. If that merge conflicts in `docs/wiki/` (an earlier mid-feature ingest of this feature against pages changed by another feature), the feature takes `develop`'s wiki as it is and runs **one** ingest of all its sources: `raw/<feature-name>/` and `raw/compiled/<feature-name>/` (the only case where `compiled/` is read when processing). Conflicts outside `docs/wiki/` are resolved by the user.
+Features do not change the wiki: they add raw notes and code, and the ingest runs only **after** the feature is merged into `develop`, in its own short feature `feature/ingest-<feature-name>`. `/close` merges the feature PR and then runs `/ingest <feature-name>`, which opens the ingest feature from the current `develop`, updates the wiki, moves the raw files to `compiled/`, and opens and merges its own PR at once, with no further checks. So every ingest works on the current wiki, and two features never conflict on it. There is no mid-feature ingest.
 
-Wiki changes never reach `develop` directly: they go through the feature's PR, reviewed by Michele.
+If a feature PR is merged by hand (e.g. after hard conflicts, see `/close`), whoever merged it runs `/ingest <feature-name>`. Folders left in `raw/` (other than `compiled/`) on `develop` belong to merged features still waiting for their ingest.
 
 ## Using the wiki during development
 
