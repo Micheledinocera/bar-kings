@@ -18,7 +18,7 @@ Conventions (branch names, commit format) are in `CONTRIBUTING.md`; raw rules ar
 
 ## 1. Inputs
 
-- **Feature name**: from the arguments. Short, English, kebab-case (`deck-shuffle`). Analysis-only features use the `study-` prefix (`study-scoring`). If missing or not in that form, propose one and ask the user to confirm.
+- **Feature name**: from the arguments. Short, English, kebab-case (`deck-shuffle`). Analysis-only features use the `study-` prefix (`study-scoring`). The `ingest-` prefix is reserved for `/ingest`. If missing or not in that form, propose one and ask the user to confirm.
 - **Continuing a topic**: a feature that resumes an earlier one keeps its name with the next free number: `study-scoring` → `study-scoring-2` → `study-scoring-3`. If the name given is already taken (check 3 below) and the goal continues that topic, propose the numbered name.
 - **Goal**: what the task is about and why. If not in the arguments, ask the user. It is written in **Italian**, in their words; don't invent requirements.
 - **Resuming a topic**: if the wiki has a decision on the same topic, e.g. a study left `in analisi` (radar in `docs/wiki/index.md`, or `grep -rl "tipo: decisione" docs/wiki`), mention it to the user and link it in the goal note, so the work starts from there.
@@ -43,7 +43,7 @@ gh pr list --state open                 # open PRs (skip if gh is missing or not
 ```
 
 - Local branches whose remote is `gone`: GitHub deletes the remote branch after the merge (auto-delete is on). Delete the local one automatically, but only if its PR is merged: `gh pr list --state merged --head feature/<name> --json number` must return a PR; then `git branch -D feature/<name>` (never the current branch; switch to `develop` first if needed). A `gone` branch without a merged PR: only mention it, never delete it. Report the branches deleted.
-- Other local features and open PRs: work not merged yet; the new feature may conflict with it on the wiki (`/close` handles that).
+- Other local features and open PRs: work not merged yet. Folders in `docs/raw/` on `develop` other than `compiled/` are merged features still waiting for their ingest: mention them (`/ingest <name>`).
 - Stashes: mention them; one may be meant for this feature (`git stash pop` after step 3).
 
 ## 3. Create the feature
@@ -78,4 +78,4 @@ End the commit message with the attribution line required by the session.
 
 ## 6. Report
 
-Branch created, path of the goal note, open work found in step 2b, the decisions and open questions on the topic, and a reminder: add notes to `docs/raw/<name>/` whenever needed; `/close` will process them. For a `study-` feature, also remind that it touches no code (only documentation: any `*.md` file, `docs/`, `.claude/`).
+Branch created, path of the goal note, open work found in step 2b, the decisions and open questions on the topic, and a reminder: add notes to `docs/raw/<name>/` whenever needed; after `/close` merges the feature, `/ingest` turns them into wiki pages. For a `study-` feature, also remind that it touches no code (only documentation: any `*.md` file, `docs/`, `.claude/`).

@@ -10,7 +10,7 @@
 
 ## Wiki
 
-<!-- Pages created / updated / deleted by the `docs(wiki): ...` commit, and any conflicts or open questions it reported. "None" if nothing changed. -->
+<!-- The wiki is updated after the merge, by the `feature/ingest-<name>` PR that `/close` opens and merges. -->
 
 -
 
