@@ -1,10 +1,11 @@
 ---
 tipo: decisione
 stato: presa
-aggiornato: 2026-10-16
+aggiornato: 2026-11-11
 verificato: 2026-10-11
 consolidato: 2026-10-11
 fonti:
+  - raw/compiled/new-ingest/2026-11-11-risposte.md
   - raw/compiled/build/2026-10-16-comando-build.md
   - raw/compiled/build/2026-10-16-modifiche-non-salvate.md
   - raw/compiled/unity-mcp/2026-10-15-decisione-mcp.md
@@ -27,8 +28,9 @@ Quando una feature di codice è finita e può andare in PR.
 - **Codice scritto dalle persone**: `/close` lo confronta con le regole di `AGENTS.md`, applica i fix piccoli e sicuri che non cambiano il comportamento e segnala il resto. Non rinomina mai gli identificatori e non chiede di rifare il lavoro.
 - **Unity**: `/close` legge da solo la Console tramite `unity-mcp` (nessun errore di compilazione, nessun errore o warning nuovo; vedi [Accesso dell'agent all'Unity Editor](./accesso-editor-agent.md)); se l'MCP non è disponibile lo chiede all'utente. All'utente chiede se la feature funziona in Play mode. I problemi segnalati vanno nella PR, e l'utente decide se sistemarli subito o dopo.
 - **Niente di non salvato**: prima di leggere la Console `/close` salva tutto quello che è aperto nell'Editor (scene e asset) e guarda `git status`. Unity segna spesso una scena modificata senza cambiarla: salvata, git non mostra niente. Un file che cambia davvero lo mostra all'utente, che decide se appartiene alla feature (si committa) o no (si annulla).
-- **Build**: `/close` lancia la build Windows dal menu `Tools/Build Windows` e controlla esito, errori e warning, peso rispetto all'ultimo noto e `git status` pulito dopo la build (vedi [scenes, Build](../tecnico/scenes.md#build)). Come gli altri controlli non blocca: i problemi vanno nella PR. Si salta per gli studi senza codice.
-- **Stop veri** (senza, la PR sarebbe sbagliata): ramo diverso da `feature/*`, lavoro non committato, `gh` non autenticato, conflitti di merge fuori dal wiki. Per uno studio che contiene file diversi dalla documentazione, `/close` chiede se spostarli.
+- **Build**: `/close` lancia la build Windows dal menu `Tools/Build Windows` e controlla esito, errori e warning, peso rispetto all'ultimo noto e `git status` pulito dopo la build (vedi [scenes, Build](../tecnico/scenes.md#build)). Come gli altri controlli non ferma il `/close`: i problemi vanno nella PR (una build fallita ferma solo il merge automatico). Si salta per gli studi senza codice.
+- **Stop veri** (senza, la PR sarebbe sbagliata): ramo diverso da `feature/*`, lavoro non committato, `gh` non autenticato. Per uno studio che contiene file diversi dalla documentazione, `/close` chiede se spostarli.
+- **Merge automatico**: finiti i controlli `/close` unisce la PR da solo, tranne quando ci sono conflitti veri con `develop` (lascia una proposta di risoluzione e il merge allo sviluppatore) o il codice non funziona: errori di compilazione, build fallita, Play che non va secondo l'utente. In quel caso la PR è aperta con le note e l'utente sceglie se sistemare subito o unire comunque. Non è una regola bloccante: il codice rotto non deve arrivare su `develop` senza che nessuno lo guardi.
 - Riferimenti: `.claude/skills/close/SKILL.md`, `.github/pull_request_template.md`, `CONTRIBUTING.md`.
 
 ## Perché
